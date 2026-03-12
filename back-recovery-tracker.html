@@ -834,8 +834,8 @@ const EXERCISES_DB = {
       { level: 5, name: "Add load", description: "Ankle weight / cable / abductor machine option.", goal: "Same quality, more stimulus" }
     ]
   },
-  "deep-squat-hold": {
-    name: "Deep Squat Hold", category: "Mobility",
+  "deep-squat": {
+    name: "Deep Squat", category: "Mobility",
     formVideoUrl: "",
     effortRange: [3, 6], defaultDose: "2x2min",
     formCues: ["No spinal rounding to chase depth", "Depth only counts if you can own it", "Heels elevated is fine"],
@@ -1169,6 +1169,150 @@ const EXERCISES_DB = {
       { level: 5, name: "Deeper single-leg lockout", description: "Only after Level 4 stable. Smooth, controlled.", goal: "No pop-out-the-hip-and-yank strategy" }
     ]
   },
+  "single-leg-iso-hold": {
+    name: "Single Leg Iso Hold", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "1min each side",
+    formCues: ["Same back extension setup", "Light glute contraction, squeeze shoulder blades", "One leg at a time to test side-to-side tolerance"],
+    progressionRules: ["If one side flares more: stay at shorter holds on that side", "Build tolerance symmetrically before progressing"],
+    prerequisites: [
+      { exercise: "back-extension", minLevel: 1, note: "Comfortable with double leg iso hold first" }
+    ],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 60 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true },
+      { id: "padHeight", type: "select", label: "Pad Height", options: ["High", "Medium", "Standard"] }
+    ],
+    levels: [
+      { level: 1, name: "Short holds (20-30s)", description: "One leg at a time. Use hands for support if needed.", goal: "Feel each side working independently without flare" },
+      { level: 2, name: "Build to 1 min per side", description: "Increase hold time gradually.", goal: "3 weeks stable at 1 min each side" },
+      { level: 3, name: "Less support", description: "Reduce hand assistance, rely more on back/glute contraction.", goal: "Clean holds without compensating" },
+      { level: 4, name: "Longer holds / multiple sets", description: "Build total time under tension.", goal: "Symmetric tolerance left vs right" }
+    ]
+  },
+  "deep-squat-hold": {
+    name: "Deep Squat Hold", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "2x2min",
+    formCues: ["No spinal rounding to chase depth", "Depth only counts if you can own it", "Heels elevated is fine"],
+    progressionRules: ["If sharp knife sensation in hip/SI: raise heels, shorten hold, stay taller"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 120 },
+      { id: "heelElev", type: "select", label: "Heel Elevation", options: ["High wedge/slant board", "Medium wedge", "Low wedge", "Flat"] }
+    ],
+    levels: [
+      { level: 1, name: "High elevation + upright hold", description: "Heels elevated a lot (slant board/plates/wedge). Hold onto something for balance.", goal: "Torso upright, spine quiet, gentle groin opening" },
+      { level: 2, name: "Same elevation, longer time", description: "Don't chase deeper yet—just make the position feel normal.", goal: "Build to 60-120s holds with control" },
+      { level: 3, name: "Lower heel elevation", description: "Reduce wedge height slightly. Keep same rules.", goal: "Same upright posture at harder ankle/hip demand" },
+      { level: 4, name: "Flat heels", description: "Depth with heels flatter and no butt wink (or much less).", goal: "Sit deep and feel stable, not jammed" },
+      { level: 5, name: "Add load as counterbalance", description: "Light weight held in front helps stay upright and open the position.", goal: "Time + calmness + posture progression" }
+    ]
+  },
+  "full-range-split-squat-hold": {
+    name: "Full Range Split Squat Hold", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "2x1min each leg",
+    formCues: ["Back leg stays long, torso stays tall", "Hold at comfortable depth", "Feel the stretch, don't fight through pain"],
+    progressionRules: ["If back feels grabby: raise range and use support", "Build hold time before chasing depth"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 60 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light dumbbells", "Medium dumbbells"] }
+    ],
+    levels: [
+      { level: 1, name: "High range / supported hold", description: "Use hand support (rack/wall), keep range higher. Hold position.", goal: "No sharp knee pain, no back pinch" },
+      { level: 2, name: "Deeper hold", description: "Gradually lower depth over weeks.", goal: "Calm exposure at deeper range" },
+      { level: 3, name: "Less support", description: "Reduce hand support, hold deeper position independently.", goal: "Stable hold without compensation" },
+      { level: 4, name: "Longer holds", description: "Build time in position.", goal: "Consistent tolerance, stable next-day response" }
+    ]
+  },
+  "outer-hip-dropset": {
+    name: "Outer Hip Dropset", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "1 dropset each side",
+    formCues: ["Same outer hip circuit movements but as a drop set", "Keep pelvis quiet, isolate the hip"],
+    progressionRules: ["If hip pinch/click: shorten range", "If back does the work: smaller range, slower"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "reps", type: "number", label: "Reps per position", default: 10 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true }
+    ],
+    levels: [
+      { level: 1, name: "Intro / light", description: "Easy drop set, small range, slow.", goal: "Feel outer hip working without irritation" },
+      { level: 2, name: "Full circuit, clean reps", description: "Bigger range + smoother control.", goal: "Strong pump in outer hip" },
+      { level: 3, name: "Longer time under tension", description: "More burn, still controlled.", goal: "Build the drop set effect" },
+      { level: 4, name: "Add load", description: "Ankle weight / cable / band.", goal: "Same quality, more stimulus" }
+    ]
+  },
+  "calf-raise": {
+    name: "Calf Raise", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "2x25",
+    formCues: ["Controlled motion, no bouncing", "Full range: stretch at bottom, squeeze at top"],
+    progressionRules: ["If Achilles is angry next day: reduce depth or volume"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 25 },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light dumbbell", "Medium dumbbell", "Heavy dumbbell", "Machine"] }
+    ],
+    levels: [
+      { level: 1, name: "Partial range, bodyweight", description: "Smaller range if full stretch too intense.", goal: "Smooth reps, no sharp pain" },
+      { level: 2, name: "Full range bodyweight", description: "Full stretch at bottom, full squeeze at top.", goal: "Controlled through full range" },
+      { level: 3, name: "Add volume", description: "Build reps/sets over weeks.", goal: "Better endurance, less sensitivity" },
+      { level: 4, name: "Add load", description: "Add weight keeping same range and control.", goal: "Loaded full range without irritation" }
+    ]
+  },
+  "deadlift": {
+    name: "Deadlift", category: "Other",
+    formVideoUrl: "",
+    effortRange: [3, 8], defaultDose: "3x5",
+    formCues: ["Brace before every rep", "Push floor away, don't yank", "Keep bar close"],
+    progressionRules: ["If back rounds or pain increases: reduce weight", "Build slowly post-recovery"],
+    prerequisites: [
+      { exercise: "back-extension", minLevel: 4, note: "Strong back extension tolerance first" }
+    ],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 3 },
+      { id: "reps", type: "number", label: "Reps", default: 5 },
+      { id: "weight", type: "number", label: "Weight (kg)", default: 0 },
+      { id: "variation", type: "select", label: "Variation", options: ["Conventional", "Sumo", "Trap Bar", "Romanian (RDL)", "Block Pull"] }
+    ],
+    levels: [
+      { level: 1, name: "Patterning / light", description: "Empty bar or very light. Focus on form.", goal: "Clean hinge pattern without back rounding" },
+      { level: 2, name: "Light load", description: "Build weight slowly, keep form strict.", goal: "Consistent reps, no next-day spike" },
+      { level: 3, name: "Moderate load", description: "Working sets with moderate weight.", goal: "Strong and stable through full range" },
+      { level: 4, name: "Progressive overload", description: "Add weight over weeks/months.", goal: "Strength gains with tissue tolerance" }
+    ]
+  },
+  "squat": {
+    name: "Squat", category: "Other",
+    formVideoUrl: "",
+    effortRange: [3, 8], defaultDose: "3x5",
+    formCues: ["Brace before descending", "Knees track over toes", "Control the descent"],
+    progressionRules: ["If back rounds at bottom (butt wink): reduce depth", "Build depth before load"],
+    prerequisites: [
+      { exercise: "deep-squat", minLevel: 2, note: "Comfortable with deep squat hold pattern" }
+    ],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 3 },
+      { id: "reps", type: "number", label: "Reps", default: 5 },
+      { id: "weight", type: "number", label: "Weight (kg)", default: 0 },
+      { id: "variation", type: "select", label: "Variation", options: ["Back Squat", "Front Squat", "Goblet Squat", "Safety Bar"] }
+    ],
+    levels: [
+      { level: 1, name: "Bodyweight / goblet", description: "Practice the pattern with no or light load.", goal: "Clean depth without compensation" },
+      { level: 2, name: "Light barbell", description: "Empty bar or light weight.", goal: "Consistent reps, stable next-day" },
+      { level: 3, name: "Moderate load", description: "Working sets with moderate weight.", goal: "Strong and controlled through range" },
+      { level: 4, name: "Progressive overload", description: "Add weight over weeks/months.", goal: "Strength gains with maintained form" }
+    ]
+  },
   "jefferson-curls": {
     name: "Jefferson Curls", category: "Compound",
     formVideoUrl: "",
@@ -1196,6 +1340,15 @@ const EXERCISES_DB = {
 };
 
 const DB_VERSION = 2;
+
+const EXERCISE_ORDER = [
+  { category: "Mobility", exercises: ["couch-stretch", "outer-hip-circuit", "pigeon-strength", "deep-squat", "loaded-butterfly", "active-hang"] },
+  { category: "LBA", exercises: ["tibialis-raise", "deep-calf-raise", "reverse-step-up", "full-range-split-squat", "external-rotation", "dumbbell-pullover", "trap-3-raise", "back-extension", "hip-flexor-kick-out", "side-bend-progression"] },
+  { category: "Other", exercises: ["deadlift", "squat"] },
+  { category: "SI Joint Protocol", exercises: ["single-leg-iso-hold", "deep-squat-hold", "full-range-split-squat-hold", "abductor-machine", "outer-hip-dropset", "big-toe-heel-sit", "calf-raise", "elephant-walk"] },
+  { category: "Compound", exercises: ["jefferson-curls"] }
+];
+
 let db;
 let syncCfg = { apiKey: '', binId: '' };
 const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
@@ -1484,7 +1637,7 @@ function renderExerciseBlocks() {
           <label>Exercise</label>
           <select onchange="updateExerciseInBlock('${block.id}', this.value)">
             <option value="">-- Select Exercise --</option>
-            ${Object.entries(EXERCISES_DB).map(([id, e]) => `<option value="${id}" ${block.exerciseId === id ? 'selected' : ''}>${e.name}</option>`).join('')}
+            ${EXERCISE_ORDER.map(grp => `<optgroup label="${grp.category}">${grp.exercises.filter(id => EXERCISES_DB[id]).map(id => `<option value="${id}" ${block.exerciseId === id ? 'selected' : ''}>${EXERCISES_DB[id].name}</option>`).join('')}</optgroup>`).join('')}
           </select>
         </div>
 
@@ -1500,7 +1653,7 @@ function renderExerciseBlocks() {
         <div class="form-group">
           <label>Effort (0-10)</label>
           <div class="slider-group">
-            <input type="range" min="0" max="10" value="${block.effort || 5}" onchange="updateEffortInBlock('${block.id}', this.value)">
+            <input type="range" min="0" max="10" value="${block.effort || 5}" oninput="updateEffortInBlock('${block.id}', this.value, this)">
             <span class="slider-value">${block.effort || 5}</span>
           </div>
         </div>
@@ -1580,11 +1733,14 @@ function updateDoseField(blockId, fieldId, value) {
   }
 }
 
-function updateEffortInBlock(blockId, value) {
+function updateEffortInBlock(blockId, value, inputEl) {
   const block = currentSession.exercises.find(b => b.id === blockId);
   if (block) {
     block.effort = parseInt(value);
-    document.querySelectorAll('.slider-value')[0].textContent = value;
+    if (inputEl) {
+      const valueSpan = inputEl.nextElementSibling;
+      if (valueSpan) valueSpan.textContent = value;
+    }
   }
 }
 
@@ -2055,7 +2211,14 @@ async function deleteRoutine(id) {
 
 async function renderProgressions() {
   const container = document.getElementById('progressions-container');
-  container.innerHTML = Object.entries(EXERCISES_DB).map(([id, ex]) => {
+  const orderedExercises = [];
+  EXERCISE_ORDER.forEach(grp => {
+    orderedExercises.push({ isCategory: true, category: grp.category });
+    grp.exercises.forEach(id => { if (EXERCISES_DB[id]) orderedExercises.push({ id, ex: EXERCISES_DB[id] }); });
+  });
+  container.innerHTML = orderedExercises.map(item => {
+    if (item.isCategory) return `<div style="margin-top: 16px; margin-bottom: 8px; font-weight: 700; color: var(--accent); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px;">${item.category}</div>`;
+    const id = item.id, ex = item.ex;
     const currentLevel = localStorage.getItem(`level_${id}`) ? parseInt(localStorage.getItem(`level_${id}`)) : 1;
     return `
       <div class="history-entry">
