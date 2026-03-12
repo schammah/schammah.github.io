@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back Recovery Tracker</title>
+<style>
+:root {
+  --bg: #002b36;
+  --surface: #073642;
+  --surface2: #00212b;
+  --border: #0a4050;
+  --border2: #586e75;
+  --text: #93a1a1;
+  --text2: #839496;
+  --text3: #657b83;
+  --accent: #268bd2;
+  --accent2: #1a6da0;
+  --green: #859900;
+  --yellow: #b58900;
+  --red: #dc322f;
+  --orange: #cb4b16;
+  --cyan: #2aa198;
+  --violet: #6c71c4;
+  --magenta: #d33682;
+  --radius: 10px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.app { max-width: 720px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+.subtitle { color: var(--text2); font-size: 0.85rem; margin-bottom: 24px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tab { padding: 10px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text2); font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.tab:hover { border-color: var(--accent); color: var(--text); }
+.tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Cards */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.25); }
+.card h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text); }
+.card h2 .icon { font-size: 1.15rem; }
+.section-hint { color: var(--text3); font-size: 0.8rem; margin: -8px 0 14px; font-style: italic; }
+
+/* Form elements */
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 0.82rem; color: var(--text2); margin-bottom: 5px; font-weight: 500; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font-size: 0.9rem; font-family: inherit; transition: border-color 0.15s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(38,139,210,0.12); }
+.field textarea { resize: vertical; min-height: 60px; }
+.field select { cursor: pointer; }
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1; }
+
+/* Slider */
+.slider-wrap { display: flex; align-items: center; gap: 12px; }
+.slider-wrap input[type="range"] { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 3px; background: var(--border); border: none; padding: 0; }
+.slider-wrap input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.slider-val { min-width: 32px; text-align: center; font-weight: 700; font-size: 1.1rem; color: var(--text); }
+
+/* Pill groups */
+.pill-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 0.82rem; cursor: pointer; transition: all 0.15s; }
+.pill:hover { border-color: var(--accent); color: var(--text); }
+.pill.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pill.green.selected { background: var(--green); color: #fff; border-color: var(--green); }
+.pill.yellow.selected { background: var(--yellow); color: #fff; border-color: var(--yellow); }
+.pill.red.selected { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* Checkbox pills */
+.check-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.check-pill { padding: 7px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 0.8rem; cursor: pointer; transition: all 0.15s; user-select: none; }
+.check-pill:hover { border-color: var(--accent); }
+.check-pill.checked { background: var(--cyan); color: #fff; border-color: var(--cyan); }
+
+/* Exercise block */
+.exercise-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 10px; position: relative; }
+.exercise-block .remove-btn { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--red); cursor: pointer; font-size: 1.1rem; padding: 4px; }
+
+/* Buttons */
+.btn { padding: 10px 20px; border-radius: 8px; border: none; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-green { background: var(--green); color: #fff; }
+.btn-green:hover { opacity: 0.9; }
+.btn-outline { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); }
+.btn-outline:hover { border-color: var(--accent); color: var(--text); }
+.btn-danger { background: var(--surface2); border: 1px solid var(--red); color: var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+.btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+
+/* Sub-tabs within New Entry */
+.sub-tabs { display: flex; gap: 0; margin-bottom: 20px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.sub-tab { flex: 1; padding: 12px 8px; text-align: center; background: var(--surface); color: var(--text2); font-size: 0.85rem; font-weight: 500; cursor: pointer; border-right: 1px solid var(--border); transition: all 0.15s; }
+.sub-tab:last-child { border-right: none; }
+.sub-tab:hover { color: var(--text); background: var(--surface2); }
+.sub-tab.active { background: var(--accent); color: #fff; }
+
+/* Linked session badge */
+.linked-session { background: var(--bg); border: 1px solid var(--cyan); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 0.85rem; color: var(--text2); }
+.linked-session strong { color: var(--cyan); }
+
+/* History */
+.history-entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.history-entry:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(38,139,210,0.1); }
+.history-date { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+.history-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; margin-left: 8px; text-transform: uppercase; }
+.type-session { background: rgba(38,139,210,0.12); color: var(--accent); }
+.type-nextday { background: rgba(42,161,152,0.12); color: var(--cyan); }
+.history-summary { color: var(--text2); font-size: 0.82rem; margin-top: 6px; line-height: 1.5; }
+.history-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.badge { padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+.badge-pain { background: rgba(220,50,47,0.1); color: var(--red); }
+.badge-exercises { background: rgba(38,139,210,0.1); color: var(--accent); }
+.badge-better { background: rgba(133,153,0,0.12); color: var(--green); }
+.badge-same { background: rgba(181,137,0,0.12); color: var(--yellow); }
+.badge-worse { background: rgba(220,50,47,0.1); color: var(--red); }
+.badge-linked { background: rgba(42,161,152,0.1); color: var(--cyan); }
+
+/* Detail view */
+.detail-section { margin-bottom: 14px; }
+.detail-section h3 { font-size: 0.88rem; color: var(--accent); margin-bottom: 8px; font-weight: 600; }
+.detail-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid var(--surface); }
+.detail-row:last-child { border-bottom: none; }
+.detail-label { color: var(--text2); }
+
+/* Routine management */
+.routine-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+.routine-item .routine-name { font-weight: 600; font-size: 0.9rem; }
+.routine-item .routine-count { color: var(--text3); font-size: 0.8rem; }
+.routine-actions { display: flex; gap: 6px; }
+
+/* Stats */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.stat-val { font-size: 1.8rem; font-weight: 800; color: var(--text); }
+.stat-label { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+
+/* Chart */
+.chart-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.chart-container h3 { font-size: 0.95rem; margin-bottom: 12px; color: var(--text); }
+canvas { width: 100% !important; height: 200px !important; }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 0.88rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+.toast.show { opacity: 1; }
+
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; }
+.modal { background: var(--surface); border-radius: var(--radius); padding: 24px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 30px rgba(0,0,0,0.5); border: 1px solid var(--border); }
+.modal h3 { font-size: 1.1rem; margin-bottom: 16px; color: var(--text); }
+
+/* Sync status bar */
+.sync-bar { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 8px; margin-bottom: 16px; font-size: 0.82rem; border: 1px solid var(--border); background: var(--surface); }
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); flex-shrink: 0; transition: background 0.3s; }
+.sync-dot.ok { background: var(--green); }
+.sync-dot.syncing { background: var(--yellow); animation: pulse 1s infinite; }
+.sync-dot.error { background: var(--red); }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.sync-text { flex: 1; color: var(--text2); }
+.sync-btn-inline { background: none; border: none; color: var(--accent); font-size: 0.82rem; cursor: pointer; padding: 0; font-weight: 600; text-decoration: underline; }
+
+/* Utility */
+.hidden { display: none !important; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.text-center { text-align: center; }
+.text-muted { color: var(--text2); font-size: 0.85rem; }
+
+@media (max-width: 500px) {
+  .field-row { flex-direction: column; gap: 0; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .sub-tab { font-size: 0.78rem; padding: 10px 4px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>Back Recovery Tracker</h1>
+  <p class="subtitle">LBA Program · Disc Herniation L4-L5 / L5-S1 · Sciatica &amp; SI Joint</p>
+
+  <div class="sync-bar" id="sync-bar">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span class="sync-text" id="sync-text">Cloud sync not configured</span>
+    <button class="sync-btn-inline" onclick="document.querySelector('.tab[data-tab=settings]').click()">Set up</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="log">New Entry</div>
+    <div class="tab" data-tab="history">History</div>
+    <div class="tab" data-tab="routines">Routines</div>
+    <div class="tab" data-tab="stats">Trends</div>
+    <div class="tab" data-tab="settings">Data</div>
+  </div>
+
+  <!-- ============== NEW ENTRY TAB ============== -->
+  <div id="tab-log">
+    <div class="sub-tabs">
+      <div class="sub-tab active" data-subtab="session" onclick="switchSubTab('session')">Log Session</div>
+      <div class="sub-tab" data-subtab="nextday" onclick="switchSubTab('nextday')">Next-Day Check</div>
+    </div>
+
+    <!-- ===== SESSION ENTRY ===== -->
+    <div id="subtab-session">
+      <div class="card">
+        <h2><span class="icon">📊</span> Baseline</h2>
+        <p class="section-hint">Fill before your session</p>
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="s-date">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Pain (0–10)</label>
+            <div class="slider-wrap">
+              <input type="range" min="0" max="10" value="0" id="s-pain" oninput="this.nextElementSibling.textContent=this.value">
+              <span class="slider-val">0</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Stiffness (0–10)</label>
+            <div class="slider-wrap">
+              <input type="range" min="0" max="10" value="0" id="s-stiffness" oninput="this.nextElementSibling.textContent=this.value">
+              <span class="slider-val">0</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Main location(s)</label>
+          <div class="check-group" id="s-locations">
+            <div class="check-pill" onclick="toggleCheck(this)">Center low back</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Left SI</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Right SI</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Left glute</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Right glute</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Left hamstring</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Right hamstring</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Left leg (sciatic)</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Right leg (sciatic)</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Hip flexor</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Nerve symptoms?</label>
+          <div class="pill-group" id="s-nerve">
+            <div class="pill" onclick="selectPill(this)">No</div>
+            <div class="pill" onclick="selectPill(this)">Numbness</div>
+            <div class="pill" onclick="selectPill(this)">Tingling</div>
+            <div class="pill" onclick="selectPill(this)">Both</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Mood / Stress / Sleep (1–5)</label>
+          <div class="slider-wrap">
+            <input type="range" min="1" max="5" value="3" id="s-mood" oninput="this.nextElementSibling.textContent=this.value">
+            <span class="slider-val">3</span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Approx steps today</label>
+            <input type="number" id="s-steps" placeholder="e.g. 5000">
+          </div>
+          <div class="field">
+            <label>Sitting hours today</label>
+            <input type="number" id="s-sitting" placeholder="e.g. 6" step="0.5">
+          </div>
+        </div>
+      </div>
+
+      <!-- EXERCISES -->
+      <div class="card">
+        <h2><span class="icon">🏋️</span> Exercises</h2>
+        <div class="field">
+          <label>Load a routine</label>
+          <div style="display:flex;gap:8px">
+            <select id="routine-picker" style="flex:1;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.9rem">
+              <option value="">Pick a routine...</option>
+            </select>
+            <button class="btn btn-outline btn-sm" onclick="loadRoutine()">Load</button>
+          </div>
+        </div>
+        <div id="exercise-list"></div>
+        <button class="btn btn-outline btn-sm" onclick="addExercise()">+ Add Exercise</button>
+      </div>
+
+      <!-- DURING + AFTER -->
+      <div class="card">
+        <h2><span class="icon">⚡</span> During &amp; After</h2>
+        <div class="field">
+          <label>Symptoms during session</label>
+          <div class="pill-group" id="s-during">
+            <div class="pill green" onclick="selectPill(this)">Better</div>
+            <div class="pill yellow" onclick="selectPill(this)">Same</div>
+            <div class="pill red" onclick="selectPill(this)">Worse</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Any sharp pain?</label>
+          <div class="pill-group" id="s-sharp">
+            <div class="pill green" onclick="selectPill(this)">No</div>
+            <div class="pill red" onclick="selectPill(this)">Yes</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>After session pain (0–10)</label>
+          <div class="slider-wrap">
+            <input type="range" min="0" max="10" value="0" id="s-after-pain" oninput="this.nextElementSibling.textContent=this.value">
+            <span class="slider-val">0</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>What felt best?</label>
+          <input type="text" id="s-felt-best" placeholder="e.g. couch stretch calmed the sciatica">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="saveSession()" style="flex:1">Save Session</button>
+      </div>
+      <div style="height:30px"></div>
+    </div>
+
+    <!-- ===== NEXT-DAY CHECK ===== -->
+    <div id="subtab-nextday" class="hidden">
+      <div class="card">
+        <h2><span class="icon">🌅</span> Next-Day Check</h2>
+        <p class="section-hint">Link this to the session you're evaluating</p>
+
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="nd-date">
+        </div>
+
+        <div class="field">
+          <label>Which session are you evaluating?</label>
+          <select id="nd-link-session">
+            <option value="">Select a session...</option>
+          </select>
+        </div>
+        <div id="nd-linked-info" class="hidden"></div>
+
+        <div class="field">
+          <label>Next-day pain/stiffness vs baseline</label>
+          <div class="pill-group" id="nd-vs">
+            <div class="pill green" onclick="selectPill(this)">Better</div>
+            <div class="pill yellow" onclick="selectPill(this)">Same</div>
+            <div class="pill red" onclick="selectPill(this)">Worse</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Any flare signs?</label>
+          <div class="pill-group" id="nd-flare">
+            <div class="pill green" onclick="selectPill(this)">No</div>
+            <div class="pill red" onclick="selectPill(this)">Yes</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>What do you think caused it?</label>
+          <div class="check-group" id="nd-causes">
+            <div class="check-pill" onclick="toggleCheck(this)">Training dose</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Too much sitting</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Stress</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Poor sleep</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Activity / lifting</div>
+            <div class="check-pill" onclick="toggleCheck(this)">Weather</div>
+          </div>
+          <input type="text" id="nd-cause-other" placeholder="Other cause..." class="mt-8">
+        </div>
+      </div>
+
+      <!-- DECISION -->
+      <div class="card">
+        <h2><span class="icon">🎯</span> Decision for Next Time</h2>
+        <div class="field">
+          <label>Plan</label>
+          <div class="pill-group" id="nd-plan">
+            <div class="pill yellow" onclick="selectPill(this)">Keep same</div>
+            <div class="pill red" onclick="selectPill(this)">Regress</div>
+            <div class="pill green" onclick="selectPill(this)">Progress</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>If progressing, what one variable?</label>
+          <div class="pill-group" id="nd-progress-var">
+            <div class="pill" onclick="selectPill(this)">More time</div>
+            <div class="pill" onclick="selectPill(this)">More reps</div>
+            <div class="pill" onclick="selectPill(this)">More range</div>
+            <div class="pill" onclick="selectPill(this)">More load</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Notes for next session</label>
+          <textarea id="nd-notes" placeholder="Anything you want to remember..."></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-green" onclick="saveNextDay()" style="flex:1">Save Next-Day Check</button>
+      </div>
+      <div style="height:30px"></div>
+    </div>
+  </div>
+
+  <!-- ============== HISTORY TAB ============== -->
+  <div id="tab-history" class="hidden">
+    <div id="history-list"></div>
+    <div id="history-detail" class="hidden"></div>
+  </div>
+
+  <!-- ============== ROUTINES TAB ============== -->
+  <div id="tab-routines" class="hidden">
+    <div class="card">
+      <h2><span class="icon">📦</span> My Routines</h2>
+      <p class="section-hint">Create named groups of exercises to quickly load them during logging</p>
+      <div id="routines-list"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm" onclick="openCreateRoutine()">+ New Routine</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== STATS TAB ============== -->
+  <div id="tab-stats" class="hidden">
+    <div class="stats-row" id="stats-cards"></div>
+    <div class="chart-container">
+      <h3>Pain Over Time</h3>
+      <canvas id="pain-chart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h3>Next-Day Response</h3>
+      <canvas id="response-chart"></canvas>
+    </div>
+  </div>
+
+  <!-- ============== SETTINGS/DATA TAB ============== -->
+  <div id="tab-settings" class="hidden">
+
+    <div class="card" id="sync-setup-card">
+      <h2><span class="icon">☁️</span> Cloud Sync</h2>
+      <p class="section-hint">Sync across Mac &amp; iPhone via JSONBin.io (free)</p>
+
+      <div id="sync-unconfigured">
+        <p style="font-size:0.88rem;color:var(--text2);margin-bottom:14px;line-height:1.6">
+          JSONBin.io stores your data as a JSON file in the cloud, accessible from any device.
+          Setup takes ~2 minutes:
+        </p>
+        <ol style="font-size:0.85rem;color:var(--text2);padding-left:20px;line-height:2">
+          <li>Go to <strong style="color:var(--accent)">jsonbin.io</strong> → sign up for a free account</li>
+          <li>Click <strong>+ New Bin</strong> → paste the following as content → Save:<br><code style="display:block;margin-top:6px;background:var(--surface2);padding:6px 8px;border-radius:4px;font-size:0.85em;word-break:break-all">{"version":2,"sessions":[],"nextdays":[],"routines":[]}</code></li>
+          <li>Copy the <strong>Bin ID</strong> from the URL (the part after <code style="background:var(--surface2);padding:2px 5px;border-radius:4px">/b/</code>)</li>
+          <li>Go to <strong>Account → API Keys</strong> → copy your <strong>Master Key</strong></li>
+          <li>Paste both below and click Connect</li>
+        </ol>
+        <div class="field mt-16">
+          <label>JSONBin Master Key</label>
+          <input type="password" id="sync-api-key" placeholder="$2b$10$...">
+        </div>
+        <div class="field">
+          <label>Bin ID</label>
+          <input type="text" id="sync-bin-id" placeholder="64f3a...">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="connectSync()">Connect &amp; Sync</button>
+        </div>
+      </div>
+
+      <div id="sync-configured" class="hidden">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div class="sync-dot ok"></div>
+          <span style="font-size:0.88rem;color:var(--text2)">Connected to JSONBin</span>
+        </div>
+        <p style="font-size:0.82rem;color:var(--text3);margin-bottom:14px">
+          Data syncs automatically on every save. Last sync: <span id="last-sync-time">—</span>
+        </p>
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="syncNow()">Sync Now</button>
+          <button class="btn btn-danger btn-sm" onclick="disconnectSync()">Disconnect</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="icon">💾</span> Backup &amp; Restore</h2>
+      <p class="section-hint">Export your data to keep a backup, or import from a previous one</p>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="exportData()">Export JSON</button>
+        <button class="btn btn-outline" onclick="document.getElementById('import-file').click()">Import JSON</button>
+        <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+      </div>
+    </div>
+    <div class="card">
+      <h2><span class="icon">📋</span> Export to CSV</h2>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2><span class="icon">🗑️</span> Danger Zone</h2>
+      <div class="btn-row">
+        <button class="btn btn-danger" onclick="clearAllData()">Delete All Data</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal container -->
+<div id="modal-container" class="hidden"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ========= EXERCISES DB =========
+const EXERCISES = {
+  "Mobility": [
+    { name: "Couch Stretch", defaultDose: "2x1min each leg", defaultProgress: "Yoga Block → no handling" },
+    { name: "Outer Hip Circuit", defaultDose: "1x each leg", defaultProgress: "Regular" },
+    { name: "Pigeon Strength", defaultDose: "1x20 each leg", defaultProgress: "Regular" },
+    { name: "Deep Squat", defaultDose: "2x2min", defaultProgress: "Bodyweight → full" },
+    { name: "Loaded Butterfly", defaultDose: "2x1min", defaultProgress: "Bodyweight" },
+    { name: "Active Hang", defaultDose: "1min", defaultProgress: "Bodyweight" }
+  ],
+  "LBA Core": [
+    { name: "Tibialis Raise", defaultDose: "2x25", defaultProgress: "" },
+    { name: "Deep Calf Raise", defaultDose: "2x25", defaultProgress: "" },
+    { name: "Reverse Step Up", defaultDose: "2x25 each leg", defaultProgress: "" },
+    { name: "Full Range Split Squat", defaultDose: "2x10 each leg or 2x1min hold", defaultProgress: "" },
+    { name: "External Rotation", defaultDose: "1x15 each side", defaultProgress: "" },
+    { name: "Dumbbell Pullover", defaultDose: "2x15", defaultProgress: "" },
+    { name: "Trap 3 Raise", defaultDose: "2x10", defaultProgress: "" },
+    { name: "Back Extension", defaultDose: "By levels", defaultProgress: "Level progression" },
+    { name: "Hip Flexor Kick Out", defaultDose: "2x5 (5s hold) each leg", defaultProgress: "" },
+    { name: "Side Bend Progression", defaultDose: "2x12", defaultProgress: "" }
+  ],
+  "Compound": [
+    { name: "Deadlift", defaultDose: "3x8", defaultProgress: "Stick → barbell" },
+    { name: "Squat", defaultDose: "3x8", defaultProgress: "Bodyweight → loaded" }
+  ],
+  "SI Joint Protocol": [
+    { name: "Single Leg Iso Hold", defaultDose: "2x1min each leg", defaultProgress: "High pad → low" },
+    { name: "Deep Squat Hold", defaultDose: "2min hold + 2x20", defaultProgress: "" },
+    { name: "Full Range Split Squat Hold", defaultDose: "2x1min each leg", defaultProgress: "" },
+    { name: "Abductor Machine", defaultDose: "2x30", defaultProgress: "" },
+    { name: "Outer Hip Dropset", defaultDose: "3x30s each leg", defaultProgress: "" },
+    { name: "Big Toe Heel Sit", defaultDose: "30s–1min", defaultProgress: "" },
+    { name: "Calf Raise", defaultDose: "2x25", defaultProgress: "" },
+    { name: "Elephant Walk", defaultDose: "20 rep max", defaultProgress: "" }
+  ]
+};
+
+function findExercise(name) {
+  for (const exs of Object.values(EXERCISES)) {
+    const found = exs.find(e => e.name === name);
+    if (found) return found;
+  }
+  return null;
+}
+
+// ========= IndexedDB =========
+const DB_NAME = 'BackRecoveryTracker';
+const DB_VERSION = 2;
+let db;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('sessions')) d.createObjectStore('sessions', { keyPath: 'id' });
+      if (!d.objectStoreNames.contains('nextdays')) d.createObjectStore('nextdays', { keyPath: 'id' });
+      if (!d.objectStoreNames.contains('routines')) d.createObjectStore('routines', { keyPath: 'id' });
+      // Migrate old 'entries' store if exists
+      if (d.objectStoreNames.contains('entries')) d.deleteObjectStore('entries');
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = e => reject(e);
+  });
+}
+
+function dbOp(store, mode, fn) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, mode);
+    const result = fn(tx.objectStore(store));
+    if (result && result.onsuccess !== undefined) {
+      result.onsuccess = () => resolve(result.result);
+    }
+    tx.oncomplete = () => resolve(result?.result);
+    tx.onerror = e => reject(e);
+  });
+}
+
+const dbPut = (store, obj) => dbOp(store, 'readwrite', s => s.put(obj));
+const dbGetAll = (store) => dbOp(store, 'readonly', s => s.getAll());
+const dbDelete = (store, id) => dbOp(store, 'readwrite', s => s.delete(id));
+const dbClear = (store) => dbOp(store, 'readwrite', s => s.clear());
+
+// ========= UI HELPERS =========
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function toggleCheck(el) { el.classList.toggle('checked'); }
+
+function selectPill(el) {
+  el.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function getSelectedPill(id) {
+  const s = document.querySelector(`#${id} .pill.selected`);
+  return s ? s.textContent : '';
+}
+
+function getCheckedItems(id) {
+  return [...document.querySelectorAll(`#${id} .check-pill.checked`)].map(e => e.textContent);
+}
+
+function formatDate(d) {
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function showModal(html) {
+  const c = document.getElementById('modal-container');
+  c.innerHTML = `<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">${html}</div></div>`;
+  c.classList.remove('hidden');
+}
+
+function closeModal() { document.getElementById('modal-container').classList.add('hidden'); }
+
+// ========= TABS =========
+const ALL_TABS = ['log','history','routines','stats','settings'];
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.dataset.tab;
+    ALL_TABS.forEach(t => document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== target));
+    if (target === 'history') renderHistory();
+    if (target === 'routines') renderRoutines();
+    if (target === 'stats') renderStats();
+  });
+});
+
+function switchSubTab(which) {
+  document.querySelectorAll('.sub-tab').forEach(t => t.classList.toggle('active', t.dataset.subtab === which));
+  document.getElementById('subtab-session').classList.toggle('hidden', which !== 'session');
+  document.getElementById('subtab-nextday').classList.toggle('hidden', which !== 'nextday');
+  if (which === 'nextday') populateSessionPicker();
+}
+
+// ========= EXERCISE BLOCKS =========
+let exCount = 0;
+
+function buildExerciseOptionsHTML() {
+  let h = '<option value="">Select exercise...</option>';
+  for (const [cat, exs] of Object.entries(EXERCISES)) {
+    h += `<optgroup label="${cat}">`;
+    exs.forEach(ex => { h += `<option value="${ex.name}" data-dose="${ex.defaultDose}" data-progress="${ex.defaultProgress}">${ex.name}</option>`; });
+    h += '</optgroup>';
+  }
+  return h;
+}
+
+function addExercise(preset) {
+  exCount++;
+  const id = exCount;
+  const div = document.createElement('div');
+  div.className = 'exercise-block';
+  div.dataset.exId = id;
+
+  div.innerHTML = `
+    <button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+    <div class="field">
+      <label>Exercise</label>
+      <select onchange="onExSelect(this,${id})">${buildExerciseOptionsHTML()}</select>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Level / Variation</label><input type="text" id="exl-${id}" placeholder="e.g. Level 2"></div>
+      <div class="field"><label>Dose (sets × reps / time)</label><input type="text" id="exd-${id}" placeholder="e.g. 2x25"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Range</label>
+        <div class="pill-group" id="exr-${id}">
+          <div class="pill" onclick="selectPill(this)">Short</div>
+          <div class="pill" onclick="selectPill(this)">Medium</div>
+          <div class="pill" onclick="selectPill(this)">Full</div>
+        </div>
+      </div>
+      <div class="field"><label>Effort (0–10)</label>
+        <div class="slider-wrap">
+          <input type="range" min="0" max="10" value="3" id="exe-${id}" oninput="this.nextElementSibling.textContent=this.value">
+          <span class="slider-val">3</span>
+        </div>
+      </div>
+    </div>
+    <div class="field"><label>Notes</label><input type="text" id="exn-${id}" placeholder="Where felt it, compensation..."></div>
+  `;
+
+  document.getElementById('exercise-list').appendChild(div);
+
+  if (preset) {
+    const sel = div.querySelector('select');
+    sel.value = preset.name;
+    if (preset.dose) document.getElementById(`exd-${id}`).value = preset.dose;
+    if (preset.level) document.getElementById(`exl-${id}`).value = preset.level;
+  }
+}
+
+function onExSelect(sel, id) {
+  const opt = sel.selectedOptions[0];
+  if (opt.dataset.dose) document.getElementById(`exd-${id}`).value = opt.dataset.dose;
+  if (opt.dataset.progress) document.getElementById(`exl-${id}`).value = opt.dataset.progress;
+}
+
+function collectExercises() {
+  const exercises = [];
+  document.querySelectorAll('.exercise-block').forEach(block => {
+    const id = block.dataset.exId;
+    const sel = block.querySelector('select');
+    if (!sel.value) return;
+    exercises.push({
+      name: sel.value,
+      level: document.getElementById(`exl-${id}`).value,
+      dose: document.getElementById(`exd-${id}`).value,
+      range: getSelectedPill(`exr-${id}`),
+      effort: +document.getElementById(`exe-${id}`).value,
+      notes: document.getElementById(`exn-${id}`).value
+    });
+  });
+  return exercises;
+}
+
+// ========= ROUTINES =========
+async function renderRoutines() {
+  const routines = await dbGetAll('routines');
+  const list = document.getElementById('routines-list');
+  if (!routines.length) {
+    list.innerHTML = '<p class="text-muted" style="padding:12px 0">No routines yet. Create one to speed up logging.</p>';
+    return;
+  }
+  list.innerHTML = routines.map(r => `
+    <div class="routine-item">
+      <div>
+        <div class="routine-name">${r.name}</div>
+        <div class="routine-count">${r.exercises.length} exercises: ${r.exercises.map(e => e.name).join(', ')}</div>
+      </div>
+      <div class="routine-actions">
+        <button class="btn btn-outline btn-sm" onclick="editRoutine('${r.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteRoutine('${r.id}')">Del</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function refreshRoutinePicker() {
+  const routines = await dbGetAll('routines');
+  const sel = document.getElementById('routine-picker');
+  sel.innerHTML = '<option value="">Pick a routine...</option>' +
+    routines.map(r => `<option value="${r.id}">${r.name} (${r.exercises.length})</option>`).join('');
+}
+
+async function loadRoutine() {
+  const sel = document.getElementById('routine-picker');
+  if (!sel.value) return;
+  const routines = await dbGetAll('routines');
+  const r = routines.find(x => x.id === sel.value);
+  if (!r) return;
+  document.getElementById('exercise-list').innerHTML = '';
+  exCount = 0;
+  r.exercises.forEach(ex => addExercise(ex));
+  toast(`Loaded "${r.name}"`);
+}
+
+function openCreateRoutine(existing) {
+  let checkboxes = '';
+  for (const [cat, exs] of Object.entries(EXERCISES)) {
+    checkboxes += `<div style="margin-bottom:8px"><strong style="font-size:0.82rem;color:var(--text2)">${cat}</strong></div>`;
+    exs.forEach(ex => {
+      const checked = existing?.exercises?.some(e => e.name === ex.name) ? 'checked' : '';
+      checkboxes += `<label style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:0.88rem;cursor:pointer">
+        <input type="checkbox" value="${ex.name}" ${checked}> ${ex.name}
+      </label>`;
+    });
+  }
+
+  showModal(`
+    <h3>${existing ? 'Edit' : 'New'} Routine</h3>
+    <div class="field">
+      <label>Routine Name</label>
+      <input type="text" id="modal-routine-name" value="${existing?.name || ''}" placeholder="e.g. Morning Mobility">
+    </div>
+    <div class="field">
+      <label>Select exercises</label>
+      <div id="modal-routine-exercises" style="max-height:300px;overflow-y:auto;padding:4px">${checkboxes}</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveRoutine('${existing?.id || ''}')" style="flex:1">Save</button>
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  `);
+}
+
+async function saveRoutine(existingId) {
+  const name = document.getElementById('modal-routine-name').value.trim();
+  if (!name) { toast('Give it a name'); return; }
+  const checked = [...document.querySelectorAll('#modal-routine-exercises input:checked')].map(cb => {
+    const ex = findExercise(cb.value);
+    return { name: cb.value, dose: ex?.defaultDose || '', level: ex?.defaultProgress || '' };
+  });
+  if (!checked.length) { toast('Pick at least one exercise'); return; }
+  const routine = { id: existingId || 'r_' + Date.now(), name, exercises: checked };
+  await dbPut('routines', routine);
+  closeModal();
+  toast('Routine saved!');
+  renderRoutines();
+  refreshRoutinePicker();
+  syncPush();
+}
+
+async function editRoutine(id) {
+  const routines = await dbGetAll('routines');
+  openCreateRoutine(routines.find(r => r.id === id));
+}
+
+async function deleteRoutine(id) {
+  if (!confirm('Delete this routine?')) return;
+  await dbDelete('routines', id);
+  toast('Deleted');
+  renderRoutines();
+  refreshRoutinePicker();
+}
+
+// ========= SAVE SESSION =========
+async function saveSession() {
+  const date = document.getElementById('s-date').value;
+  if (!date) { toast('Set a date first'); return; }
+
+  const entry = {
+    id: 'ses_' + date + '_' + Date.now(),
+    type: 'session',
+    date,
+    baseline: {
+      pain: +document.getElementById('s-pain').value,
+      stiffness: +document.getElementById('s-stiffness').value,
+      locations: getCheckedItems('s-locations'),
+      nerveSymptoms: getSelectedPill('s-nerve'),
+      mood: +document.getElementById('s-mood').value,
+      steps: document.getElementById('s-steps').value,
+      sitting: document.getElementById('s-sitting').value
+    },
+    exercises: collectExercises(),
+    during: {
+      symptoms: getSelectedPill('s-during'),
+      sharpPain: getSelectedPill('s-sharp'),
+      afterPain: +document.getElementById('s-after-pain').value,
+      feltBest: document.getElementById('s-felt-best').value
+    }
+  };
+
+  await dbPut('sessions', entry);
+  toast('Session saved!');
+  resetSessionForm();
+  syncPush();
+}
+
+function resetSessionForm() {
+  document.getElementById('s-date').value = new Date().toISOString().split('T')[0];
+  ['s-pain','s-stiffness','s-after-pain'].forEach(id => {
+    const el = document.getElementById(id); el.value = 0; el.nextElementSibling.textContent = '0';
+  });
+  const m = document.getElementById('s-mood'); m.value = 3; m.nextElementSibling.textContent = '3';
+  ['s-steps','s-sitting','s-felt-best'].forEach(id => document.getElementById(id).value = '');
+  document.querySelectorAll('#subtab-session .pill.selected').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('#subtab-session .check-pill.checked').forEach(p => p.classList.remove('checked'));
+  document.getElementById('exercise-list').innerHTML = '';
+  exCount = 0;
+}
+
+// ========= NEXT-DAY CHECK =========
+async function populateSessionPicker() {
+  const sessions = await dbGetAll('sessions');
+  const sel = document.getElementById('nd-link-session');
+  sel.innerHTML = '<option value="">Select a session...</option>' +
+    sessions.sort((a, b) => b.date.localeCompare(a.date)).slice(0, 30).map(s => {
+      const exNames = s.exercises.map(x => x.name).slice(0, 3).join(', ');
+      return `<option value="${s.id}">${formatDate(s.date)} — Pain ${s.baseline.pain}/10 — ${exNames || 'no exercises'}</option>`;
+    }).join('');
+
+  sel.onchange = async () => {
+    const info = document.getElementById('nd-linked-info');
+    if (!sel.value) { info.classList.add('hidden'); return; }
+    const sessions = await dbGetAll('sessions');
+    const s = sessions.find(x => x.id === sel.value);
+    if (!s) return;
+    info.classList.remove('hidden');
+    info.innerHTML = `<div class="linked-session">
+      <strong>Linked to:</strong> ${formatDate(s.date)}<br>
+      Baseline pain: ${s.baseline.pain}/10 · Stiffness: ${s.baseline.stiffness}/10<br>
+      Exercises: ${s.exercises.map(x => x.name).join(', ') || 'none'}<br>
+      After-session pain: ${s.during.afterPain}/10
+    </div>`;
+  };
+}
+
+async function saveNextDay() {
+  const date = document.getElementById('nd-date').value;
+  if (!date) { toast('Set a date'); return; }
+
+  const entry = {
+    id: 'nd_' + date + '_' + Date.now(),
+    type: 'nextday',
+    date,
+    linkedSessionId: document.getElementById('nd-link-session').value || null,
+    vsBaseline: getSelectedPill('nd-vs'),
+    flare: getSelectedPill('nd-flare'),
+    causes: getCheckedItems('nd-causes'),
+    causeOther: document.getElementById('nd-cause-other').value,
+    decision: {
+      plan: getSelectedPill('nd-plan'),
+      progressVar: getSelectedPill('nd-progress-var'),
+      notes: document.getElementById('nd-notes').value
+    }
+  };
+
+  await dbPut('nextdays', entry);
+  toast('Next-day check saved!');
+  resetNextDayForm();
+  syncPush();
+}
+
+function resetNextDayForm() {
+  document.getElementById('nd-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('nd-link-session').value = '';
+  document.getElementById('nd-linked-info').classList.add('hidden');
+  document.getElementById('nd-cause-other').value = '';
+  document.getElementById('nd-notes').value = '';
+  document.querySelectorAll('#subtab-nextday .pill.selected').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('#subtab-nextday .check-pill.checked').forEach(p => p.classList.remove('checked'));
+}
+
+// ========= HISTORY =========
+async function renderHistory() {
+  const sessions = await dbGetAll('sessions');
+  const nextdays = await dbGetAll('nextdays');
+  const list = document.getElementById('history-list');
+  const detail = document.getElementById('history-detail');
+  detail.classList.add('hidden');
+  list.classList.remove('hidden');
+
+  const all = [
+    ...sessions.map(s => ({ ...s, _sort: s.date + '_0' })),
+    ...nextdays.map(n => ({ ...n, _sort: n.date + '_1' }))
+  ].sort((a, b) => b._sort.localeCompare(a._sort));
+
+  if (!all.length) {
+    list.innerHTML = '<p class="text-center text-muted" style="padding:40px">No entries yet. Log your first session!</p>';
+    return;
+  }
+
+  // Build a lookup for next-day linked to sessions
+  const ndBySession = {};
+  nextdays.forEach(nd => { if (nd.linkedSessionId) ndBySession[nd.linkedSessionId] = nd; });
+
+  list.innerHTML = all.map(e => {
+    if (e.type === 'session') {
+      const exNames = e.exercises.map(x => x.name).join(', ') || 'No exercises';
+      const nd = ndBySession[e.id];
+      const ndBadge = nd ? `<span class="badge badge-${nd.vsBaseline === 'Better' ? 'better' : nd.vsBaseline === 'Worse' ? 'worse' : 'same'}">Next day: ${nd.vsBaseline}</span>` : '<span class="badge badge-linked" style="opacity:0.5">No next-day yet</span>';
+      return `
+        <div class="history-entry" onclick="showSessionDetail('${e.id}')">
+          <div class="history-date">${formatDate(e.date)} <span class="history-type type-session">Session</span></div>
+          <div class="history-summary">${exNames}</div>
+          <div class="history-badges">
+            <span class="badge badge-pain">Pain: ${e.baseline.pain}/10</span>
+            <span class="badge badge-exercises">${e.exercises.length} exercises</span>
+            ${ndBadge}
+          </div>
+        </div>`;
+    } else {
+      const linked = sessions.find(s => s.id === e.linkedSessionId);
+      return `
+        <div class="history-entry" onclick="showNextDayDetail('${e.id}')">
+          <div class="history-date">${formatDate(e.date)} <span class="history-type type-nextday">Next-Day</span></div>
+          <div class="history-summary">${linked ? `Evaluating session from ${formatDate(linked.date)}` : 'Unlinked check'}</div>
+          <div class="history-badges">
+            <span class="badge badge-${e.vsBaseline === 'Better' ? 'better' : e.vsBaseline === 'Worse' ? 'worse' : 'same'}">${e.vsBaseline || '—'}</span>
+            ${e.decision.plan ? `<span class="badge badge-linked">Plan: ${e.decision.plan}</span>` : ''}
+          </div>
+        </div>`;
+    }
+  }).join('');
+}
+
+async function showSessionDetail(id) {
+  const sessions = await dbGetAll('sessions');
+  const e = sessions.find(x => x.id === id);
+  if (!e) return;
+
+  const nextdays = await dbGetAll('nextdays');
+  const nd = nextdays.find(n => n.linkedSessionId === id);
+
+  document.getElementById('history-list').classList.add('hidden');
+  const detail = document.getElementById('history-detail');
+  detail.classList.remove('hidden');
+
+  let exHTML = e.exercises.map(x => `
+    <div style="padding:8px 0;border-bottom:1px solid var(--surface)">
+      <strong>${x.name}</strong> — ${x.dose} ${x.range ? `(${x.range})` : ''}<br>
+      <span style="color:var(--text2);font-size:0.82rem">${x.level ? `Level: ${x.level} · ` : ''}Effort: ${x.effort}/10${x.notes ? ` · ${x.notes}` : ''}</span>
+    </div>
+  `).join('') || '<p class="text-muted">None logged</p>';
+
+  let ndHTML = '';
+  if (nd) {
+    ndHTML = `<div class="card">
+      <div class="detail-section">
+        <h3>Next-Day Check (${formatDate(nd.date)})</h3>
+        <div class="detail-row"><span class="detail-label">vs Baseline</span><span>${nd.vsBaseline || '—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Flare?</span><span>${nd.flare || '—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Likely cause</span><span>${[...nd.causes, nd.causeOther].filter(Boolean).join(', ') || '—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Plan</span><span>${nd.decision.plan || '—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Progress variable</span><span>${nd.decision.progressVar || '—'}</span></div>
+        <div class="detail-row"><span class="detail-label">Notes</span><span>${nd.decision.notes || '—'}</span></div>
+      </div>
+    </div>`;
+  } else {
+    ndHTML = `<div class="card" style="border-color:var(--cyan);background:rgba(42,161,152,0.04)">
+      <p style="text-align:center;color:var(--cyan);font-size:0.88rem">No next-day check linked yet.
+        <a href="#" onclick="event.preventDefault();switchToNextDayFor('${e.id}')" style="color:var(--accent);font-weight:600">Add one now</a>
+      </p>
+    </div>`;
+  }
+
+  detail.innerHTML = `
+    <button class="btn btn-outline btn-sm" onclick="backToHistory()">← Back</button>
+    <h2 style="margin:16px 0 12px">${formatDate(e.date)} <span class="history-type type-session">Session</span></h2>
+    <div class="card"><div class="detail-section"><h3>Baseline</h3>
+      <div class="detail-row"><span class="detail-label">Pain</span><span>${e.baseline.pain}/10</span></div>
+      <div class="detail-row"><span class="detail-label">Stiffness</span><span>${e.baseline.stiffness}/10</span></div>
+      <div class="detail-row"><span class="detail-label">Locations</span><span>${e.baseline.locations.join(', ') || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Nerve symptoms</span><span>${e.baseline.nerveSymptoms || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Mood/Stress/Sleep</span><span>${e.baseline.mood}/5</span></div>
+      <div class="detail-row"><span class="detail-label">Steps / Sitting</span><span>${e.baseline.steps || '—'} / ${e.baseline.sitting || '—'}h</span></div>
+    </div></div>
+    <div class="card"><div class="detail-section"><h3>Exercises</h3>${exHTML}</div></div>
+    <div class="card"><div class="detail-section"><h3>During & After</h3>
+      <div class="detail-row"><span class="detail-label">Symptoms during</span><span>${e.during.symptoms || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Sharp pain?</span><span>${e.during.sharpPain || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">After-session pain</span><span>${e.during.afterPain}/10</span></div>
+      <div class="detail-row"><span class="detail-label">What felt best</span><span>${e.during.feltBest || '—'}</span></div>
+    </div></div>
+    ${ndHTML}
+    <div class="btn-row"><button class="btn btn-danger btn-sm" onclick="delSession('${e.id}')">Delete session</button></div>
+  `;
+}
+
+async function showNextDayDetail(id) {
+  const nextdays = await dbGetAll('nextdays');
+  const e = nextdays.find(x => x.id === id);
+  if (!e) return;
+
+  const sessions = await dbGetAll('sessions');
+  const linked = sessions.find(s => s.id === e.linkedSessionId);
+
+  document.getElementById('history-list').classList.add('hidden');
+  const detail = document.getElementById('history-detail');
+  detail.classList.remove('hidden');
+
+  let linkedHTML = linked
+    ? `<div class="linked-session"><strong>Linked session:</strong> ${formatDate(linked.date)} — Pain ${linked.baseline.pain}/10 — ${linked.exercises.map(x=>x.name).join(', ')||'no exercises'}</div>`
+    : '<p class="text-muted">No linked session</p>';
+
+  detail.innerHTML = `
+    <button class="btn btn-outline btn-sm" onclick="backToHistory()">← Back</button>
+    <h2 style="margin:16px 0 12px">${formatDate(e.date)} <span class="history-type type-nextday">Next-Day</span></h2>
+    ${linkedHTML}
+    <div class="card"><div class="detail-section"><h3>Assessment</h3>
+      <div class="detail-row"><span class="detail-label">vs Baseline</span><span>${e.vsBaseline || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Flare?</span><span>${e.flare || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Likely cause</span><span>${[...e.causes, e.causeOther].filter(Boolean).join(', ') || '—'}</span></div>
+    </div></div>
+    <div class="card"><div class="detail-section"><h3>Decision</h3>
+      <div class="detail-row"><span class="detail-label">Plan</span><span>${e.decision.plan || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Progress variable</span><span>${e.decision.progressVar || '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Notes</span><span>${e.decision.notes || '—'}</span></div>
+    </div></div>
+    <div class="btn-row"><button class="btn btn-danger btn-sm" onclick="delNextDay('${e.id}')">Delete check</button></div>
+  `;
+}
+
+function backToHistory() {
+  document.getElementById('history-list').classList.remove('hidden');
+  document.getElementById('history-detail').classList.add('hidden');
+}
+
+function switchToNextDayFor(sessionId) {
+  // Switch to next-day tab and pre-select the session
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.tab[data-tab="log"]').classList.add('active');
+  ALL_TABS.forEach(t => document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== 'log'));
+  switchSubTab('nextday');
+  setTimeout(async () => {
+    await populateSessionPicker();
+    document.getElementById('nd-link-session').value = sessionId;
+    document.getElementById('nd-link-session').dispatchEvent(new Event('change'));
+  }, 100);
+}
+
+async function delSession(id) {
+  if (!confirm('Delete this session?')) return;
+  await dbDelete('sessions', id);
+  toast('Session deleted');
+  renderHistory();
+}
+
+async function delNextDay(id) {
+  if (!confirm('Delete this next-day check?')) return;
+  await dbDelete('nextdays', id);
+  toast('Check deleted');
+  renderHistory();
+}
+
+// ========= STATS =========
+async function renderStats() {
+  const sessions = (await dbGetAll('sessions')).sort((a, b) => a.date.localeCompare(b.date));
+  const nextdays = await dbGetAll('nextdays');
+  const container = document.getElementById('stats-cards');
+
+  if (!sessions.length) {
+    container.innerHTML = '<p class="text-center text-muted" style="padding:40px">No data yet</p>';
+    document.getElementById('pain-chart').getContext('2d').clearRect(0,0,9999,9999);
+    document.getElementById('response-chart').getContext('2d').clearRect(0,0,9999,9999);
+    return;
+  }
+
+  const avgPain = (sessions.reduce((s, e) => s + e.baseline.pain, 0) / sessions.length).toFixed(1);
+  const recent = sessions.slice(-7);
+  const recentAvg = (recent.reduce((s, e) => s + e.baseline.pain, 0) / recent.length).toFixed(1);
+  const betterDays = nextdays.filter(n => n.vsBaseline === 'Better').length;
+
+  container.innerHTML = `
+    <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${sessions.length}</div><div class="stat-label">Sessions</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--red)">${avgPain}</div><div class="stat-label">Avg Pain</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--orange)">${recentAvg}</div><div class="stat-label">Last 7d Pain</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">${betterDays}</div><div class="stat-label">Better Days</div></div>
+  `;
+
+  drawPainChart(sessions);
+  drawResponseChart(nextdays);
+}
+
+function drawPainChart(data) {
+  const canvas = document.getElementById('pain-chart');
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width - 32; canvas.height = 200;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (data.length < 2) { ctx.fillStyle = '#586e75'; ctx.fillText('Need at least 2 sessions', 60, 100); return; }
+
+  const pad = { top: 20, right: 20, bottom: 30, left: 35 };
+  const w = canvas.width - pad.left - pad.right;
+  const h = canvas.height - pad.top - pad.bottom;
+
+  ctx.strokeStyle = '#0a4050'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 10; i += 2) {
+    const y = pad.top + h - (i / 10) * h;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + w, y); ctx.stroke();
+    ctx.fillStyle = '#657b83'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(i, pad.left - 6, y + 4);
+  }
+
+  drawLine(ctx, data.map((e, i) => ({ x: pad.left + (i/(data.length-1))*w, y: pad.top + h - (e.baseline.pain/10)*h })), '#dc322f');
+  drawLine(ctx, data.map((e, i) => ({ x: pad.left + (i/(data.length-1))*w, y: pad.top + h - ((e.during?.afterPain||0)/10)*h })), '#268bd2');
+
+  ctx.fillStyle = '#657b83'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+  const step = Math.max(1, Math.floor(data.length / 6));
+  data.forEach((e, i) => {
+    if (i % step === 0 || i === data.length - 1) ctx.fillText(e.date.slice(5), pad.left + (i/(data.length-1))*w, canvas.height - 6);
+  });
+
+  ctx.fillStyle = '#dc322f'; ctx.fillRect(pad.left, 4, 12, 3);
+  ctx.fillStyle = '#839496'; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('Baseline', pad.left + 16, 10);
+  ctx.fillStyle = '#268bd2'; ctx.fillRect(pad.left + 80, 4, 12, 3);
+  ctx.fillStyle = '#839496'; ctx.fillText('After session', pad.left + 96, 10);
+}
+
+function drawLine(ctx, pts, color) {
+  if (pts.length < 2) return;
+  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+  pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.stroke();
+  pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); });
+}
+
+function drawResponseChart(data) {
+  const canvas = document.getElementById('response-chart');
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width - 32; canvas.height = 160;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const withR = data.filter(e => e.vsBaseline);
+  if (!withR.length) { ctx.fillStyle = '#586e75'; ctx.fillText('No next-day data yet', 60, 80); return; }
+
+  const better = withR.filter(e => e.vsBaseline === 'Better').length;
+  const same = withR.filter(e => e.vsBaseline === 'Same').length;
+  const worse = withR.filter(e => e.vsBaseline === 'Worse').length;
+  const total = withR.length;
+  const startX = 150, startY = 30;
+
+  [{ label: 'Better', val: better, color: '#859900' },
+   { label: 'Same', val: same, color: '#b58900' },
+   { label: 'Worse', val: worse, color: '#dc322f' }
+  ].forEach((item, i) => {
+    const y = startY + i * 44;
+    const w = total ? (item.val / total) * (canvas.width - startX - 60) : 0;
+    ctx.fillStyle = '#0a4050'; ctx.fillRect(startX, y, canvas.width - startX - 60, 24);
+    ctx.fillStyle = item.color; ctx.fillRect(startX, y, w, 24);
+    ctx.fillStyle = '#839496'; ctx.font = '13px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(item.label, startX - 12, y + 17);
+    ctx.textAlign = 'left';
+    ctx.fillText(`${item.val} (${total ? Math.round(item.val/total*100) : 0}%)`, startX + w + 8, y + 17);
+  });
+}
+
+// ========= EXPORT / IMPORT =========
+async function exportData() {
+  const data = {
+    version: 2,
+    sessions: await dbGetAll('sessions'),
+    nextdays: await dbGetAll('nextdays'),
+    routines: await dbGetAll('routines')
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = `back-recovery-${new Date().toISOString().split('T')[0]}.json`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('Data exported!');
+}
+
+async function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  try {
+    const raw = JSON.parse(await file.text());
+    if (raw.version === 2) {
+      for (const s of (raw.sessions || [])) await dbPut('sessions', s);
+      for (const n of (raw.nextdays || [])) await dbPut('nextdays', n);
+      for (const r of (raw.routines || [])) await dbPut('routines', r);
+      toast(`Imported ${(raw.sessions||[]).length} sessions, ${(raw.nextdays||[]).length} checks, ${(raw.routines||[]).length} routines`);
+    } else if (Array.isArray(raw)) {
+      // Legacy v1 import
+      for (const entry of raw) {
+        const session = { id: entry.id || 'ses_' + entry.date + '_' + Date.now(), type: 'session', date: entry.date, baseline: entry.baseline, exercises: entry.exercises || [], during: entry.during || {} };
+        await dbPut('sessions', session);
+        if (entry.nextDay?.vsBaseline) {
+          const nd = { id: 'nd_' + entry.date + '_' + Date.now(), type: 'nextday', date: entry.date, linkedSessionId: session.id, vsBaseline: entry.nextDay.vsBaseline, flare: entry.nextDay.flare, causes: entry.nextDay.causes || [], causeOther: entry.nextDay.causeOther || '', decision: entry.decision || {} };
+          await dbPut('nextdays', nd);
+        }
+      }
+      toast(`Imported ${raw.length} legacy entries`);
+    } else {
+      throw new Error('Unrecognized format');
+    }
+    event.target.value = '';
+    refreshRoutinePicker();
+  } catch (e) { toast('Import failed: ' + e.message); }
+}
+
+async function exportCSV() {
+  const sessions = (await dbGetAll('sessions')).sort((a, b) => a.date.localeCompare(b.date));
+  const nextdays = await dbGetAll('nextdays');
+  const ndMap = {};
+  nextdays.forEach(n => { if (n.linkedSessionId) ndMap[n.linkedSessionId] = n; });
+
+  const headers = ['Date','Pain','Stiffness','Locations','Nerve','Mood','Steps','Sitting','Exercises','During','SharpPain','AfterPain','FeltBest','NextDayDate','NextDay','Flare','Causes','Plan','ProgressVar','Notes'];
+  const rows = sessions.map(s => {
+    const nd = ndMap[s.id];
+    return [
+      s.date, s.baseline.pain, s.baseline.stiffness, s.baseline.locations.join(';'), s.baseline.nerveSymptoms, s.baseline.mood, s.baseline.steps, s.baseline.sitting,
+      s.exercises.map(x => `${x.name}(${x.dose})`).join(';'),
+      s.during.symptoms, s.during.sharpPain, s.during.afterPain, s.during.feltBest,
+      nd?.date || '', nd?.vsBaseline || '', nd?.flare || '', [...(nd?.causes||[]), nd?.causeOther].filter(Boolean).join(';'),
+      nd?.decision?.plan || '', nd?.decision?.progressVar || '', nd?.decision?.notes || ''
+    ].map(v => `"${(v ?? '').toString().replace(/"/g, '""')}"`).join(',');
+  });
+
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = `back-recovery-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('CSV exported!');
+}
+
+async function clearAllData() {
+  if (!confirm('Delete ALL data? This cannot be undone.')) return;
+  if (!confirm('Really sure? Export a backup first!')) return;
+  await dbClear('sessions');
+  await dbClear('nextdays');
+  await dbClear('routines');
+  toast('All data deleted');
+  refreshRoutinePicker();
+}
+
+// ========= CLOUD SYNC (JSONBin.io) =========
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
+let syncCfg = { apiKey: '', binId: '' };
+
+function loadSyncConfig() {
+  try {
+    const raw = localStorage.getItem('brt_sync');
+    if (raw) syncCfg = JSON.parse(raw);
+  } catch(e) {}
+  return !!(syncCfg.apiKey && syncCfg.binId);
+}
+
+function saveSyncConfig() {
+  localStorage.setItem('brt_sync', JSON.stringify(syncCfg));
+}
+
+function clearSyncConfig() {
+  syncCfg = { apiKey: '', binId: '' };
+  localStorage.removeItem('brt_sync');
+}
+
+function updateSyncStatus(state, msg) {
+  const dot = document.getElementById('sync-dot');
+  const text = document.getElementById('sync-text');
+  const bar = document.getElementById('sync-bar');
+  dot.className = 'sync-dot' + (state === 'ok' ? ' ok' : state === 'syncing' ? ' syncing' : state === 'error' ? ' error' : '');
+  text.textContent = msg;
+  // Hide the "Set up" link if configured
+  const setupBtn = bar.querySelector('.sync-btn-inline');
+  if (setupBtn) setupBtn.style.display = (state === 'none') ? '' : 'none';
+}
+
+async function syncPush() {
+  if (!syncCfg.apiKey || !syncCfg.binId) return;
+  updateSyncStatus('syncing', 'Syncing…');
+  try {
+    const data = {
+      version: 2,
+      sessions: await dbGetAll('sessions'),
+      nextdays: await dbGetAll('nextdays'),
+      routines: await dbGetAll('routines'),
+      updatedAt: new Date().toISOString()
+    };
+    const res = await fetch(`${JSONBIN_BASE}/${syncCfg.binId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': syncCfg.apiKey },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const now = new Date().toLocaleTimeString();
+    updateSyncStatus('ok', `Synced · ${now}`);
+    const el = document.getElementById('last-sync-time');
+    if (el) el.textContent = now;
+  } catch(e) {
+    updateSyncStatus('error', `Sync failed: ${e.message}`);
+  }
+}
+
+async function syncPull() {
+  if (!syncCfg.apiKey || !syncCfg.binId) return;
+  updateSyncStatus('syncing', 'Pulling from cloud…');
+  try {
+    const res = await fetch(`${JSONBIN_BASE}/${syncCfg.binId}/latest`, {
+      headers: { 'X-Master-Key': syncCfg.apiKey }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const data = json.record;
+    if (!data || !data.version) throw new Error('Unrecognized format in bin');
+    // Merge: put everything from cloud (cloud wins on conflict since IDs are unique timestamps)
+    for (const s of (data.sessions || [])) await dbPut('sessions', s);
+    for (const n of (data.nextdays || [])) await dbPut('nextdays', n);
+    for (const r of (data.routines || [])) await dbPut('routines', r);
+    const now = new Date().toLocaleTimeString();
+    updateSyncStatus('ok', `Synced · ${now}`);
+    const el = document.getElementById('last-sync-time');
+    if (el) el.textContent = now;
+    refreshRoutinePicker();
+  } catch(e) {
+    updateSyncStatus('error', `Pull failed: ${e.message}`);
+  }
+}
+
+async function syncNow() {
+  await syncPull();
+  await syncPush();
+}
+
+async function connectSync() {
+  const key = document.getElementById('sync-api-key').value.trim();
+  const binId = document.getElementById('sync-bin-id').value.trim();
+  if (!key || !binId) { toast('Enter both fields'); return; }
+  syncCfg = { apiKey: key, binId };
+  // Test connection
+  updateSyncStatus('syncing', 'Connecting…');
+  try {
+    const res = await fetch(`${JSONBIN_BASE}/${binId}/latest`, {
+      headers: { 'X-Master-Key': key }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status} — check your credentials`);
+    saveSyncConfig();
+    showSyncConfiguredUI();
+    toast('Connected! Syncing…');
+    await syncPull();
+    await syncPush();
+  } catch(e) {
+    updateSyncStatus('error', `Connection failed: ${e.message}`);
+    toast('Connection failed: ' + e.message);
+    syncCfg = { apiKey: '', binId: '' };
+  }
+}
+
+function disconnectSync() {
+  if (!confirm('Disconnect cloud sync? Your local data stays intact.')) return;
+  clearSyncConfig();
+  showSyncUnconfiguredUI();
+  updateSyncStatus('none', 'Cloud sync not configured');
+  toast('Disconnected');
+}
+
+function showSyncConfiguredUI() {
+  document.getElementById('sync-unconfigured').classList.add('hidden');
+  document.getElementById('sync-configured').classList.remove('hidden');
+}
+
+function showSyncUnconfiguredUI() {
+  document.getElementById('sync-configured').classList.add('hidden');
+  document.getElementById('sync-unconfigured').classList.remove('hidden');
+}
+
+// ========= INIT =========
+async function init() {
+  await openDB();
+  document.getElementById('s-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('nd-date').value = new Date().toISOString().split('T')[0];
+  refreshRoutinePicker();
+
+  if (loadSyncConfig()) {
+    showSyncConfiguredUI();
+    await syncPull();
+  } else {
+    updateSyncStatus('none', 'Cloud sync not configured');
+  }
+}
+
+init();
+</script>
+</body>
+</html>
