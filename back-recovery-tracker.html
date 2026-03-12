@@ -10,7 +10,6 @@
   --surface: #073642;
   --surface2: #00212b;
   --border: #0a4050;
-  --border2: #586e75;
   --text: #93a1a1;
   --text2: #839496;
   --text3: #657b83;
@@ -25,1443 +24,2187 @@
   --magenta: #d33682;
   --radius: 10px;
 }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 .app { max-width: 720px; margin: 0 auto; padding: 16px; }
 h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
-.subtitle { color: var(--text2); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--text2); font-size: 0.85rem; margin-bottom: 16px; }
 
-/* Tabs */
-.tabs { display: flex; gap: 4px; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.tab { padding: 10px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text2); font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
-.tab:hover { border-color: var(--accent); color: var(--text); }
-.tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-/* Cards */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.25); }
-.card h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text); }
-.card h2 .icon { font-size: 1.15rem; }
-.section-hint { color: var(--text3); font-size: 0.8rem; margin: -8px 0 14px; font-style: italic; }
-
-/* Form elements */
-.field { margin-bottom: 14px; }
-.field label { display: block; font-size: 0.82rem; color: var(--text2); margin-bottom: 5px; font-weight: 500; }
-.field input, .field select, .field textarea {
-  width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
-  background: var(--bg); color: var(--text); font-size: 0.9rem; font-family: inherit; transition: border-color 0.15s;
+.sync-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  font-size: 0.85rem;
 }
-.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(38,139,210,0.12); }
-.field textarea { resize: vertical; min-height: 60px; }
-.field select { cursor: pointer; }
-.field-row { display: flex; gap: 12px; }
-.field-row .field { flex: 1; }
-
-/* Slider */
-.slider-wrap { display: flex; align-items: center; gap: 12px; }
-.slider-wrap input[type="range"] { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 3px; background: var(--border); border: none; padding: 0; }
-.slider-wrap input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-.slider-val { min-width: 32px; text-align: center; font-weight: 700; font-size: 1.1rem; color: var(--text); }
-
-/* Pill groups */
-.pill-group { display: flex; gap: 6px; flex-wrap: wrap; }
-.pill { padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 0.82rem; cursor: pointer; transition: all 0.15s; }
-.pill:hover { border-color: var(--accent); color: var(--text); }
-.pill.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
-.pill.green.selected { background: var(--green); color: #fff; border-color: var(--green); }
-.pill.yellow.selected { background: var(--yellow); color: #fff; border-color: var(--yellow); }
-.pill.red.selected { background: var(--red); color: #fff; border-color: var(--red); }
-
-/* Checkbox pills */
-.check-group { display: flex; gap: 6px; flex-wrap: wrap; }
-.check-pill { padding: 7px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 0.8rem; cursor: pointer; transition: all 0.15s; user-select: none; }
-.check-pill:hover { border-color: var(--accent); }
-.check-pill.checked { background: var(--cyan); color: #fff; border-color: var(--cyan); }
-
-/* Exercise block */
-.exercise-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 10px; position: relative; }
-.exercise-block .remove-btn { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--red); cursor: pointer; font-size: 1.1rem; padding: 4px; }
-
-/* Buttons */
-.btn { padding: 10px 20px; border-radius: 8px; border: none; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent2); }
-.btn-green { background: var(--green); color: #fff; }
-.btn-green:hover { opacity: 0.9; }
-.btn-outline { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); }
-.btn-outline:hover { border-color: var(--accent); color: var(--text); }
-.btn-danger { background: var(--surface2); border: 1px solid var(--red); color: var(--red); }
-.btn-danger:hover { background: var(--red); color: #fff; }
-.btn-sm { padding: 7px 14px; font-size: 0.8rem; }
-.btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
-
-/* Sub-tabs within New Entry */
-.sub-tabs { display: flex; gap: 0; margin-bottom: 20px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
-.sub-tab { flex: 1; padding: 12px 8px; text-align: center; background: var(--surface); color: var(--text2); font-size: 0.85rem; font-weight: 500; cursor: pointer; border-right: 1px solid var(--border); transition: all 0.15s; }
-.sub-tab:last-child { border-right: none; }
-.sub-tab:hover { color: var(--text); background: var(--surface2); }
-.sub-tab.active { background: var(--accent); color: #fff; }
-
-/* Linked session badge */
-.linked-session { background: var(--bg); border: 1px solid var(--cyan); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 0.85rem; color: var(--text2); }
-.linked-session strong { color: var(--cyan); }
-
-/* History */
-.history-entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
-.history-entry:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(38,139,210,0.1); }
-.history-date { font-weight: 700; font-size: 0.95rem; color: var(--text); }
-.history-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; margin-left: 8px; text-transform: uppercase; }
-.type-session { background: rgba(38,139,210,0.12); color: var(--accent); }
-.type-nextday { background: rgba(42,161,152,0.12); color: var(--cyan); }
-.history-summary { color: var(--text2); font-size: 0.82rem; margin-top: 6px; line-height: 1.5; }
-.history-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-.badge { padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
-.badge-pain { background: rgba(220,50,47,0.1); color: var(--red); }
-.badge-exercises { background: rgba(38,139,210,0.1); color: var(--accent); }
-.badge-better { background: rgba(133,153,0,0.12); color: var(--green); }
-.badge-same { background: rgba(181,137,0,0.12); color: var(--yellow); }
-.badge-worse { background: rgba(220,50,47,0.1); color: var(--red); }
-.badge-linked { background: rgba(42,161,152,0.1); color: var(--cyan); }
-
-/* Detail view */
-.detail-section { margin-bottom: 14px; }
-.detail-section h3 { font-size: 0.88rem; color: var(--accent); margin-bottom: 8px; font-weight: 600; }
-.detail-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid var(--surface); }
-.detail-row:last-child { border-bottom: none; }
-.detail-label { color: var(--text2); }
-
-/* Routine management */
-.routine-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-.routine-item .routine-name { font-weight: 600; font-size: 0.9rem; }
-.routine-item .routine-count { color: var(--text3); font-size: 0.8rem; }
-.routine-actions { display: flex; gap: 6px; }
-
-/* Stats */
-.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
-.stat-val { font-size: 1.8rem; font-weight: 800; color: var(--text); }
-.stat-label { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
-
-/* Chart */
-.chart-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
-.chart-container h3 { font-size: 0.95rem; margin-bottom: 12px; color: var(--text); }
-canvas { width: 100% !important; height: 200px !important; }
-
-/* Toast */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 0.88rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
-.toast.show { opacity: 1; }
-
-/* Modal */
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; }
-.modal { background: var(--surface); border-radius: var(--radius); padding: 24px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 30px rgba(0,0,0,0.5); border: 1px solid var(--border); }
-.modal h3 { font-size: 1.1rem; margin-bottom: 16px; color: var(--text); }
-
-/* Sync status bar */
-.sync-bar { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 8px; margin-bottom: 16px; font-size: 0.82rem; border: 1px solid var(--border); background: var(--surface); }
-.sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); flex-shrink: 0; transition: background 0.3s; }
-.sync-dot.ok { background: var(--green); }
+.sync-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text3);
+}
+.sync-dot.synced { background: var(--green); }
 .sync-dot.syncing { background: var(--yellow); animation: pulse 1s infinite; }
 .sync-dot.error { background: var(--red); }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .sync-text { flex: 1; color: var(--text2); }
-.sync-btn-inline { background: none; border: none; color: var(--accent); font-size: 0.82rem; cursor: pointer; padding: 0; font-weight: 600; text-decoration: underline; }
+.sync-btn-inline {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.sync-btn-inline:hover { background: var(--accent2); }
 
-/* Utility */
-.hidden { display: none !important; }
-.mt-8 { margin-top: 8px; }
-.mt-16 { margin-top: 16px; }
-.text-center { text-align: center; }
-.text-muted { color: var(--text2); font-size: 0.85rem; }
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.tab {
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--text2);
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+.tab:hover { background: var(--surface2); }
+.tab.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
 
-@media (max-width: 500px) {
-  .field-row { flex-direction: column; gap: 0; }
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .sub-tab { font-size: 0.78rem; padding: 10px 4px; }
+.subtabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.subtab {
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.subtab:hover { color: var(--text); }
+.subtab.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: -8px;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface2);
+}
+
+.pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pill {
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.pill:hover { border-color: var(--accent); }
+.pill.selected {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.pill.green { background: var(--green); color: var(--bg); border-color: var(--green); }
+.pill.yellow { background: var(--yellow); color: var(--bg); border-color: var(--yellow); }
+.pill.red { background: var(--red); color: var(--bg); border-color: var(--red); }
+
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.slider-group input[type="range"] {
+  flex: 1;
+  height: 6px;
+  background: var(--surface);
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+.slider-group input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+.slider-value {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+.checkbox-item label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.exercise-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.exercise-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.exercise-block-title {
+  font-weight: 600;
+  color: var(--text);
+}
+.exercise-remove-btn {
+  background: var(--red);
+  color: var(--bg);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.exercise-remove-btn:hover { background: #b82828; }
+
+.dose-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.dose-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dose-field label {
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin: 0;
+}
+.dose-field input[type="number"],
+.dose-field select {
+  padding: 8px;
+  font-size: 0.85rem;
+}
+
+button {
+  padding: 12px 20px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+button:hover { background: var(--accent2); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.alert.error { background: rgba(220, 50, 47, 0.2); color: #ff6b6b; }
+.alert.success { background: rgba(133, 153, 0, 0.2); color: #b8e500; }
+.alert.info { background: rgba(38, 139, 210, 0.2); color: #a0d8ff; }
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  color: var(--text);
+  padding: 14px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+.toast.error { border-color: var(--red); }
+@keyframes slideUp { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+
+.history-entry {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+.history-date {
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.history-content {
+  color: var(--text2);
+  font-size: 0.9rem;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+.modal-content {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.status {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.status.normal { background: rgba(133, 153, 0, 0.3); color: var(--green); }
+.status.mild { background: rgba(181, 137, 0, 0.3); color: var(--yellow); }
+.status.moderate { background: rgba(203, 75, 22, 0.3); color: var(--orange); }
+.status.severe { background: rgba(220, 50, 47, 0.3); color: var(--red); }
+
+@media (max-width: 720px) {
+  .app { padding: 12px; }
+  .tabs { gap: 6px; }
+  .dose-fields-grid {
+    grid-template-columns: 1fr;
+  }
+  .checkboxes {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 <body>
+
 <div class="app">
-  <h1>Back Recovery Tracker</h1>
-  <p class="subtitle">LBA Program · Disc Herniation L4-L5 / L5-S1 · Sciatica &amp; SI Joint</p>
+<h1>Back Recovery Tracker</h1>
+<p class="subtitle">Tracking pain, progressions, and recovery patterns</p>
 
-  <div class="sync-bar" id="sync-bar">
-    <div class="sync-dot" id="sync-dot"></div>
-    <span class="sync-text" id="sync-text">Cloud sync not configured</span>
-    <button class="sync-btn-inline" onclick="document.querySelector('.tab[data-tab=settings]').click()">Set up</button>
+<div class="sync-bar">
+  <div class="sync-dot synced" id="sync-dot"></div>
+  <div class="sync-text" id="sync-text">Cloud sync not configured</div>
+  <button class="sync-btn-inline" onclick="toggleSyncSetup()">Setup</button>
+  <button class="sync-btn-inline" id="disconnect-btn" style="display:none; background: var(--red);" onclick="disconnectSync()">Disconnect</button>
+</div>
+
+<div id="sync-setup" style="display:none; margin-bottom:20px;">
+  <div class="form-group">
+    <label>JSONBin.io API Key</label>
+    <input type="text" id="sync-api-key" placeholder="Enter your API key">
+  </div>
+  <div class="form-group">
+    <label>Bin ID</label>
+    <input type="text" id="sync-bin-id" placeholder="Enter your bin ID">
+  </div>
+  <button onclick="connectSync()" style="width:100%;">Connect Cloud Sync</button>
+  <div id="sync-status-msg" style="margin-top:12px;"></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab(event, 'new-entry')">New Entry</button>
+  <button class="tab" onclick="switchTab(event, 'history')">History</button>
+  <button class="tab" onclick="switchTab(event, 'routines')">Routines</button>
+  <button class="tab" onclick="switchTab(event, 'progressions')">Progressions</button>
+  <button class="tab" onclick="switchTab(event, 'trends')">Trends</button>
+  <button class="tab" onclick="switchTab(event, 'settings')">Settings</button>
+</div>
+
+<!-- NEW ENTRY TAB: Log Session / Next-Day Check -->
+<div id="new-entry" class="tab-content active">
+  <div class="subtabs">
+    <button class="subtab active" onclick="switchSubTab(event, 'log-session')">Log Session</button>
+    <button class="subtab" onclick="switchSubTab(event, 'next-day-check')">Next-Day Check</button>
   </div>
 
-  <div class="tabs">
-    <div class="tab active" data-tab="log">New Entry</div>
-    <div class="tab" data-tab="history">History</div>
-    <div class="tab" data-tab="routines">Routines</div>
-    <div class="tab" data-tab="stats">Trends</div>
-    <div class="tab" data-tab="settings">Data</div>
+  <!-- LOG SESSION -->
+  <div id="log-session" class="tab-content active">
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="session-date">
+    </div>
+
+    <!-- BASELINE SECTION -->
+    <div style="background: var(--surface2); padding: 16px; border-radius: var(--radius); margin-bottom: 16px;">
+      <div style="font-weight: 600; color: var(--accent); margin-bottom: 12px;">Baseline (Session Start)</div>
+
+      <div class="form-group">
+        <label>Pain Level</label>
+        <div class="slider-group">
+          <input type="range" id="baseline-pain" min="0" max="10" value="0" onchange="updateSliderDisplay('baseline-pain')">
+          <span class="slider-value" id="baseline-pain-value">0</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Stiffness Level</label>
+        <div class="slider-group">
+          <input type="range" id="baseline-stiffness" min="0" max="10" value="0" onchange="updateSliderDisplay('baseline-stiffness')">
+          <span class="slider-value" id="baseline-stiffness-value">0</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Pain Location(s)</label>
+        <div class="checkboxes">
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Center low back"> <label>Center low back</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Left SI"> <label>Left SI</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Right SI"> <label>Right SI</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Left glute"> <label>Left glute</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Right glute"> <label>Right glute</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Left hamstring"> <label>Left hamstring</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Right hamstring"> <label>Right hamstring</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Left leg (sciatic)"> <label>Left leg (sciatic)</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Right leg (sciatic)"> <label>Right leg (sciatic)</label></div>
+          <div class="checkbox-item"><input type="checkbox" name="location" value="Hip flexor"> <label>Hip flexor</label></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nerve Symptoms</label>
+        <input type="text" id="baseline-nerve" placeholder="e.g., Tingling, Numbness">
+      </div>
+
+      <div class="form-group">
+        <label>Mood (1-5)</label>
+        <div class="slider-group">
+          <input type="range" id="baseline-mood" min="1" max="5" value="3" onchange="updateSliderDisplay('baseline-mood')">
+          <span class="slider-value" id="baseline-mood-value">3</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Stress (1-5)</label>
+        <div class="slider-group">
+          <input type="range" id="baseline-stress" min="1" max="5" value="3" onchange="updateSliderDisplay('baseline-stress')">
+          <span class="slider-value" id="baseline-stress-value">3</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Sleep Quality (1-5)</label>
+        <div class="slider-group">
+          <input type="range" id="baseline-sleep" min="1" max="5" value="3" onchange="updateSliderDisplay('baseline-sleep')">
+          <span class="slider-value" id="baseline-sleep-value">3</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Steps (approx)</label>
+        <input type="number" id="baseline-steps" placeholder="e.g., 5000">
+      </div>
+
+      <div class="form-group">
+        <label>Hours Sitting</label>
+        <input type="number" id="baseline-sitting" step="0.5" placeholder="e.g., 6">
+      </div>
+    </div>
+
+    <!-- LOAD ROUTINE -->
+    <div class="form-group">
+      <label>Load Routine (Optional)</label>
+      <div style="display: flex; gap: 8px;">
+        <select id="routine-select" style="flex: 1;">
+          <option value="">-- Select Routine --</option>
+        </select>
+        <button onclick="loadRoutineIntoSession()" style="flex: 0 0 auto; min-width: 100px;">Load</button>
+      </div>
+    </div>
+
+    <!-- EXERCISE LIST -->
+    <div style="margin-bottom: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div style="font-weight: 600; color: var(--accent);">Exercises</div>
+        <button onclick="addExerciseBlock()" style="padding: 6px 12px; font-size: 0.85rem;">+ Add Exercise</button>
+      </div>
+      <div id="exercise-blocks-container"></div>
+    </div>
+
+    <!-- DURING & AFTER SECTION -->
+    <div style="background: var(--surface2); padding: 16px; border-radius: var(--radius); margin-bottom: 16px;">
+      <div style="font-weight: 600; color: var(--accent); margin-bottom: 12px;">During & After</div>
+
+      <div class="form-group">
+        <label>Symptoms During</label>
+        <div class="pills">
+          <button class="pill" onclick="selectDuringSymptoms(event, 'Better')">Better</button>
+          <button class="pill" onclick="selectDuringSymptoms(event, 'Same')">Same</button>
+          <button class="pill" onclick="selectDuringSymptoms(event, 'Worse')">Worse</button>
+        </div>
+        <input type="hidden" id="during-symptoms">
+      </div>
+
+      <div class="form-group">
+        <label>Sharp Pain During?</label>
+        <div class="pills">
+          <button class="pill" onclick="selectSharpPain(event, 'Yes')">Yes</button>
+          <button class="pill" onclick="selectSharpPain(event, 'No')">No</button>
+        </div>
+        <input type="hidden" id="sharp-pain">
+      </div>
+
+      <div class="form-group">
+        <label>Pain After Session (0-10)</label>
+        <div class="slider-group">
+          <input type="range" id="after-pain" min="0" max="10" value="0" onchange="updateSliderDisplay('after-pain')">
+          <span class="slider-value" id="after-pain-value">0</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>What Felt Best?</label>
+        <textarea id="felt-best" placeholder="e.g., couch stretch calmed sciatica" rows="2"></textarea>
+      </div>
+    </div>
+
+    <button onclick="saveSession()" style="width: 100%; padding: 14px;">Save Session</button>
   </div>
 
-  <!-- ============== NEW ENTRY TAB ============== -->
-  <div id="tab-log">
-    <div class="sub-tabs">
-      <div class="sub-tab active" data-subtab="session" onclick="switchSubTab('session')">Log Session</div>
-      <div class="sub-tab" data-subtab="nextday" onclick="switchSubTab('nextday')">Next-Day Check</div>
+  <!-- NEXT-DAY CHECK -->
+  <div id="next-day-check" class="tab-content">
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="nextday-date">
     </div>
 
-    <!-- ===== SESSION ENTRY ===== -->
-    <div id="subtab-session">
-      <div class="card">
-        <h2><span class="icon">📊</span> Baseline</h2>
-        <p class="section-hint">Fill before your session</p>
-        <div class="field">
-          <label>Date</label>
-          <input type="date" id="s-date">
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label>Pain (0–10)</label>
-            <div class="slider-wrap">
-              <input type="range" min="0" max="10" value="0" id="s-pain" oninput="this.nextElementSibling.textContent=this.value">
-              <span class="slider-val">0</span>
-            </div>
-          </div>
-          <div class="field">
-            <label>Stiffness (0–10)</label>
-            <div class="slider-wrap">
-              <input type="range" min="0" max="10" value="0" id="s-stiffness" oninput="this.nextElementSibling.textContent=this.value">
-              <span class="slider-val">0</span>
-            </div>
-          </div>
-        </div>
-        <div class="field">
-          <label>Main location(s)</label>
-          <div class="check-group" id="s-locations">
-            <div class="check-pill" onclick="toggleCheck(this)">Center low back</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Left SI</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Right SI</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Left glute</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Right glute</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Left hamstring</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Right hamstring</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Left leg (sciatic)</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Right leg (sciatic)</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Hip flexor</div>
-          </div>
-        </div>
-        <div class="field">
-          <label>Nerve symptoms?</label>
-          <div class="pill-group" id="s-nerve">
-            <div class="pill" onclick="selectPill(this)">No</div>
-            <div class="pill" onclick="selectPill(this)">Numbness</div>
-            <div class="pill" onclick="selectPill(this)">Tingling</div>
-            <div class="pill" onclick="selectPill(this)">Both</div>
-          </div>
-        </div>
-        <div class="field">
-          <label>Mood / Stress / Sleep (1–5)</label>
-          <div class="slider-wrap">
-            <input type="range" min="1" max="5" value="3" id="s-mood" oninput="this.nextElementSibling.textContent=this.value">
-            <span class="slider-val">3</span>
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label>Approx steps today</label>
-            <input type="number" id="s-steps" placeholder="e.g. 5000">
-          </div>
-          <div class="field">
-            <label>Sitting hours today</label>
-            <input type="number" id="s-sitting" placeholder="e.g. 6" step="0.5">
-          </div>
-        </div>
-      </div>
-
-      <!-- EXERCISES -->
-      <div class="card">
-        <h2><span class="icon">🏋️</span> Exercises</h2>
-        <div class="field">
-          <label>Load a routine</label>
-          <div style="display:flex;gap:8px">
-            <select id="routine-picker" style="flex:1;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.9rem">
-              <option value="">Pick a routine...</option>
-            </select>
-            <button class="btn btn-outline btn-sm" onclick="loadRoutine()">Load</button>
-          </div>
-        </div>
-        <div id="exercise-list"></div>
-        <button class="btn btn-outline btn-sm" onclick="addExercise()">+ Add Exercise</button>
-      </div>
-
-      <!-- DURING + AFTER -->
-      <div class="card">
-        <h2><span class="icon">⚡</span> During &amp; After</h2>
-        <div class="field">
-          <label>Symptoms during session</label>
-          <div class="pill-group" id="s-during">
-            <div class="pill green" onclick="selectPill(this)">Better</div>
-            <div class="pill yellow" onclick="selectPill(this)">Same</div>
-            <div class="pill red" onclick="selectPill(this)">Worse</div>
-          </div>
-        </div>
-        <div class="field">
-          <label>Any sharp pain?</label>
-          <div class="pill-group" id="s-sharp">
-            <div class="pill green" onclick="selectPill(this)">No</div>
-            <div class="pill red" onclick="selectPill(this)">Yes</div>
-          </div>
-        </div>
-        <div class="field">
-          <label>After session pain (0–10)</label>
-          <div class="slider-wrap">
-            <input type="range" min="0" max="10" value="0" id="s-after-pain" oninput="this.nextElementSibling.textContent=this.value">
-            <span class="slider-val">0</span>
-          </div>
-        </div>
-        <div class="field">
-          <label>What felt best?</label>
-          <input type="text" id="s-felt-best" placeholder="e.g. couch stretch calmed the sciatica">
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="saveSession()" style="flex:1">Save Session</button>
-      </div>
-      <div style="height:30px"></div>
+    <div class="form-group">
+      <label>Select Previous Session</label>
+      <select id="previous-session-select">
+        <option value="">-- Select Session --</option>
+      </select>
     </div>
 
-    <!-- ===== NEXT-DAY CHECK ===== -->
-    <div id="subtab-nextday" class="hidden">
-      <div class="card">
-        <h2><span class="icon">🌅</span> Next-Day Check</h2>
-        <p class="section-hint">Link this to the session you're evaluating</p>
-
-        <div class="field">
-          <label>Date</label>
-          <input type="date" id="nd-date">
-        </div>
-
-        <div class="field">
-          <label>Which session are you evaluating?</label>
-          <select id="nd-link-session">
-            <option value="">Select a session...</option>
-          </select>
-        </div>
-        <div id="nd-linked-info" class="hidden"></div>
-
-        <div class="field">
-          <label>Next-day pain/stiffness vs baseline</label>
-          <div class="pill-group" id="nd-vs">
-            <div class="pill green" onclick="selectPill(this)">Better</div>
-            <div class="pill yellow" onclick="selectPill(this)">Same</div>
-            <div class="pill red" onclick="selectPill(this)">Worse</div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Any flare signs?</label>
-          <div class="pill-group" id="nd-flare">
-            <div class="pill green" onclick="selectPill(this)">No</div>
-            <div class="pill red" onclick="selectPill(this)">Yes</div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>What do you think caused it?</label>
-          <div class="check-group" id="nd-causes">
-            <div class="check-pill" onclick="toggleCheck(this)">Training dose</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Too much sitting</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Stress</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Poor sleep</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Activity / lifting</div>
-            <div class="check-pill" onclick="toggleCheck(this)">Weather</div>
-          </div>
-          <input type="text" id="nd-cause-other" placeholder="Other cause..." class="mt-8">
-        </div>
-      </div>
-
-      <!-- DECISION -->
-      <div class="card">
-        <h2><span class="icon">🎯</span> Decision for Next Time</h2>
-        <div class="field">
-          <label>Plan</label>
-          <div class="pill-group" id="nd-plan">
-            <div class="pill yellow" onclick="selectPill(this)">Keep same</div>
-            <div class="pill red" onclick="selectPill(this)">Regress</div>
-            <div class="pill green" onclick="selectPill(this)">Progress</div>
-          </div>
-        </div>
-        <div class="field">
-          <label>If progressing, what one variable?</label>
-          <div class="pill-group" id="nd-progress-var">
-            <div class="pill" onclick="selectPill(this)">More time</div>
-            <div class="pill" onclick="selectPill(this)">More reps</div>
-            <div class="pill" onclick="selectPill(this)">More range</div>
-            <div class="pill" onclick="selectPill(this)">More load</div>
-          </div>
-        </div>
-        <div class="field">
-          <label>Notes for next session</label>
-          <textarea id="nd-notes" placeholder="Anything you want to remember..."></textarea>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-green" onclick="saveNextDay()" style="flex:1">Save Next-Day Check</button>
-      </div>
-      <div style="height:30px"></div>
+    <div id="linked-session-info" style="background: var(--surface2); padding: 12px; border-radius: var(--radius); margin-bottom: 16px; display: none;">
+      <div id="linked-session-content"></div>
     </div>
+
+    <div class="form-group">
+      <label>Overall Response vs Baseline</label>
+      <div class="pills">
+        <button class="pill" onclick="selectNDResponse(event, 'Better')">Better</button>
+        <button class="pill" onclick="selectNDResponse(event, 'Same')">Same</button>
+        <button class="pill" onclick="selectNDResponse(event, 'Worse')">Worse</button>
+      </div>
+      <input type="hidden" id="nd-response">
+    </div>
+
+    <div class="form-group">
+      <label>Flare-up?</label>
+      <div class="pills">
+        <button class="pill" onclick="selectFlare(event, 'Yes')">Yes</button>
+        <button class="pill" onclick="selectFlare(event, 'No')">No</button>
+      </div>
+      <input type="hidden" id="nd-flare">
+    </div>
+
+    <div class="form-group">
+      <label>Likely Causes</label>
+      <div class="checkboxes">
+        <div class="checkbox-item"><input type="checkbox" name="nd-cause" value="Training dose"> <label>Training dose</label></div>
+        <div class="checkbox-item"><input type="checkbox" name="nd-cause" value="Too much sitting"> <label>Too much sitting</label></div>
+        <div class="checkbox-item"><input type="checkbox" name="nd-cause" value="Stress"> <label>Stress</label></div>
+        <div class="checkbox-item"><input type="checkbox" name="nd-cause" value="Poor sleep"> <label>Poor sleep</label></div>
+        <div class="checkbox-item"><input type="checkbox" name="nd-cause" value="Activity/lifting"> <label>Activity/lifting</label></div>
+        <div class="checkbox-item"><input type="checkbox" name="nd-cause" value="Weather"> <label>Weather</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Other Causes</label>
+      <textarea id="nd-cause-other" placeholder="Any other factors" rows="2"></textarea>
+    </div>
+
+    <div style="background: var(--surface2); padding: 16px; border-radius: var(--radius); margin-bottom: 16px;">
+      <div style="font-weight: 600; color: var(--accent); margin-bottom: 12px;">Decision</div>
+
+      <div class="form-group">
+        <label>Plan</label>
+        <div class="pills">
+          <button class="pill" onclick="selectPlan(event, 'Keep same')">Keep Same</button>
+          <button class="pill" onclick="selectPlan(event, 'Regress')">Regress</button>
+          <button class="pill" onclick="selectPlan(event, 'Progress')">Progress</button>
+        </div>
+        <input type="hidden" id="nd-plan">
+      </div>
+
+      <div class="form-group">
+        <label>If Progressing: What Variable?</label>
+        <div class="pills">
+          <button class="pill" onclick="selectProgressVar(event, 'More time')">More Time</button>
+          <button class="pill" onclick="selectProgressVar(event, 'More reps')">More Reps</button>
+          <button class="pill" onclick="selectProgressVar(event, 'More range')">More Range</button>
+          <button class="pill" onclick="selectProgressVar(event, 'More load')">More Load</button>
+        </div>
+        <input type="hidden" id="nd-progress-var">
+      </div>
+
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea id="nd-notes" placeholder="e.g., Add 10 seconds next time" rows="3"></textarea>
+      </div>
+    </div>
+
+    <button onclick="saveNextDay()" style="width: 100%; padding: 14px;">Save Next-Day Check</button>
   </div>
+</div>
 
-  <!-- ============== HISTORY TAB ============== -->
-  <div id="tab-history" class="hidden">
-    <div id="history-list"></div>
-    <div id="history-detail" class="hidden"></div>
+<!-- HISTORY TAB -->
+<div id="history" class="tab-content">
+  <div style="margin-bottom: 16px;">
+    <div style="font-weight: 600; color: var(--accent); margin-bottom: 12px;">Sessions & Next-Day Checks</div>
+    <div id="history-container"></div>
   </div>
+</div>
 
-  <!-- ============== ROUTINES TAB ============== -->
-  <div id="tab-routines" class="hidden">
-    <div class="card">
-      <h2><span class="icon">📦</span> My Routines</h2>
-      <p class="section-hint">Create named groups of exercises to quickly load them during logging</p>
-      <div id="routines-list"></div>
-      <div class="btn-row">
-        <button class="btn btn-primary btn-sm" onclick="openCreateRoutine()">+ New Routine</button>
-      </div>
-    </div>
+<!-- ROUTINES TAB -->
+<div id="routines" class="tab-content">
+  <div style="margin-bottom: 16px;">
+    <button onclick="openCreateRoutineModal()" style="width: 100%; margin-bottom: 16px;">+ Create New Routine</button>
+    <div id="routines-list"></div>
   </div>
+</div>
 
-  <!-- ============== STATS TAB ============== -->
-  <div id="tab-stats" class="hidden">
-    <div class="stats-row" id="stats-cards"></div>
-    <div class="chart-container">
-      <h3>Pain Over Time</h3>
-      <canvas id="pain-chart"></canvas>
-    </div>
-    <div class="chart-container">
-      <h3>Next-Day Response</h3>
-      <canvas id="response-chart"></canvas>
-    </div>
+<!-- PROGRESSIONS TAB -->
+<div id="progressions" class="tab-content">
+  <div id="progressions-container"></div>
+</div>
+
+<!-- TRENDS TAB -->
+<div id="trends" class="tab-content">
+  <div id="trends-container"></div>
+</div>
+
+<!-- SETTINGS TAB -->
+<div id="settings" class="tab-content">
+  <div class="form-group">
+    <label>Data Management</label>
   </div>
+  <button onclick="exportData()" style="width: 100%; margin-bottom: 8px;">Export Data (JSON)</button>
+  <button onclick="importData()" style="width: 100%; margin-bottom: 8px;">Import Data (JSON)</button>
+  <button onclick="clearAllData()" style="width: 100%; background: var(--red);">Clear All Data</button>
+  <input type="file" id="import-file" style="display:none;" accept=".json">
+</div>
 
-  <!-- ============== SETTINGS/DATA TAB ============== -->
-  <div id="tab-settings" class="hidden">
+</div>
 
-    <div class="card" id="sync-setup-card">
-      <h2><span class="icon">☁️</span> Cloud Sync</h2>
-      <p class="section-hint">Sync across Mac &amp; iPhone via JSONBin.io (free)</p>
-
-      <div id="sync-unconfigured">
-        <p style="font-size:0.88rem;color:var(--text2);margin-bottom:14px;line-height:1.6">
-          JSONBin.io stores your data as a JSON file in the cloud, accessible from any device.
-          Setup takes ~2 minutes:
-        </p>
-        <ol style="font-size:0.85rem;color:var(--text2);padding-left:20px;line-height:2">
-          <li>Go to <strong style="color:var(--accent)">jsonbin.io</strong> → sign up for a free account</li>
-          <li>Click <strong>+ New Bin</strong> → paste the following as content → Save:<br><code style="display:block;margin-top:6px;background:var(--surface2);padding:6px 8px;border-radius:4px;font-size:0.85em;word-break:break-all">{"version":2,"sessions":[],"nextdays":[],"routines":[]}</code></li>
-          <li>Copy the <strong>Bin ID</strong> from the URL (the part after <code style="background:var(--surface2);padding:2px 5px;border-radius:4px">/b/</code>)</li>
-          <li>Go to <strong>Account → API Keys</strong> → copy your <strong>Master Key</strong></li>
-          <li>Paste both below and click Connect</li>
-        </ol>
-        <div class="field mt-16">
-          <label>JSONBin Master Key</label>
-          <input type="password" id="sync-api-key" placeholder="$2b$10$...">
-        </div>
-        <div class="field">
-          <label>Bin ID</label>
-          <input type="text" id="sync-bin-id" placeholder="64f3a...">
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="connectSync()">Connect &amp; Sync</button>
-        </div>
-      </div>
-
-      <div id="sync-configured" class="hidden">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div class="sync-dot ok"></div>
-          <span style="font-size:0.88rem;color:var(--text2)">Connected to JSONBin</span>
-        </div>
-        <p style="font-size:0.82rem;color:var(--text3);margin-bottom:14px">
-          Data syncs automatically on every save. Last sync: <span id="last-sync-time">—</span>
-        </p>
-        <div class="btn-row">
-          <button class="btn btn-outline" onclick="syncNow()">Sync Now</button>
-          <button class="btn btn-danger btn-sm" onclick="disconnectSync()">Disconnect</button>
-        </div>
-      </div>
+<!-- MODALS -->
+<div id="routine-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Create Routine</div>
+    <div class="form-group">
+      <label>Routine Name</label>
+      <input type="text" id="routine-name" placeholder="e.g., Monday Mobility">
     </div>
-
-    <div class="card">
-      <h2><span class="icon">💾</span> Backup &amp; Restore</h2>
-      <p class="section-hint">Export your data to keep a backup, or import from a previous one</p>
-      <div class="btn-row">
-        <button class="btn btn-outline" onclick="exportData()">Export JSON</button>
-        <button class="btn btn-outline" onclick="document.getElementById('import-file').click()">Import JSON</button>
-        <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
-      </div>
+    <div style="margin-bottom: 16px;">
+      <div style="font-weight: 600; color: var(--accent); margin-bottom: 8px;">Exercises</div>
+      <div id="routine-exercises-list"></div>
+      <button onclick="addExerciseToRoutineModal()" style="width: 100%; margin-top: 8px;">+ Add Exercise</button>
     </div>
-    <div class="card">
-      <h2><span class="icon">📋</span> Export to CSV</h2>
-      <div class="btn-row">
-        <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
-      </div>
-    </div>
-    <div class="card">
-      <h2><span class="icon">🗑️</span> Danger Zone</h2>
-      <div class="btn-row">
-        <button class="btn btn-danger" onclick="clearAllData()">Delete All Data</button>
-      </div>
+    <div class="modal-buttons">
+      <button onclick="closeRoutineModal()" style="flex: 1; background: var(--surface); color: var(--text); border: 1px solid var(--border);">Cancel</button>
+      <button onclick="saveRoutine()" style="flex: 1;">Save Routine</button>
     </div>
   </div>
 </div>
 
-<!-- Modal container -->
-<div id="modal-container" class="hidden"></div>
-<div class="toast" id="toast"></div>
+<div id="routine-exercise-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Add Exercise to Routine</div>
+    <div class="form-group">
+      <label>Exercise</label>
+      <select id="modal-exercise-select" onchange="updateModalLevelDropdown()">
+        <option value="">-- Select Exercise --</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Level</label>
+      <select id="modal-level-select"></select>
+    </div>
+    <div id="modal-dose-fields"></div>
+    <div class="modal-buttons">
+      <button onclick="closeRoutineExerciseModal()" style="flex: 1; background: var(--surface); color: var(--text); border: 1px solid var(--border);">Cancel</button>
+      <button onclick="addRoutineExercise()" style="flex: 1;">Add to Routine</button>
+    </div>
+  </div>
+</div>
 
 <script>
-// ========= EXERCISES DB =========
-const EXERCISES = {
-  "Mobility": [
-    { name: "Couch Stretch", defaultDose: "2x1min each leg", defaultProgress: "Yoga Block → no handling" },
-    { name: "Outer Hip Circuit", defaultDose: "1x each leg", defaultProgress: "Regular" },
-    { name: "Pigeon Strength", defaultDose: "1x20 each leg", defaultProgress: "Regular" },
-    { name: "Deep Squat", defaultDose: "2x2min", defaultProgress: "Bodyweight → full" },
-    { name: "Loaded Butterfly", defaultDose: "2x1min", defaultProgress: "Bodyweight" },
-    { name: "Active Hang", defaultDose: "1min", defaultProgress: "Bodyweight" }
-  ],
-  "LBA Core": [
-    { name: "Tibialis Raise", defaultDose: "2x25", defaultProgress: "" },
-    { name: "Deep Calf Raise", defaultDose: "2x25", defaultProgress: "" },
-    { name: "Reverse Step Up", defaultDose: "2x25 each leg", defaultProgress: "" },
-    { name: "Full Range Split Squat", defaultDose: "2x10 each leg or 2x1min hold", defaultProgress: "" },
-    { name: "External Rotation", defaultDose: "1x15 each side", defaultProgress: "" },
-    { name: "Dumbbell Pullover", defaultDose: "2x15", defaultProgress: "" },
-    { name: "Trap 3 Raise", defaultDose: "2x10", defaultProgress: "" },
-    { name: "Back Extension", defaultDose: "By levels", defaultProgress: "Level progression" },
-    { name: "Hip Flexor Kick Out", defaultDose: "2x5 (5s hold) each leg", defaultProgress: "" },
-    { name: "Side Bend Progression", defaultDose: "2x12", defaultProgress: "" }
-  ],
-  "Compound": [
-    { name: "Deadlift", defaultDose: "3x8", defaultProgress: "Stick → barbell" },
-    { name: "Squat", defaultDose: "3x8", defaultProgress: "Bodyweight → loaded" }
-  ],
-  "SI Joint Protocol": [
-    { name: "Single Leg Iso Hold", defaultDose: "2x1min each leg", defaultProgress: "High pad → low" },
-    { name: "Deep Squat Hold", defaultDose: "2min hold + 2x20", defaultProgress: "" },
-    { name: "Full Range Split Squat Hold", defaultDose: "2x1min each leg", defaultProgress: "" },
-    { name: "Abductor Machine", defaultDose: "2x30", defaultProgress: "" },
-    { name: "Outer Hip Dropset", defaultDose: "3x30s each leg", defaultProgress: "" },
-    { name: "Big Toe Heel Sit", defaultDose: "30s–1min", defaultProgress: "" },
-    { name: "Calf Raise", defaultDose: "2x25", defaultProgress: "" },
-    { name: "Elephant Walk", defaultDose: "20 rep max", defaultProgress: "" }
-  ]
+const GLOBAL_RULES = {
+  effortRule: "3/10 effort can still create change. Don't chase max burn.",
+  nextDayRule: "Next-day response is the real test. If tomorrow is worse, you overdosed.",
+  regressRule: "Regression is intelligence, not failure. Raise support, shorten range, lower load.",
+  oneVarRule: "Change one variable at a time: time OR reps OR range OR load.",
+  painScale: "Stay in 0-2/10 discomfort for mobility, 3-6/10 effort for strength work."
 };
 
-function findExercise(name) {
-  for (const exs of Object.values(EXERCISES)) {
-    const found = exs.find(e => e.name === name);
-    if (found) return found;
+const EXERCISES_DB = {
+  "pigeon-strength": {
+    name: "Pigeon Strength", category: "Mobility",
+    formVideoUrl: "https://lowbackability.com/2023/12/28/elevated-pigeon-outer-hip/",
+    effortRange: [0, 2], defaultDose: "1x20 each leg",
+    formCues: ["Contract and own the position, don't collapse into it", "Strength-based: you're contracting, not just stretching"],
+    progressionRules: ["Stay 0-2/10 discomfort, no sharp pain", "If pinchy or sharp: raise elevation, shorten dose"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 60 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true },
+      { id: "elevation", type: "select", label: "Pad Elevation", options: ["High (bench/chair)", "Medium", "Low (stacked pads)", "Flat/near-flat"] }
+    ],
+    levels: [
+      { level: 1, name: "High elevation", description: "Front leg supported high (couch/bench/chair height). Torso more upright.", goal: "Smooth holds/pulses with low threat" },
+      { level: 2, name: "Medium elevation", description: "Same setup, lower the support height. Slightly more hip rotation demand.", goal: "Calm and repeatable at reduced height" },
+      { level: 3, name: "Low elevation", description: "Front leg supported low (lower bench/stacked pads). More load into outer hip.", goal: "Outer hip engagement without sharp pain" },
+      { level: 4, name: "Flat / near-flat", description: "Front leg closer to classic pigeon angle (as tolerated). Still strength-based.", goal: "Own the position with control" },
+      { level: 5, name: "More load/time/control", description: "Longer holds, cleaner pulses, less hand support, more upright control.", goal: "Quality + time progression" }
+    ]
+  },
+  "couch-stretch": {
+    name: "Couch Stretch", category: "Mobility",
+    formVideoUrl: "https://lowbackability.com/2023/12/28/couch-stretch/",
+    effortRange: [0, 2], defaultDose: "2x1min each leg",
+    formCues: ["Stay tall, ribs down", "Light glute contraction", "If duck-footed, slight external rotation of back leg is okay"],
+    progressionRules: ["0-2/10 discomfort, no sharp pain", "If low back grabs: back away from wall, get more upright"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 60 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true },
+      { id: "wallDist", type: "select", label: "Wall Distance", options: ["Far from wall", "Medium", "Close", "Closest"] }
+    ],
+    levels: [
+      { level: 1, name: "Very upright + far from wall", description: "Back knee on something soft. Far enough from wall to stay tall without strain.", goal: "Gentle front-of-hip opening without low back taking over" },
+      { level: 2, name: "Closer to wall", description: "Same upright torso, inch knee closer. Small change.", goal: "Same calm sensation, slightly more intensity" },
+      { level: 3, name: "Add glute squeeze + ribs down", description: "Light glute contraction, light core brace, ribs locked down.", goal: "Hip flexor gets the message, low back stays quiet" },
+      { level: 4, name: "Taller posture / less hand support", description: "More vertical, hands help less.", goal: "Breathe and stay relaxed while holding" },
+      { level: 5, name: "Deepest version", description: "Closest knee position you can tolerate with control.", goal: "Time + calmness progression" }
+    ]
+  },
+  "outer-hip-circuit": {
+    name: "Outer Hip Circuit", category: "Mobility",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "1x each leg",
+    formCues: ["Keep pelvis quiet, isolate the hip", "Don't turn it into a torso movement"],
+    progressionRules: ["If hip pinch/click: shorten range, stay just shy of it", "If back does the work: smaller range, slower, more support"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "reps", type: "number", label: "Reps", default: 10 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true }
+    ],
+    levels: [
+      { level: 1, name: "Intro / patterning", description: "Small range, slow, no pinching/clicking. Do the circuit as taught.", goal: "Feel outer hip working without low back twisting" },
+      { level: 2, name: "Full circuit, clean reps", description: "Bigger range + smoother control. Same exercises.", goal: "Left/right start to feel more even" },
+      { level: 3, name: "Longer time under tension", description: "More burn, still controlled. Build the drop set effect.", goal: "Strong pump in outer hip, no irritation" },
+      { level: 4, name: "Less support / stricter position", description: "Less leaning, less torso movement, cleaner hip-only motion.", goal: "Quiet pelvis, better hip isolation" },
+      { level: 5, name: "Add load", description: "Ankle weight / cable / abductor machine option.", goal: "Same quality, more stimulus" }
+    ]
+  },
+  "deep-squat-hold": {
+    name: "Deep Squat Hold", category: "Mobility",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "2x2min",
+    formCues: ["No spinal rounding to chase depth", "Depth only counts if you can own it", "Heels elevated is fine"],
+    progressionRules: ["If sharp knife sensation in hip/SI: raise heels, shorten hold, stay taller"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 120 },
+      { id: "heelElev", type: "select", label: "Heel Elevation", options: ["High wedge/slant board", "Medium wedge", "Low wedge", "Flat"] }
+    ],
+    levels: [
+      { level: 1, name: "High elevation + upright hold", description: "Heels elevated a lot (slant board/plates/wedge). Hold onto something for balance.", goal: "Torso upright, spine quiet, gentle groin opening" },
+      { level: 2, name: "Same elevation, longer time", description: "Don't chase deeper yet—just make the position feel normal.", goal: "Build to 60-120s holds with control" },
+      { level: 3, name: "Lower heel elevation", description: "Reduce wedge height slightly. Keep same rules.", goal: "Same upright posture at harder ankle/hip demand" },
+      { level: 4, name: "Flat heels", description: "Depth with heels flatter and no butt wink (or much less).", goal: "Sit deep and feel stable, not jammed" },
+      { level: 5, name: "Add load as counterbalance", description: "Light weight held in front helps stay upright and open the position.", goal: "Time + calmness + posture progression" }
+    ]
+  },
+  "loaded-butterfly": {
+    name: "Loaded Butterfly", category: "Mobility",
+    formVideoUrl: "https://lowbackability.com/2024/03/03/loaded-butterfly/",
+    effortRange: [3, 6], defaultDose: "2x1min",
+    formCues: ["As little low-back rounding as possible", "Work to ~90% range, not max", "Feel it in the muscle (inner thigh), not joints"],
+    progressionRules: ["If pinch/jam in hip joint instead of groin stretch: more elevation, less range, less load"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 60 },
+      { id: "seatElev", type: "select", label: "Seat Elevation", options: ["High (bench)", "Medium", "Low", "Floor"] },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light pressure", "Light dumbbell", "Medium dumbbell"] }
+    ],
+    levels: [
+      { level: 1, name: "Elevated sit + upright spine", description: "Sit on high elevation (pads/books/bench). Back against wall if needed.", goal: "Minimal low-back rounding, gentle opening" },
+      { level: 2, name: "Add controlled reps", description: "Use hands/forearms for light pressure, slow reps into ~90% range.", goal: "Feel it in inner thigh, not joints" },
+      { level: 3, name: "Lower elevation", description: "Reduce sitting height gradually.", goal: "Keep same upright posture as you lower" },
+      { level: 4, name: "Add load", description: "Small dumbbell/plate on thighs or gentle hand pressure, keep smooth.", goal: "Loaded stretch you can repeat without irritation" },
+      { level: 5, name: "More time under tension", description: "Longer sets, slower reps, slightly more load only if next-day calm.", goal: "Own end range without cranking" }
+    ]
+  },
+  "active-hang": {
+    name: "Active Hang", category: "Mobility",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "1min",
+    formCues: ["Keep shoulders active (scaps engaged)", "Not shrugged into ears", "Never go passive"],
+    progressionRules: ["Stop if sharp pain, numbness/tingling, or strong nerve pull", "If it yanks low back/shoulders: regress"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 3 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 15 },
+      { id: "support", type: "select", label: "Support", options: ["Feet on box (supported)", "Partial weight", "Full hang"] }
+    ],
+    levels: [
+      { level: 1, name: "Supported active hang", description: "Box/chair so feet take some weight. Shoulders active.", goal: "Feel length without sharp pull" },
+      { level: 2, name: "Full bodyweight (short holds)", description: "Feet off ground, scaps engaged. 10-20s holds.", goal: "Calm decompression, no nerve zing" },
+      { level: 3, name: "Longer active holds", description: "Build time gradually (20-40s, then up).", goal: "Same quality, more tolerance" },
+      { level: 4, name: "Multiple sets / total time", description: "Accumulate time in several short sets.", goal: "Consistent exposure without flare-ups" },
+      { level: 5, name: "Stronger scap control", description: "More deliberate active position the whole time.", goal: "You own the hang, it doesn't own you" }
+    ]
+  },
+  "tibialis-raise": {
+    name: "Tibialis Raise", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2023/09/24/tibialis-raise/",
+    effortRange: [3, 6], defaultDose: "2x25",
+    formCues: ["Movement is at the ankle: toes up, toes down", "Keep it smooth, don't bounce", "Expect burn/cramp early on"],
+    progressionRules: ["If ankle/front-of-ankle pinching: shorten range slightly, build back up"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 25 },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light band", "Tib bar (light)", "Tib bar (heavy)"] }
+    ],
+    levels: [
+      { level: 1, name: "Assisted / partial range", description: "Light support with hands on wall/rack. Smaller range if full dorsiflexion cramps.", goal: "Smooth reps, no ankle pinching" },
+      { level: 2, name: "Full range bodyweight reps", description: "Pull toes up as high as you can with control, lower under control.", goal: "Consistent shin burn, ankles feel more open" },
+      { level: 3, name: "More volume (capacity)", description: "Same form, build reps/sets over weeks.", goal: "Less cramping, better endurance, cleaner top position" },
+      { level: 4, name: "Add load", description: "Add resistance (tib bar/weight/band).", goal: "Same range and control, more stimulus" },
+      { level: 5, name: "Loaded + strict tempo / pauses", description: "Pause briefly at the top, slow lowering.", goal: "Strong end-range control without irritation" }
+    ]
+  },
+  "deep-calf-raise": {
+    name: "Deep Calf Raise", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2022/02/10/deep-calf-raise/",
+    effortRange: [3, 6], defaultDose: "2x25",
+    formCues: ["No bouncing in the bottom—tendon likes control", "Move slow"],
+    progressionRules: ["If sharp Achilles pain or next-day angry stiffness: reduce depth, volume, or load"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 25 },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light dumbbell", "Medium dumbbell", "Heavy dumbbell", "Machine"] }
+    ],
+    levels: [
+      { level: 1, name: "Assisted + partial depth", description: "Use hand support, keep range shorter if deep stretch too intense.", goal: "Smooth reps, no sharp Achilles/ankle pain" },
+      { level: 2, name: "Full depth bodyweight reps", description: "Controlled deep stretch at bottom + full rise to top.", goal: "Hit bottom without bouncing or guarding" },
+      { level: 3, name: "Add pauses (control)", description: "Brief pause in deep bottom and/or at top squeeze.", goal: "More tendon/ankle control, less springy reps" },
+      { level: 4, name: "More volume (capacity)", description: "Build reps/sets over weeks.", goal: "Less next-day sensitivity, better endurance" },
+      { level: 5, name: "Add load", description: "Add weight (dumbbell/vest/machine) keeping same depth and control.", goal: "Loaded full range without irritation" }
+    ]
+  },
+  "reverse-step-up": {
+    name: "Reverse Step Up", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2023/12/28/reverse-step-up/",
+    effortRange: [3, 6], defaultDose: "2x25 each leg",
+    formCues: ["Control the lowering, don't free-fall", "Slow eccentric"],
+    progressionRules: ["If knee pain: reduce height, add support, slow down", "If low back helps: too high/too heavy, regress"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 25 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true },
+      { id: "stepHeight", type: "select", label: "Step Height", options: ["Low (book/plate)", "Medium", "High"] },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light dumbbells", "Medium dumbbells", "Weight vest"] }
+    ],
+    levels: [
+      { level: 1, name: "Very low step + support", description: "Low step (book/plate). Hold wall/rail for balance.", goal: "Smooth reps, no sharp knee pain, no back compensation" },
+      { level: 2, name: "Low step, less support", description: "Same height, rely less on hands.", goal: "Controlled lowering, quiet pelvis, no wobble" },
+      { level: 3, name: "Increase step height", description: "Raise step slightly (small jumps only).", goal: "Same knee tracking + slow eccentric" },
+      { level: 4, name: "Add volume (capacity)", description: "More reps/sets at given height before going higher.", goal: "Next-day knees/hips feel normal or better" },
+      { level: 5, name: "Add load", description: "Add dumbbells/weight vest once pattern is rock solid.", goal: "Same control, no drop into bottom" }
+    ]
+  },
+  "full-range-split-squat": {
+    name: "Full Range Split Squat", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2022/02/10/split-squat/",
+    effortRange: [3, 6], defaultDose: "2x10 each leg or 2x1min hold",
+    formCues: ["Back leg stays long, torso stays tall", "3/10 effort can still create change, especially here"],
+    progressionRules: ["If back feels grabby: raise range and use support", "If knee complains: reduce depth, slow down, build tolerance"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 10 },
+      { id: "duration", type: "number", label: "OR Hold (sec)", default: 60 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light dumbbells", "Medium dumbbells", "Heavy dumbbells"] }
+    ],
+    levels: [
+      { level: 1, name: "High range / supported", description: "Use hand support (rack/wall), keep range higher.", goal: "No sharp knee pain, no back pinch" },
+      { level: 2, name: "ISO holds", description: "Hold comfortable depth (even if high).", goal: "Calm exposure; feel you could do more when you stop" },
+      { level: 3, name: "Deeper range", description: "Gradually lower over weeks/months.", goal: "Deeper without losing control or dumping into low back" },
+      { level: 4, name: "Full range reps", description: "Smooth reps through deepest range you can own.", goal: "Consistent bottom position, no bouncing, no twisting" },
+      { level: 5, name: "Add load", description: "Add dumbbells/weight once full range is clean.", goal: "Same depth and posture, more stimulus" }
+    ]
+  },
+  "external-rotation": {
+    name: "External Rotation", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2022/02/10/external-rotation/",
+    effortRange: [3, 6], defaultDose: "1x15 each side",
+    formCues: ["Feel back of shoulder working, not neck/traps", "Clean shoulder position throughout"],
+    progressionRules: ["If sharp pinch or catch: reduce range and load"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "reps", type: "number", label: "Reps", default: 15 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true },
+      { id: "weight", type: "select", label: "Load", options: ["Light band", "Heavy band", "Light dumbbell", "Medium dumbbell"] }
+    ],
+    levels: [
+      { level: 1, name: "Lightest load, short range", description: "Lightest band/cable/dumbbell. Keep range small if full range feels sketchy.", goal: "Smooth reps, no shoulder pinching" },
+      { level: 2, name: "Full controlled range (still light)", description: "Gradually work toward fuller range you can control.", goal: "Feel back of shoulder, not neck/traps taking over" },
+      { level: 3, name: "Add pauses", description: "Brief pause at the open position.", goal: "Stronger end-range ownership" },
+      { level: 4, name: "Add volume (capacity)", description: "More reps/sets at same load before increasing weight.", goal: "Shoulder feels more stable, not irritated" },
+      { level: 5, name: "Increase load", description: "Increase resistance in small jumps, same clean form.", goal: "Stronger cuff without compensation" }
+    ]
+  },
+  "dumbbell-pullover": {
+    name: "Dumbbell Pullover", category: "LBA Core",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "2x15",
+    formCues: ["Ribs down, light brace", "If low back arches hard: too far or too heavy"],
+    progressionRules: ["If sharp shoulder pinch/instability: shorten range and reduce load"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 15 },
+      { id: "weight", type: "select", label: "Load", options: ["Very light", "Light dumbbell", "Medium dumbbell", "Heavy dumbbell"] }
+    ],
+    levels: [
+      { level: 1, name: "Short range + very light", description: "Very light dumbbell. Only go to range where ribs stay locked down.", goal: "Stretch through lats/pecs/upper back, not a low-back arch" },
+      { level: 2, name: "Same load, more range", description: "Gradually reach farther back over time.", goal: "Smoother bottom position, no shoulder pinch" },
+      { level: 3, name: "Add pauses / slower tempo", description: "Brief pause in stretched position if comfortable.", goal: "Own end range without losing rib position" },
+      { level: 4, name: "Add volume (capacity)", description: "More reps/sets at same load and range.", goal: "Movement feels better week to week" },
+      { level: 5, name: "Increase load", description: "Add weight in small jumps, same rib control and range.", goal: "Stronger + more mobile through same clean pattern" }
+    ]
+  },
+  "trap-3-raise": {
+    name: "Trap 3 Raise", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2022/02/10/trap-3-raise/",
+    effortRange: [3, 6], defaultDose: "2x10",
+    formCues: ["Don't turn it into a shrug/neck exercise", "Arms aren't zero pounds—go lighter than you think"],
+    progressionRules: ["If traps/neck dominate: reduce load and range", "If low back spasming: regress to Level 1, shorten set"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 10 },
+      { id: "weight", type: "select", label: "Load", options: ["No weight (position only)", "0.5-1 lb", "2-3 lb", "5 lb+"] }
+    ],
+    levels: [
+      { level: 1, name: "Hold the position", description: "Get into setup and hold spinal extension with chest supported. No arm raise yet if it irritates.", goal: "Mid/upper back working without low-back spasm or shrugging" },
+      { level: 2, name: "Small range raises (very light)", description: "Start raising arms through small range with control.", goal: "Shoulder blades move smoothly; neck stays relaxed" },
+      { level: 3, name: "Full range raises (still light)", description: "Work toward full range as shown in LBA demo.", goal: "Consistent reps without losing spine position" },
+      { level: 4, name: "Add volume (capacity)", description: "More reps/sets at same load before increasing weight.", goal: "Good soreness, not cranky spine/neck" },
+      { level: 5, name: "Add load in tiny increments", description: "Increase weight very slowly (even 0.5-1 lb jumps).", goal: "Same clean form, more stimulus" }
+    ]
+  },
+  "back-extension": {
+    name: "Back Extension", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2024/02/11/back-extension/",
+    effortRange: [3, 6], defaultDose: "By levels",
+    formCues: ["Light glute contraction, squeeze shoulder blades, ribs down", "Raising pad higher helps find the right low-back contraction", "Everyone starts at Level 1 regardless of past strength"],
+    progressionRules: ["Strength gains ≠ healing. Tissue tolerance develops slower than muscle strength.", "Regression is always allowed: raise pad, shorten range, add hand support, lower time"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "duration", type: "number", label: "Hold (sec, 0 if reps)", default: 120 },
+      { id: "reps", type: "number", label: "Reps (0 if iso)", default: 0 },
+      { id: "perSide", type: "checkbox", label: "Single leg (each side)", default: false },
+      { id: "padHeight", type: "select", label: "Pad Height", options: ["High", "Medium", "Standard"] },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light dumbbell", "Medium dumbbell"] }
+    ],
+    levels: [
+      { level: 1, name: "Double Leg Isometric Hold", description: "Find a height you can hold with clean form. Start 20-30s if needed. Build to 2 minutes.", goal: "3 consecutive weeks at 2 minutes with no increase in pain" },
+      { level: 2, name: "Single Leg Isometric Holds", description: "1 minute per side. Teaches each side to tolerate load independently.", goal: "3 weeks with stable next-day symptoms" },
+      { level: 3, name: "Assisted Hinge Reps (No Flexion)", description: "Half-range reps with locked spine. Use hands lightly for assistance.", goal: "10-15 smooth reps without irritation" },
+      { level: 4, name: "Full Range Bodyweight Reps", description: "Introduce spinal flexion under control. Start with 3-5 reps.", goal: "Build toward 30 reps" },
+      { level: 5, name: "Single Leg Full Range Reps", description: "Advanced spinal control and tissue tolerance.", goal: "Up to 20 reps per side" },
+      { level: 6, name: "Loaded Reps", description: "Only after Level 4-5 fully stable. Begin with very light dumbbells.", goal: "Loaded with maintained form" }
+    ]
+  },
+  "hip-flexor-kick-out": {
+    name: "Hip Flexor Kick Out", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2023/12/28/single-leg-hip-flexor-raise/",
+    effortRange: [3, 6], defaultDose: "2x5 (5s hold) each leg",
+    formCues: ["Feel front of hip working, not low back", "If you cramp: reduce range, reduce reps"],
+    progressionRules: ["Hip flexors flare up when you go all out too soon", "Cramping usually fades as capacity builds"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 5 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 5 },
+      { id: "perSide", type: "checkbox", label: "Each side", default: true }
+    ],
+    levels: [
+      { level: 1, name: "Short range, slow reps", description: "Keep range small, motion smooth.", goal: "Feel front of hip without cramping or back compensation" },
+      { level: 2, name: "Full range kick outs", description: "Gradually extend farther as tolerance improves.", goal: "Controlled end range, no snapping/jerking" },
+      { level: 3, name: "Add pauses", description: "Brief pause in kicked out position.", goal: "Own end range without low back taking over" },
+      { level: 4, name: "Add volume (capacity)", description: "Build reps/sets over weeks.", goal: "Less next-day hip flexor sensitivity" },
+      { level: 5, name: "More direct psoas bias", description: "Single-leg cable hip flexor raise to bias deeper hip flexor (if in your plan).", goal: "Targeted deep hip flexor strengthening" }
+    ]
+  },
+  "side-bend-progression": {
+    name: "Side Bend Progression", category: "LBA Core",
+    formVideoUrl: "https://lowbackability.com/2023/12/28/ql-extension/",
+    effortRange: [3, 6], defaultDose: "2x12",
+    formCues: ["Chase control, not the stretch", "If you feel nothing: that's obliques first, depth comes later"],
+    progressionRules: ["Lateral flexion is often the last step—it tugs closest to disc tissues"],
+    prerequisites: [
+      { exercise: "back-extension", minLevel: 4, note: "Forward spine tolerance first (BX reps)" },
+      { exercise: "pigeon-strength", minLevel: 2, note: "Outer hip balance" },
+      { exercise: "full-range-split-squat", minLevel: 2, note: "Front of hip work" },
+      { exercise: "couch-stretch", minLevel: 2, note: "Front of hip work" }
+    ],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 12 },
+      { id: "weight", type: "select", label: "Load", options: ["Bodyweight", "Light dumbbell", "Medium dumbbell"] }
+    ],
+    levels: [
+      { level: 1, name: "Standing side bend (gentle)", description: "Small range, slow reps. You'll mostly feel obliques first.", goal: "Introduce lateral motion without any yank sensation" },
+      { level: 2, name: "Standing side bend (deeper range)", description: "Over weeks, gradually slide lower/reach deeper.", goal: "Smoother range, less guarding, no next-day spike" },
+      { level: 3, name: "Add load (light)", description: "Only once bodyweight is stable for weeks.", goal: "Same control, bit more stimulus" },
+      { level: 4, name: "Back extension version", description: "Deeper, more demanding version. Comes after strong forward BX work.", goal: "Deeper QL access with tolerant spine" }
+    ]
+  },
+  "abductor-machine": {
+    name: "Abductor Machine", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "2x30",
+    formCues: ["Aim for clean outer-glute contraction", "If TFL/front hip grabs: reduce range/load, slow down"],
+    progressionRules: ["If glutes are tight/sensitive, prioritize short-range pump work first"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 30 },
+      { id: "machineWeight", type: "number", label: "Machine Weight (lbs)", default: 0 }
+    ],
+    levels: [
+      { level: 1, name: "Short range, light load", description: "Easy load, smaller range if end-range feels pinchy.", goal: "Feel outer glute without hip joint irritation" },
+      { level: 2, name: "Full controlled range (still light)", description: "Gradually open wider as tolerance improves.", goal: "Smooth reps, no bouncing, no shifting" },
+      { level: 3, name: "Add pauses", description: "Brief pause in open position.", goal: "Stronger end-range control and better pump" },
+      { level: 4, name: "Add volume (capacity)", description: "Build reps/sets (standard: 2x30).", goal: "Repeatable week to week with stable next-day" },
+      { level: 5, name: "Increase load", description: "Add weight in small jumps, same range and control.", goal: "Same clean contraction, no compensation" }
+    ]
+  },
+  "big-toe-heel-sit": {
+    name: "Big Toe Heel Sit", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "30s-1min",
+    formCues: ["Feel stretch/pressure, not sharp joint pain", "It's okay to use hands to offload"],
+    progressionRules: ["Next-day toe/foot sensitivity must be stable before progressing"],
+    prerequisites: [],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "duration", type: "number", label: "Hold (sec)", default: 30 }
+    ],
+    levels: [
+      { level: 1, name: "Partial heel sit", description: "Don't sit all the way back. Use hands to offload.", goal: "Mild stretch/pressure in big toes, no sharp joint pain" },
+      { level: 2, name: "Full heel sit (bodyweight)", description: "Sit back further as tolerance improves.", goal: "Calm breathing, no foot cramping" },
+      { level: 3, name: "Increase time (capacity)", description: "Build total time in position over weeks.", goal: "Toes feel less sensitive day to day" },
+      { level: 4, name: "Add gentle pulses", description: "Small controlled pulses in/out of deepest position.", goal: "More usable range, not just passive stretch" },
+      { level: 5, name: "Add load", description: "Bit of load/pressure only after position is very tolerant.", goal: "Same calm sensation, more stimulus" }
+    ]
+  },
+  "elephant-walk": {
+    name: "Elephant Walk", category: "SI Joint Protocol",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "20 rep max",
+    formCues: ["More of a test than a builder early on", "Was removed from main program flow—dose very conservatively"],
+    progressionRules: ["If okay during but achy next day: scale back or remove it", "If active sciatica or early-stage: skip for 1-2 months, build BX first"],
+    prerequisites: [
+      { exercise: "back-extension", minLevel: 4, note: "Solid with BX reps/strong isometrics without next-day increase" }
+    ],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 1 },
+      { id: "reps", type: "number", label: "Reps", default: 20 }
+    ],
+    levels: [
+      { level: 1, name: "Two-leg lockout only", description: "Keep both legs more locked together. Small range, slow, controlled.", goal: "Mild hamstring/back/SI sensation okay; no sharp pull" },
+      { level: 2, name: "Two-leg deeper range", description: "Gradually reach lower over weeks.", goal: "Same calm response, bit more range" },
+      { level: 3, name: "Two-leg to near-floor tolerance", description: "Build toward 2x20 reps with control.", goal: "Tolerate connective tissue pull when legs straighten" },
+      { level: 4, name: "Introduce single-leg lockout", description: "Start alternating so one leg locks out more. More force on one side.", goal: "No flare-up; keep conservative" },
+      { level: 5, name: "Deeper single-leg lockout", description: "Only after Level 4 stable. Smooth, controlled.", goal: "No pop-out-the-hip-and-yank strategy" }
+    ]
+  },
+  "jefferson-curls": {
+    name: "Jefferson Curls", category: "Compound",
+    formVideoUrl: "",
+    effortRange: [3, 6], defaultDose: "2x5",
+    formCues: ["Segment-by-segment roll down and roll up", "Not a max-out lift", "6-month journey minimum from sensitive back to Jefferson-ready"],
+    progressionRules: ["Good during + worse tomorrow = not ready or overdosed"],
+    prerequisites: [
+      { exercise: "back-extension", minLevel: 4, note: "BX iso holds ~2min comfortable" },
+      { exercise: "back-extension", minLevel: 4, note: "BX reps built up (target: 30 bodyweight reps slow)" },
+      { exercise: "elephant-walk", minLevel: 2, note: "Can tolerate flexion patterns without flare-ups" }
+    ],
+    doseFields: [
+      { id: "sets", type: "number", label: "Sets", default: 2 },
+      { id: "reps", type: "number", label: "Reps", default: 5 },
+      { id: "weight", type: "select", label: "Load", options: ["No weight (patterning)", "Very light (2-5 lb)", "Light (5-10 lb)", "Medium (10-20 lb)", "Heavy (20+ lb)"] }
+    ],
+    levels: [
+      { level: 1, name: "Patterning (no/minimal load)", description: "Learn segment-by-segment roll down and roll up. Small range if needed.", goal: "No sharp pain, no nerve symptoms, no next-day spike" },
+      { level: 2, name: "Full range, very light", description: "Gradually increase depth over weeks/months.", goal: "Smooth control at bottom and smooth extension out" },
+      { level: 3, name: "Add pauses", description: "Brief pause at bottom only if it stays calm.", goal: "More control, not more stretch" },
+      { level: 4, name: "Add volume (capacity)", description: "Add reps/sets before adding weight.", goal: "Repeatable, stable next-day response" },
+      { level: 5, name: "Add load (slow, conservative)", description: "Increase weight in tiny jumps.", goal: "Posterior chain fatigues first, not back buckling" }
+    ]
   }
-  return null;
-}
+};
 
-// ========= IndexedDB =========
-const DB_NAME = 'BackRecoveryTracker';
 const DB_VERSION = 2;
 let db;
-
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = e => {
-      const d = e.target.result;
-      if (!d.objectStoreNames.contains('sessions')) d.createObjectStore('sessions', { keyPath: 'id' });
-      if (!d.objectStoreNames.contains('nextdays')) d.createObjectStore('nextdays', { keyPath: 'id' });
-      if (!d.objectStoreNames.contains('routines')) d.createObjectStore('routines', { keyPath: 'id' });
-      // Migrate old 'entries' store if exists
-      if (d.objectStoreNames.contains('entries')) d.deleteObjectStore('entries');
-    };
-    req.onsuccess = e => { db = e.target.result; resolve(db); };
-    req.onerror = e => reject(e);
-  });
-}
-
-function dbOp(store, mode, fn) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, mode);
-    const result = fn(tx.objectStore(store));
-    if (result && result.onsuccess !== undefined) {
-      result.onsuccess = () => resolve(result.result);
-    }
-    tx.oncomplete = () => resolve(result?.result);
-    tx.onerror = e => reject(e);
-  });
-}
-
-const dbPut = (store, obj) => dbOp(store, 'readwrite', s => s.put(obj));
-const dbGetAll = (store) => dbOp(store, 'readonly', s => s.getAll());
-const dbDelete = (store, id) => dbOp(store, 'readwrite', s => s.delete(id));
-const dbClear = (store) => dbOp(store, 'readwrite', s => s.clear());
-
-// ========= UI HELPERS =========
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
-}
-
-function toggleCheck(el) { el.classList.toggle('checked'); }
-
-function selectPill(el) {
-  el.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-function getSelectedPill(id) {
-  const s = document.querySelector(`#${id} .pill.selected`);
-  return s ? s.textContent : '';
-}
-
-function getCheckedItems(id) {
-  return [...document.querySelectorAll(`#${id} .check-pill.checked`)].map(e => e.textContent);
-}
-
-function formatDate(d) {
-  return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function showModal(html) {
-  const c = document.getElementById('modal-container');
-  c.innerHTML = `<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">${html}</div></div>`;
-  c.classList.remove('hidden');
-}
-
-function closeModal() { document.getElementById('modal-container').classList.add('hidden'); }
-
-// ========= TABS =========
-const ALL_TABS = ['log','history','routines','stats','settings'];
-
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    const target = tab.dataset.tab;
-    ALL_TABS.forEach(t => document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== target));
-    if (target === 'history') renderHistory();
-    if (target === 'routines') renderRoutines();
-    if (target === 'stats') renderStats();
-  });
-});
-
-function switchSubTab(which) {
-  document.querySelectorAll('.sub-tab').forEach(t => t.classList.toggle('active', t.dataset.subtab === which));
-  document.getElementById('subtab-session').classList.toggle('hidden', which !== 'session');
-  document.getElementById('subtab-nextday').classList.toggle('hidden', which !== 'nextday');
-  if (which === 'nextday') populateSessionPicker();
-}
-
-// ========= EXERCISE BLOCKS =========
-let exCount = 0;
-
-function buildExerciseOptionsHTML() {
-  let h = '<option value="">Select exercise...</option>';
-  for (const [cat, exs] of Object.entries(EXERCISES)) {
-    h += `<optgroup label="${cat}">`;
-    exs.forEach(ex => { h += `<option value="${ex.name}" data-dose="${ex.defaultDose}" data-progress="${ex.defaultProgress}">${ex.name}</option>`; });
-    h += '</optgroup>';
-  }
-  return h;
-}
-
-function addExercise(preset) {
-  exCount++;
-  const id = exCount;
-  const div = document.createElement('div');
-  div.className = 'exercise-block';
-  div.dataset.exId = id;
-
-  div.innerHTML = `
-    <button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
-    <div class="field">
-      <label>Exercise</label>
-      <select onchange="onExSelect(this,${id})">${buildExerciseOptionsHTML()}</select>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Level / Variation</label><input type="text" id="exl-${id}" placeholder="e.g. Level 2"></div>
-      <div class="field"><label>Dose (sets × reps / time)</label><input type="text" id="exd-${id}" placeholder="e.g. 2x25"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Range</label>
-        <div class="pill-group" id="exr-${id}">
-          <div class="pill" onclick="selectPill(this)">Short</div>
-          <div class="pill" onclick="selectPill(this)">Medium</div>
-          <div class="pill" onclick="selectPill(this)">Full</div>
-        </div>
-      </div>
-      <div class="field"><label>Effort (0–10)</label>
-        <div class="slider-wrap">
-          <input type="range" min="0" max="10" value="3" id="exe-${id}" oninput="this.nextElementSibling.textContent=this.value">
-          <span class="slider-val">3</span>
-        </div>
-      </div>
-    </div>
-    <div class="field"><label>Notes</label><input type="text" id="exn-${id}" placeholder="Where felt it, compensation..."></div>
-  `;
-
-  document.getElementById('exercise-list').appendChild(div);
-
-  if (preset) {
-    const sel = div.querySelector('select');
-    sel.value = preset.name;
-    if (preset.dose) document.getElementById(`exd-${id}`).value = preset.dose;
-    if (preset.level) document.getElementById(`exl-${id}`).value = preset.level;
-  }
-}
-
-function onExSelect(sel, id) {
-  const opt = sel.selectedOptions[0];
-  if (opt.dataset.dose) document.getElementById(`exd-${id}`).value = opt.dataset.dose;
-  if (opt.dataset.progress) document.getElementById(`exl-${id}`).value = opt.dataset.progress;
-}
-
-function collectExercises() {
-  const exercises = [];
-  document.querySelectorAll('.exercise-block').forEach(block => {
-    const id = block.dataset.exId;
-    const sel = block.querySelector('select');
-    if (!sel.value) return;
-    exercises.push({
-      name: sel.value,
-      level: document.getElementById(`exl-${id}`).value,
-      dose: document.getElementById(`exd-${id}`).value,
-      range: getSelectedPill(`exr-${id}`),
-      effort: +document.getElementById(`exe-${id}`).value,
-      notes: document.getElementById(`exn-${id}`).value
-    });
-  });
-  return exercises;
-}
-
-// ========= ROUTINES =========
-async function renderRoutines() {
-  const routines = await dbGetAll('routines');
-  const list = document.getElementById('routines-list');
-  if (!routines.length) {
-    list.innerHTML = '<p class="text-muted" style="padding:12px 0">No routines yet. Create one to speed up logging.</p>';
-    return;
-  }
-  list.innerHTML = routines.map(r => `
-    <div class="routine-item">
-      <div>
-        <div class="routine-name">${r.name}</div>
-        <div class="routine-count">${r.exercises.length} exercises: ${r.exercises.map(e => e.name).join(', ')}</div>
-      </div>
-      <div class="routine-actions">
-        <button class="btn btn-outline btn-sm" onclick="editRoutine('${r.id}')">Edit</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteRoutine('${r.id}')">Del</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-async function refreshRoutinePicker() {
-  const routines = await dbGetAll('routines');
-  const sel = document.getElementById('routine-picker');
-  sel.innerHTML = '<option value="">Pick a routine...</option>' +
-    routines.map(r => `<option value="${r.id}">${r.name} (${r.exercises.length})</option>`).join('');
-}
-
-async function loadRoutine() {
-  const sel = document.getElementById('routine-picker');
-  if (!sel.value) return;
-  const routines = await dbGetAll('routines');
-  const r = routines.find(x => x.id === sel.value);
-  if (!r) return;
-  document.getElementById('exercise-list').innerHTML = '';
-  exCount = 0;
-  r.exercises.forEach(ex => addExercise(ex));
-  toast(`Loaded "${r.name}"`);
-}
-
-function openCreateRoutine(existing) {
-  let checkboxes = '';
-  for (const [cat, exs] of Object.entries(EXERCISES)) {
-    checkboxes += `<div style="margin-bottom:8px"><strong style="font-size:0.82rem;color:var(--text2)">${cat}</strong></div>`;
-    exs.forEach(ex => {
-      const checked = existing?.exercises?.some(e => e.name === ex.name) ? 'checked' : '';
-      checkboxes += `<label style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:0.88rem;cursor:pointer">
-        <input type="checkbox" value="${ex.name}" ${checked}> ${ex.name}
-      </label>`;
-    });
-  }
-
-  showModal(`
-    <h3>${existing ? 'Edit' : 'New'} Routine</h3>
-    <div class="field">
-      <label>Routine Name</label>
-      <input type="text" id="modal-routine-name" value="${existing?.name || ''}" placeholder="e.g. Morning Mobility">
-    </div>
-    <div class="field">
-      <label>Select exercises</label>
-      <div id="modal-routine-exercises" style="max-height:300px;overflow-y:auto;padding:4px">${checkboxes}</div>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="saveRoutine('${existing?.id || ''}')" style="flex:1">Save</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-    </div>
-  `);
-}
-
-async function saveRoutine(existingId) {
-  const name = document.getElementById('modal-routine-name').value.trim();
-  if (!name) { toast('Give it a name'); return; }
-  const checked = [...document.querySelectorAll('#modal-routine-exercises input:checked')].map(cb => {
-    const ex = findExercise(cb.value);
-    return { name: cb.value, dose: ex?.defaultDose || '', level: ex?.defaultProgress || '' };
-  });
-  if (!checked.length) { toast('Pick at least one exercise'); return; }
-  const routine = { id: existingId || 'r_' + Date.now(), name, exercises: checked };
-  await dbPut('routines', routine);
-  closeModal();
-  toast('Routine saved!');
-  renderRoutines();
-  refreshRoutinePicker();
-  syncPush();
-}
-
-async function editRoutine(id) {
-  const routines = await dbGetAll('routines');
-  openCreateRoutine(routines.find(r => r.id === id));
-}
-
-async function deleteRoutine(id) {
-  if (!confirm('Delete this routine?')) return;
-  await dbDelete('routines', id);
-  toast('Deleted');
-  renderRoutines();
-  refreshRoutinePicker();
-}
-
-// ========= SAVE SESSION =========
-async function saveSession() {
-  const date = document.getElementById('s-date').value;
-  if (!date) { toast('Set a date first'); return; }
-
-  const entry = {
-    id: 'ses_' + date + '_' + Date.now(),
-    type: 'session',
-    date,
-    baseline: {
-      pain: +document.getElementById('s-pain').value,
-      stiffness: +document.getElementById('s-stiffness').value,
-      locations: getCheckedItems('s-locations'),
-      nerveSymptoms: getSelectedPill('s-nerve'),
-      mood: +document.getElementById('s-mood').value,
-      steps: document.getElementById('s-steps').value,
-      sitting: document.getElementById('s-sitting').value
-    },
-    exercises: collectExercises(),
-    during: {
-      symptoms: getSelectedPill('s-during'),
-      sharpPain: getSelectedPill('s-sharp'),
-      afterPain: +document.getElementById('s-after-pain').value,
-      feltBest: document.getElementById('s-felt-best').value
-    }
-  };
-
-  await dbPut('sessions', entry);
-  toast('Session saved!');
-  resetSessionForm();
-  syncPush();
-}
-
-function resetSessionForm() {
-  document.getElementById('s-date').value = new Date().toISOString().split('T')[0];
-  ['s-pain','s-stiffness','s-after-pain'].forEach(id => {
-    const el = document.getElementById(id); el.value = 0; el.nextElementSibling.textContent = '0';
-  });
-  const m = document.getElementById('s-mood'); m.value = 3; m.nextElementSibling.textContent = '3';
-  ['s-steps','s-sitting','s-felt-best'].forEach(id => document.getElementById(id).value = '');
-  document.querySelectorAll('#subtab-session .pill.selected').forEach(p => p.classList.remove('selected'));
-  document.querySelectorAll('#subtab-session .check-pill.checked').forEach(p => p.classList.remove('checked'));
-  document.getElementById('exercise-list').innerHTML = '';
-  exCount = 0;
-}
-
-// ========= NEXT-DAY CHECK =========
-async function populateSessionPicker() {
-  const sessions = await dbGetAll('sessions');
-  const sel = document.getElementById('nd-link-session');
-  sel.innerHTML = '<option value="">Select a session...</option>' +
-    sessions.sort((a, b) => b.date.localeCompare(a.date)).slice(0, 30).map(s => {
-      const exNames = s.exercises.map(x => x.name).slice(0, 3).join(', ');
-      return `<option value="${s.id}">${formatDate(s.date)} — Pain ${s.baseline.pain}/10 — ${exNames || 'no exercises'}</option>`;
-    }).join('');
-
-  sel.onchange = async () => {
-    const info = document.getElementById('nd-linked-info');
-    if (!sel.value) { info.classList.add('hidden'); return; }
-    const sessions = await dbGetAll('sessions');
-    const s = sessions.find(x => x.id === sel.value);
-    if (!s) return;
-    info.classList.remove('hidden');
-    info.innerHTML = `<div class="linked-session">
-      <strong>Linked to:</strong> ${formatDate(s.date)}<br>
-      Baseline pain: ${s.baseline.pain}/10 · Stiffness: ${s.baseline.stiffness}/10<br>
-      Exercises: ${s.exercises.map(x => x.name).join(', ') || 'none'}<br>
-      After-session pain: ${s.during.afterPain}/10
-    </div>`;
-  };
-}
-
-async function saveNextDay() {
-  const date = document.getElementById('nd-date').value;
-  if (!date) { toast('Set a date'); return; }
-
-  const entry = {
-    id: 'nd_' + date + '_' + Date.now(),
-    type: 'nextday',
-    date,
-    linkedSessionId: document.getElementById('nd-link-session').value || null,
-    vsBaseline: getSelectedPill('nd-vs'),
-    flare: getSelectedPill('nd-flare'),
-    causes: getCheckedItems('nd-causes'),
-    causeOther: document.getElementById('nd-cause-other').value,
-    decision: {
-      plan: getSelectedPill('nd-plan'),
-      progressVar: getSelectedPill('nd-progress-var'),
-      notes: document.getElementById('nd-notes').value
-    }
-  };
-
-  await dbPut('nextdays', entry);
-  toast('Next-day check saved!');
-  resetNextDayForm();
-  syncPush();
-}
-
-function resetNextDayForm() {
-  document.getElementById('nd-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('nd-link-session').value = '';
-  document.getElementById('nd-linked-info').classList.add('hidden');
-  document.getElementById('nd-cause-other').value = '';
-  document.getElementById('nd-notes').value = '';
-  document.querySelectorAll('#subtab-nextday .pill.selected').forEach(p => p.classList.remove('selected'));
-  document.querySelectorAll('#subtab-nextday .check-pill.checked').forEach(p => p.classList.remove('checked'));
-}
-
-// ========= HISTORY =========
-async function renderHistory() {
-  const sessions = await dbGetAll('sessions');
-  const nextdays = await dbGetAll('nextdays');
-  const list = document.getElementById('history-list');
-  const detail = document.getElementById('history-detail');
-  detail.classList.add('hidden');
-  list.classList.remove('hidden');
-
-  const all = [
-    ...sessions.map(s => ({ ...s, _sort: s.date + '_0' })),
-    ...nextdays.map(n => ({ ...n, _sort: n.date + '_1' }))
-  ].sort((a, b) => b._sort.localeCompare(a._sort));
-
-  if (!all.length) {
-    list.innerHTML = '<p class="text-center text-muted" style="padding:40px">No entries yet. Log your first session!</p>';
-    return;
-  }
-
-  // Build a lookup for next-day linked to sessions
-  const ndBySession = {};
-  nextdays.forEach(nd => { if (nd.linkedSessionId) ndBySession[nd.linkedSessionId] = nd; });
-
-  list.innerHTML = all.map(e => {
-    if (e.type === 'session') {
-      const exNames = e.exercises.map(x => x.name).join(', ') || 'No exercises';
-      const nd = ndBySession[e.id];
-      const ndBadge = nd ? `<span class="badge badge-${nd.vsBaseline === 'Better' ? 'better' : nd.vsBaseline === 'Worse' ? 'worse' : 'same'}">Next day: ${nd.vsBaseline}</span>` : '<span class="badge badge-linked" style="opacity:0.5">No next-day yet</span>';
-      return `
-        <div class="history-entry" onclick="showSessionDetail('${e.id}')">
-          <div class="history-date">${formatDate(e.date)} <span class="history-type type-session">Session</span></div>
-          <div class="history-summary">${exNames}</div>
-          <div class="history-badges">
-            <span class="badge badge-pain">Pain: ${e.baseline.pain}/10</span>
-            <span class="badge badge-exercises">${e.exercises.length} exercises</span>
-            ${ndBadge}
-          </div>
-        </div>`;
-    } else {
-      const linked = sessions.find(s => s.id === e.linkedSessionId);
-      return `
-        <div class="history-entry" onclick="showNextDayDetail('${e.id}')">
-          <div class="history-date">${formatDate(e.date)} <span class="history-type type-nextday">Next-Day</span></div>
-          <div class="history-summary">${linked ? `Evaluating session from ${formatDate(linked.date)}` : 'Unlinked check'}</div>
-          <div class="history-badges">
-            <span class="badge badge-${e.vsBaseline === 'Better' ? 'better' : e.vsBaseline === 'Worse' ? 'worse' : 'same'}">${e.vsBaseline || '—'}</span>
-            ${e.decision.plan ? `<span class="badge badge-linked">Plan: ${e.decision.plan}</span>` : ''}
-          </div>
-        </div>`;
-    }
-  }).join('');
-}
-
-async function showSessionDetail(id) {
-  const sessions = await dbGetAll('sessions');
-  const e = sessions.find(x => x.id === id);
-  if (!e) return;
-
-  const nextdays = await dbGetAll('nextdays');
-  const nd = nextdays.find(n => n.linkedSessionId === id);
-
-  document.getElementById('history-list').classList.add('hidden');
-  const detail = document.getElementById('history-detail');
-  detail.classList.remove('hidden');
-
-  let exHTML = e.exercises.map(x => `
-    <div style="padding:8px 0;border-bottom:1px solid var(--surface)">
-      <strong>${x.name}</strong> — ${x.dose} ${x.range ? `(${x.range})` : ''}<br>
-      <span style="color:var(--text2);font-size:0.82rem">${x.level ? `Level: ${x.level} · ` : ''}Effort: ${x.effort}/10${x.notes ? ` · ${x.notes}` : ''}</span>
-    </div>
-  `).join('') || '<p class="text-muted">None logged</p>';
-
-  let ndHTML = '';
-  if (nd) {
-    ndHTML = `<div class="card">
-      <div class="detail-section">
-        <h3>Next-Day Check (${formatDate(nd.date)})</h3>
-        <div class="detail-row"><span class="detail-label">vs Baseline</span><span>${nd.vsBaseline || '—'}</span></div>
-        <div class="detail-row"><span class="detail-label">Flare?</span><span>${nd.flare || '—'}</span></div>
-        <div class="detail-row"><span class="detail-label">Likely cause</span><span>${[...nd.causes, nd.causeOther].filter(Boolean).join(', ') || '—'}</span></div>
-        <div class="detail-row"><span class="detail-label">Plan</span><span>${nd.decision.plan || '—'}</span></div>
-        <div class="detail-row"><span class="detail-label">Progress variable</span><span>${nd.decision.progressVar || '—'}</span></div>
-        <div class="detail-row"><span class="detail-label">Notes</span><span>${nd.decision.notes || '—'}</span></div>
-      </div>
-    </div>`;
-  } else {
-    ndHTML = `<div class="card" style="border-color:var(--cyan);background:rgba(42,161,152,0.04)">
-      <p style="text-align:center;color:var(--cyan);font-size:0.88rem">No next-day check linked yet.
-        <a href="#" onclick="event.preventDefault();switchToNextDayFor('${e.id}')" style="color:var(--accent);font-weight:600">Add one now</a>
-      </p>
-    </div>`;
-  }
-
-  detail.innerHTML = `
-    <button class="btn btn-outline btn-sm" onclick="backToHistory()">← Back</button>
-    <h2 style="margin:16px 0 12px">${formatDate(e.date)} <span class="history-type type-session">Session</span></h2>
-    <div class="card"><div class="detail-section"><h3>Baseline</h3>
-      <div class="detail-row"><span class="detail-label">Pain</span><span>${e.baseline.pain}/10</span></div>
-      <div class="detail-row"><span class="detail-label">Stiffness</span><span>${e.baseline.stiffness}/10</span></div>
-      <div class="detail-row"><span class="detail-label">Locations</span><span>${e.baseline.locations.join(', ') || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Nerve symptoms</span><span>${e.baseline.nerveSymptoms || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Mood/Stress/Sleep</span><span>${e.baseline.mood}/5</span></div>
-      <div class="detail-row"><span class="detail-label">Steps / Sitting</span><span>${e.baseline.steps || '—'} / ${e.baseline.sitting || '—'}h</span></div>
-    </div></div>
-    <div class="card"><div class="detail-section"><h3>Exercises</h3>${exHTML}</div></div>
-    <div class="card"><div class="detail-section"><h3>During & After</h3>
-      <div class="detail-row"><span class="detail-label">Symptoms during</span><span>${e.during.symptoms || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Sharp pain?</span><span>${e.during.sharpPain || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">After-session pain</span><span>${e.during.afterPain}/10</span></div>
-      <div class="detail-row"><span class="detail-label">What felt best</span><span>${e.during.feltBest || '—'}</span></div>
-    </div></div>
-    ${ndHTML}
-    <div class="btn-row"><button class="btn btn-danger btn-sm" onclick="delSession('${e.id}')">Delete session</button></div>
-  `;
-}
-
-async function showNextDayDetail(id) {
-  const nextdays = await dbGetAll('nextdays');
-  const e = nextdays.find(x => x.id === id);
-  if (!e) return;
-
-  const sessions = await dbGetAll('sessions');
-  const linked = sessions.find(s => s.id === e.linkedSessionId);
-
-  document.getElementById('history-list').classList.add('hidden');
-  const detail = document.getElementById('history-detail');
-  detail.classList.remove('hidden');
-
-  let linkedHTML = linked
-    ? `<div class="linked-session"><strong>Linked session:</strong> ${formatDate(linked.date)} — Pain ${linked.baseline.pain}/10 — ${linked.exercises.map(x=>x.name).join(', ')||'no exercises'}</div>`
-    : '<p class="text-muted">No linked session</p>';
-
-  detail.innerHTML = `
-    <button class="btn btn-outline btn-sm" onclick="backToHistory()">← Back</button>
-    <h2 style="margin:16px 0 12px">${formatDate(e.date)} <span class="history-type type-nextday">Next-Day</span></h2>
-    ${linkedHTML}
-    <div class="card"><div class="detail-section"><h3>Assessment</h3>
-      <div class="detail-row"><span class="detail-label">vs Baseline</span><span>${e.vsBaseline || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Flare?</span><span>${e.flare || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Likely cause</span><span>${[...e.causes, e.causeOther].filter(Boolean).join(', ') || '—'}</span></div>
-    </div></div>
-    <div class="card"><div class="detail-section"><h3>Decision</h3>
-      <div class="detail-row"><span class="detail-label">Plan</span><span>${e.decision.plan || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Progress variable</span><span>${e.decision.progressVar || '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Notes</span><span>${e.decision.notes || '—'}</span></div>
-    </div></div>
-    <div class="btn-row"><button class="btn btn-danger btn-sm" onclick="delNextDay('${e.id}')">Delete check</button></div>
-  `;
-}
-
-function backToHistory() {
-  document.getElementById('history-list').classList.remove('hidden');
-  document.getElementById('history-detail').classList.add('hidden');
-}
-
-function switchToNextDayFor(sessionId) {
-  // Switch to next-day tab and pre-select the session
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('.tab[data-tab="log"]').classList.add('active');
-  ALL_TABS.forEach(t => document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== 'log'));
-  switchSubTab('nextday');
-  setTimeout(async () => {
-    await populateSessionPicker();
-    document.getElementById('nd-link-session').value = sessionId;
-    document.getElementById('nd-link-session').dispatchEvent(new Event('change'));
-  }, 100);
-}
-
-async function delSession(id) {
-  if (!confirm('Delete this session?')) return;
-  await dbDelete('sessions', id);
-  toast('Session deleted');
-  renderHistory();
-}
-
-async function delNextDay(id) {
-  if (!confirm('Delete this next-day check?')) return;
-  await dbDelete('nextdays', id);
-  toast('Check deleted');
-  renderHistory();
-}
-
-// ========= STATS =========
-async function renderStats() {
-  const sessions = (await dbGetAll('sessions')).sort((a, b) => a.date.localeCompare(b.date));
-  const nextdays = await dbGetAll('nextdays');
-  const container = document.getElementById('stats-cards');
-
-  if (!sessions.length) {
-    container.innerHTML = '<p class="text-center text-muted" style="padding:40px">No data yet</p>';
-    document.getElementById('pain-chart').getContext('2d').clearRect(0,0,9999,9999);
-    document.getElementById('response-chart').getContext('2d').clearRect(0,0,9999,9999);
-    return;
-  }
-
-  const avgPain = (sessions.reduce((s, e) => s + e.baseline.pain, 0) / sessions.length).toFixed(1);
-  const recent = sessions.slice(-7);
-  const recentAvg = (recent.reduce((s, e) => s + e.baseline.pain, 0) / recent.length).toFixed(1);
-  const betterDays = nextdays.filter(n => n.vsBaseline === 'Better').length;
-
-  container.innerHTML = `
-    <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${sessions.length}</div><div class="stat-label">Sessions</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--red)">${avgPain}</div><div class="stat-label">Avg Pain</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--orange)">${recentAvg}</div><div class="stat-label">Last 7d Pain</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--green)">${betterDays}</div><div class="stat-label">Better Days</div></div>
-  `;
-
-  drawPainChart(sessions);
-  drawResponseChart(nextdays);
-}
-
-function drawPainChart(data) {
-  const canvas = document.getElementById('pain-chart');
-  const ctx = canvas.getContext('2d');
-  const rect = canvas.parentElement.getBoundingClientRect();
-  canvas.width = rect.width - 32; canvas.height = 200;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (data.length < 2) { ctx.fillStyle = '#586e75'; ctx.fillText('Need at least 2 sessions', 60, 100); return; }
-
-  const pad = { top: 20, right: 20, bottom: 30, left: 35 };
-  const w = canvas.width - pad.left - pad.right;
-  const h = canvas.height - pad.top - pad.bottom;
-
-  ctx.strokeStyle = '#0a4050'; ctx.lineWidth = 1;
-  for (let i = 0; i <= 10; i += 2) {
-    const y = pad.top + h - (i / 10) * h;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + w, y); ctx.stroke();
-    ctx.fillStyle = '#657b83'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(i, pad.left - 6, y + 4);
-  }
-
-  drawLine(ctx, data.map((e, i) => ({ x: pad.left + (i/(data.length-1))*w, y: pad.top + h - (e.baseline.pain/10)*h })), '#dc322f');
-  drawLine(ctx, data.map((e, i) => ({ x: pad.left + (i/(data.length-1))*w, y: pad.top + h - ((e.during?.afterPain||0)/10)*h })), '#268bd2');
-
-  ctx.fillStyle = '#657b83'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
-  const step = Math.max(1, Math.floor(data.length / 6));
-  data.forEach((e, i) => {
-    if (i % step === 0 || i === data.length - 1) ctx.fillText(e.date.slice(5), pad.left + (i/(data.length-1))*w, canvas.height - 6);
-  });
-
-  ctx.fillStyle = '#dc322f'; ctx.fillRect(pad.left, 4, 12, 3);
-  ctx.fillStyle = '#839496'; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText('Baseline', pad.left + 16, 10);
-  ctx.fillStyle = '#268bd2'; ctx.fillRect(pad.left + 80, 4, 12, 3);
-  ctx.fillStyle = '#839496'; ctx.fillText('After session', pad.left + 96, 10);
-}
-
-function drawLine(ctx, pts, color) {
-  if (pts.length < 2) return;
-  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round';
-  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
-  pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.stroke();
-  pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); });
-}
-
-function drawResponseChart(data) {
-  const canvas = document.getElementById('response-chart');
-  const ctx = canvas.getContext('2d');
-  const rect = canvas.parentElement.getBoundingClientRect();
-  canvas.width = rect.width - 32; canvas.height = 160;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const withR = data.filter(e => e.vsBaseline);
-  if (!withR.length) { ctx.fillStyle = '#586e75'; ctx.fillText('No next-day data yet', 60, 80); return; }
-
-  const better = withR.filter(e => e.vsBaseline === 'Better').length;
-  const same = withR.filter(e => e.vsBaseline === 'Same').length;
-  const worse = withR.filter(e => e.vsBaseline === 'Worse').length;
-  const total = withR.length;
-  const startX = 150, startY = 30;
-
-  [{ label: 'Better', val: better, color: '#859900' },
-   { label: 'Same', val: same, color: '#b58900' },
-   { label: 'Worse', val: worse, color: '#dc322f' }
-  ].forEach((item, i) => {
-    const y = startY + i * 44;
-    const w = total ? (item.val / total) * (canvas.width - startX - 60) : 0;
-    ctx.fillStyle = '#0a4050'; ctx.fillRect(startX, y, canvas.width - startX - 60, 24);
-    ctx.fillStyle = item.color; ctx.fillRect(startX, y, w, 24);
-    ctx.fillStyle = '#839496'; ctx.font = '13px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(item.label, startX - 12, y + 17);
-    ctx.textAlign = 'left';
-    ctx.fillText(`${item.val} (${total ? Math.round(item.val/total*100) : 0}%)`, startX + w + 8, y + 17);
-  });
-}
-
-// ========= EXPORT / IMPORT =========
-async function exportData() {
-  const data = {
-    version: 2,
-    sessions: await dbGetAll('sessions'),
-    nextdays: await dbGetAll('nextdays'),
-    routines: await dbGetAll('routines')
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url;
-  a.download = `back-recovery-${new Date().toISOString().split('T')[0]}.json`;
-  a.click(); URL.revokeObjectURL(url);
-  toast('Data exported!');
-}
-
-async function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  try {
-    const raw = JSON.parse(await file.text());
-    if (raw.version === 2) {
-      for (const s of (raw.sessions || [])) await dbPut('sessions', s);
-      for (const n of (raw.nextdays || [])) await dbPut('nextdays', n);
-      for (const r of (raw.routines || [])) await dbPut('routines', r);
-      toast(`Imported ${(raw.sessions||[]).length} sessions, ${(raw.nextdays||[]).length} checks, ${(raw.routines||[]).length} routines`);
-    } else if (Array.isArray(raw)) {
-      // Legacy v1 import
-      for (const entry of raw) {
-        const session = { id: entry.id || 'ses_' + entry.date + '_' + Date.now(), type: 'session', date: entry.date, baseline: entry.baseline, exercises: entry.exercises || [], during: entry.during || {} };
-        await dbPut('sessions', session);
-        if (entry.nextDay?.vsBaseline) {
-          const nd = { id: 'nd_' + entry.date + '_' + Date.now(), type: 'nextday', date: entry.date, linkedSessionId: session.id, vsBaseline: entry.nextDay.vsBaseline, flare: entry.nextDay.flare, causes: entry.nextDay.causes || [], causeOther: entry.nextDay.causeOther || '', decision: entry.decision || {} };
-          await dbPut('nextdays', nd);
-        }
-      }
-      toast(`Imported ${raw.length} legacy entries`);
-    } else {
-      throw new Error('Unrecognized format');
-    }
-    event.target.value = '';
-    refreshRoutinePicker();
-  } catch (e) { toast('Import failed: ' + e.message); }
-}
-
-async function exportCSV() {
-  const sessions = (await dbGetAll('sessions')).sort((a, b) => a.date.localeCompare(b.date));
-  const nextdays = await dbGetAll('nextdays');
-  const ndMap = {};
-  nextdays.forEach(n => { if (n.linkedSessionId) ndMap[n.linkedSessionId] = n; });
-
-  const headers = ['Date','Pain','Stiffness','Locations','Nerve','Mood','Steps','Sitting','Exercises','During','SharpPain','AfterPain','FeltBest','NextDayDate','NextDay','Flare','Causes','Plan','ProgressVar','Notes'];
-  const rows = sessions.map(s => {
-    const nd = ndMap[s.id];
-    return [
-      s.date, s.baseline.pain, s.baseline.stiffness, s.baseline.locations.join(';'), s.baseline.nerveSymptoms, s.baseline.mood, s.baseline.steps, s.baseline.sitting,
-      s.exercises.map(x => `${x.name}(${x.dose})`).join(';'),
-      s.during.symptoms, s.during.sharpPain, s.during.afterPain, s.during.feltBest,
-      nd?.date || '', nd?.vsBaseline || '', nd?.flare || '', [...(nd?.causes||[]), nd?.causeOther].filter(Boolean).join(';'),
-      nd?.decision?.plan || '', nd?.decision?.progressVar || '', nd?.decision?.notes || ''
-    ].map(v => `"${(v ?? '').toString().replace(/"/g, '""')}"`).join(',');
-  });
-
-  const csv = [headers.join(','), ...rows].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url;
-  a.download = `back-recovery-${new Date().toISOString().split('T')[0]}.csv`;
-  a.click(); URL.revokeObjectURL(url);
-  toast('CSV exported!');
-}
-
-async function clearAllData() {
-  if (!confirm('Delete ALL data? This cannot be undone.')) return;
-  if (!confirm('Really sure? Export a backup first!')) return;
-  await dbClear('sessions');
-  await dbClear('nextdays');
-  await dbClear('routines');
-  toast('All data deleted');
-  refreshRoutinePicker();
-}
-
-// ========= CLOUD SYNC (JSONBin.io) =========
-const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
 let syncCfg = { apiKey: '', binId: '' };
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
+
+let currentSession = {
+  date: new Date().toISOString().split('T')[0],
+  baseline: { pain: 0, stiffness: 0, locations: [], nerveSymptoms: '', mood: 3, stress: 3, sleep: 3, steps: '', sitting: '' },
+  exercises: [],
+  during: { symptoms: '', sharpPain: '', afterPain: 0, feltBest: '' }
+};
+
+let currentRoutineExercises = [];
+let currentEditingRoutineId = null;
+
+async function initDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('BackRecoveryTrackerDB', DB_VERSION);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => {
+      db = req.result;
+      loadSyncConfig();
+      resolve();
+    };
+    req.onupgradeneeded = (e) => {
+      const database = e.target.result;
+      if (!database.objectStoreNames.contains('sessions')) {
+        database.createObjectStore('sessions', { keyPath: 'id' });
+      }
+      if (!database.objectStoreNames.contains('nextdays')) {
+        database.createObjectStore('nextdays', { keyPath: 'id' });
+      }
+      if (!database.objectStoreNames.contains('routines')) {
+        database.createObjectStore('routines', { keyPath: 'id' });
+      }
+    };
+  });
+}
 
 function loadSyncConfig() {
-  try {
-    const raw = localStorage.getItem('brt_sync');
-    if (raw) syncCfg = JSON.parse(raw);
-  } catch(e) {}
-  return !!(syncCfg.apiKey && syncCfg.binId);
+  const stored = localStorage.getItem('brt_sync');
+  if (stored) {
+    syncCfg = JSON.parse(stored);
+    updateSyncStatus();
+  }
 }
 
 function saveSyncConfig() {
   localStorage.setItem('brt_sync', JSON.stringify(syncCfg));
 }
 
-function clearSyncConfig() {
-  syncCfg = { apiKey: '', binId: '' };
-  localStorage.removeItem('brt_sync');
-}
-
-function updateSyncStatus(state, msg) {
+async function updateSyncStatus() {
   const dot = document.getElementById('sync-dot');
   const text = document.getElementById('sync-text');
-  const bar = document.getElementById('sync-bar');
-  dot.className = 'sync-dot' + (state === 'ok' ? ' ok' : state === 'syncing' ? ' syncing' : state === 'error' ? ' error' : '');
-  text.textContent = msg;
-  // Hide the "Set up" link if configured
-  const setupBtn = bar.querySelector('.sync-btn-inline');
-  if (setupBtn) setupBtn.style.display = (state === 'none') ? '' : 'none';
-}
+  const disconnectBtn = document.getElementById('disconnect-btn');
 
-async function syncPush() {
-  if (!syncCfg.apiKey || !syncCfg.binId) return;
-  updateSyncStatus('syncing', 'Syncing…');
-  try {
-    const data = {
-      version: 2,
-      sessions: await dbGetAll('sessions'),
-      nextdays: await dbGetAll('nextdays'),
-      routines: await dbGetAll('routines'),
-      updatedAt: new Date().toISOString()
-    };
-    const res = await fetch(`${JSONBIN_BASE}/${syncCfg.binId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': syncCfg.apiKey },
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const now = new Date().toLocaleTimeString();
-    updateSyncStatus('ok', `Synced · ${now}`);
-    const el = document.getElementById('last-sync-time');
-    if (el) el.textContent = now;
-  } catch(e) {
-    updateSyncStatus('error', `Sync failed: ${e.message}`);
+  if (!syncCfg.apiKey || !syncCfg.binId) {
+    dot.className = 'sync-dot';
+    text.textContent = 'Cloud sync not configured';
+    disconnectBtn.style.display = 'none';
+  } else {
+    dot.className = 'sync-dot synced';
+    text.textContent = 'Cloud sync connected';
+    disconnectBtn.style.display = 'block';
   }
 }
 
-async function syncPull() {
-  if (!syncCfg.apiKey || !syncCfg.binId) return;
-  updateSyncStatus('syncing', 'Pulling from cloud…');
-  try {
-    const res = await fetch(`${JSONBIN_BASE}/${syncCfg.binId}/latest`, {
-      headers: { 'X-Master-Key': syncCfg.apiKey }
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    const data = json.record;
-    if (!data || !data.version) throw new Error('Unrecognized format in bin');
-    // Merge: put everything from cloud (cloud wins on conflict since IDs are unique timestamps)
-    for (const s of (data.sessions || [])) await dbPut('sessions', s);
-    for (const n of (data.nextdays || [])) await dbPut('nextdays', n);
-    for (const r of (data.routines || [])) await dbPut('routines', r);
-    const now = new Date().toLocaleTimeString();
-    updateSyncStatus('ok', `Synced · ${now}`);
-    const el = document.getElementById('last-sync-time');
-    if (el) el.textContent = now;
-    refreshRoutinePicker();
-  } catch(e) {
-    updateSyncStatus('error', `Pull failed: ${e.message}`);
-  }
-}
-
-async function syncNow() {
-  await syncPull();
-  await syncPush();
+function toggleSyncSetup() {
+  const setupDiv = document.getElementById('sync-setup');
+  setupDiv.style.display = setupDiv.style.display === 'none' ? 'block' : 'none';
 }
 
 async function connectSync() {
-  const key = document.getElementById('sync-api-key').value.trim();
+  const apiKey = document.getElementById('sync-api-key').value.trim();
   const binId = document.getElementById('sync-bin-id').value.trim();
-  if (!key || !binId) { toast('Enter both fields'); return; }
-  syncCfg = { apiKey: key, binId };
-  // Test connection
-  updateSyncStatus('syncing', 'Connecting…');
+  const statusMsg = document.getElementById('sync-status-msg');
+
+  if (!apiKey || !binId) {
+    statusMsg.innerHTML = '<div class="alert error">Please enter both API Key and Bin ID</div>';
+    return;
+  }
+
   try {
-    const res = await fetch(`${JSONBIN_BASE}/${binId}/latest`, {
-      headers: { 'X-Master-Key': key }
+    statusMsg.innerHTML = '<div class="alert info">Testing connection...</div>';
+
+    const response = await fetch(`${JSONBIN_BASE}/${binId}`, {
+      headers: { 'X-Master-Key': apiKey }
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status} — check your credentials`);
+
+    if (!response.ok) {
+      throw new Error('Invalid credentials or bin not found');
+    }
+
+    syncCfg = { apiKey, binId };
     saveSyncConfig();
-    showSyncConfiguredUI();
-    toast('Connected! Syncing…');
+    await updateSyncStatus();
+
+    statusMsg.innerHTML = '<div class="alert success">Connected! Initial sync in progress...</div>';
     await syncPull();
-    await syncPush();
-  } catch(e) {
-    updateSyncStatus('error', `Connection failed: ${e.message}`);
-    toast('Connection failed: ' + e.message);
-    syncCfg = { apiKey: '', binId: '' };
+    statusMsg.innerHTML = '<div class="alert success">Cloud sync connected and synced!</div>';
+    setTimeout(() => { statusMsg.innerHTML = ''; }, 3000);
+  } catch (err) {
+    statusMsg.innerHTML = `<div class="alert error">Connection failed: ${err.message}</div>`;
   }
 }
 
 function disconnectSync() {
-  if (!confirm('Disconnect cloud sync? Your local data stays intact.')) return;
-  clearSyncConfig();
-  showSyncUnconfiguredUI();
-  updateSyncStatus('none', 'Cloud sync not configured');
-  toast('Disconnected');
+  syncCfg = { apiKey: '', binId: '' };
+  localStorage.removeItem('brt_sync');
+  document.getElementById('sync-api-key').value = '';
+  document.getElementById('sync-bin-id').value = '';
+  updateSyncStatus();
+  showToast('Cloud sync disconnected');
 }
 
-function showSyncConfiguredUI() {
-  document.getElementById('sync-unconfigured').classList.add('hidden');
-  document.getElementById('sync-configured').classList.remove('hidden');
-}
+async function syncPull() {
+  if (!syncCfg.apiKey || !syncCfg.binId) return;
 
-function showSyncUnconfiguredUI() {
-  document.getElementById('sync-configured').classList.add('hidden');
-  document.getElementById('sync-unconfigured').classList.remove('hidden');
-}
+  try {
+    const response = await fetch(`${JSONBIN_BASE}/${syncCfg.binId}`, {
+      headers: { 'X-Master-Key': syncCfg.apiKey }
+    });
 
-// ========= INIT =========
-async function init() {
-  await openDB();
-  document.getElementById('s-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('nd-date').value = new Date().toISOString().split('T')[0];
-  refreshRoutinePicker();
+    if (!response.ok) return;
 
-  if (loadSyncConfig()) {
-    showSyncConfiguredUI();
-    await syncPull();
-  } else {
-    updateSyncStatus('none', 'Cloud sync not configured');
+    const data = await response.json();
+    const record = data.record;
+
+    if (!record) return;
+
+    const tx = db.transaction(['sessions', 'nextdays', 'routines'], 'readwrite');
+
+    if (record.sessions && Array.isArray(record.sessions)) {
+      const store = tx.objectStore('sessions');
+      for (const session of record.sessions) {
+        await new Promise((resolve) => store.put(session).onsuccess = resolve);
+      }
+    }
+
+    if (record.nextdays && Array.isArray(record.nextdays)) {
+      const store = tx.objectStore('nextdays');
+      for (const nd of record.nextdays) {
+        await new Promise((resolve) => store.put(nd).onsuccess = resolve);
+      }
+    }
+
+    if (record.routines && Array.isArray(record.routines)) {
+      const store = tx.objectStore('routines');
+      for (const routine of record.routines) {
+        await new Promise((resolve) => store.put(routine).onsuccess = resolve);
+      }
+    }
+  } catch (err) {
+    console.error('Sync pull failed:', err);
   }
 }
 
-init();
+async function syncPush() {
+  if (!syncCfg.apiKey || !syncCfg.binId) return;
+
+  try {
+    const sessions = await getAllFromStore('sessions');
+    const nextdays = await getAllFromStore('nextdays');
+    const routines = await getAllFromStore('routines');
+
+    const data = {
+      version: 2,
+      sessions: sessions,
+      nextdays: nextdays,
+      routines: routines
+    };
+
+    await fetch(`${JSONBIN_BASE}/${syncCfg.binId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': syncCfg.apiKey
+      },
+      body: JSON.stringify(data)
+    });
+  } catch (err) {
+    console.error('Sync push failed:', err);
+  }
+}
+
+function getAllFromStore(storeName) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, 'readonly');
+    const store = tx.objectStore(storeName);
+    const req = store.getAll();
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result);
+  });
+}
+
+function putInStore(storeName, obj) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
+    const req = store.put(obj);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result);
+  });
+}
+
+function deleteFromStore(storeName, key) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
+    const req = store.delete(key);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve();
+  });
+}
+
+function showToast(message, isError = false) {
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (isError ? ' error' : '');
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+function updateSliderDisplay(sliderId) {
+  const slider = document.getElementById(sliderId);
+  const valueEl = document.getElementById(sliderId + '-value');
+  if (valueEl) valueEl.textContent = slider.value;
+}
+
+function switchTab(event, tabName) {
+  event.target.blur();
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(tabName).classList.add('active');
+
+  if (tabName === 'progressions') renderProgressions();
+  if (tabName === 'trends') renderTrends();
+  if (tabName === 'history') renderHistoryTab();
+  if (tabName === 'routines') renderRoutinesTab();
+  if (tabName === 'settings') renderSettingsTab();
+}
+
+function switchSubTab(event, subTabName) {
+  const parent = event.target.parentElement;
+  parent.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#new-entry .tab-content').forEach(c => c.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(subTabName).classList.add('active');
+
+  if (subTabName === 'next-day-check') renderNDSessionSelect();
+}
+
+function addExerciseBlock() {
+  const block = {
+    id: 'ex_' + Date.now(),
+    exerciseId: '',
+    level: 1,
+    dose: {},
+    range: '',
+    effort: 5,
+    notes: ''
+  };
+  currentSession.exercises.push(block);
+  renderExerciseBlocks();
+}
+
+function removeExerciseBlock(id) {
+  currentSession.exercises = currentSession.exercises.filter(ex => ex.id !== id);
+  renderExerciseBlocks();
+}
+
+function renderExerciseBlocks() {
+  const container = document.getElementById('exercise-blocks-container');
+  container.innerHTML = currentSession.exercises.map(block => {
+    const ex = EXERCISES_DB[block.exerciseId] || { name: 'Select exercise...', levels: [] };
+    const levelNames = ex.levels ? ex.levels.map(l => ({ val: l.level, name: l.name })) : [];
+
+    return `
+      <div class="exercise-block">
+        <div class="exercise-block-header">
+          <div class="exercise-block-title">${ex.name || 'Select exercise'}</div>
+          <button class="exercise-remove-btn" onclick="removeExerciseBlock('${block.id}')">×</button>
+        </div>
+
+        <div class="form-group">
+          <label>Exercise</label>
+          <select onchange="updateExerciseInBlock('${block.id}', this.value)">
+            <option value="">-- Select Exercise --</option>
+            ${Object.entries(EXERCISES_DB).map(([id, e]) => `<option value="${id}" ${block.exerciseId === id ? 'selected' : ''}>${e.name}</option>`).join('')}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Level</label>
+          <select onchange="updateLevelInBlock('${block.id}', this.value)">
+            ${levelNames.map(l => `<option value="${l.val}" ${block.level == l.val ? 'selected' : ''}>Level ${l.val}: ${l.name}</option>`).join('')}
+          </select>
+        </div>
+
+        ${block.exerciseId ? `<div class="dose-fields-grid">${renderDoseFields(block.exerciseId, block)}</div>` : ''}
+
+        <div class="form-group">
+          <label>Effort (0-10)</label>
+          <div class="slider-group">
+            <input type="range" min="0" max="10" value="${block.effort || 5}" onchange="updateEffortInBlock('${block.id}', this.value)">
+            <span class="slider-value">${block.effort || 5}</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Range</label>
+          <div class="pills">
+            <button class="pill ${block.range === 'Short' ? 'selected' : ''}" onclick="updateRangeInBlock('${block.id}', 'Short')">Short</button>
+            <button class="pill ${block.range === 'Medium' ? 'selected' : ''}" onclick="updateRangeInBlock('${block.id}', 'Medium')">Medium</button>
+            <button class="pill ${block.range === 'Full' ? 'selected' : ''}" onclick="updateRangeInBlock('${block.id}', 'Full')">Full</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea placeholder="Any notes about this exercise" onchange="updateNotesInBlock('${block.id}', this.value)" rows="2">${block.notes || ''}</textarea>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderDoseFields(exerciseId, block) {
+  const ex = EXERCISES_DB[exerciseId];
+  if (!ex || !ex.doseFields) return '';
+
+  return ex.doseFields.map(field => {
+    const currentVal = block.dose[field.id] !== undefined ? block.dose[field.id] : field.default;
+
+    if (field.type === 'number') {
+      return `
+        <div class="dose-field">
+          <label>${field.label}</label>
+          <input type="number" min="0" value="${currentVal}" onchange="updateDoseField('${block.id}', '${field.id}', this.value)">
+        </div>
+      `;
+    } else if (field.type === 'select') {
+      return `
+        <div class="dose-field">
+          <label>${field.label}</label>
+          <select onchange="updateDoseField('${block.id}', '${field.id}', this.value)">
+            ${field.options.map(opt => `<option value="${opt}" ${currentVal === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+          </select>
+        </div>
+      `;
+    } else if (field.type === 'checkbox') {
+      return `
+        <div class="dose-field" style="flex-direction: row; align-items: center; margin-top: 8px;">
+          <label style="margin: 0;">${field.label}</label>
+          <input type="checkbox" style="width: 18px; height: 18px; margin-left: 6px;" ${currentVal ? 'checked' : ''} onchange="updateDoseField('${block.id}', '${field.id}', this.checked)">
+        </div>
+      `;
+    }
+    return '';
+  }).join('');
+}
+
+function updateExerciseInBlock(blockId, exerciseId) {
+  const block = currentSession.exercises.find(b => b.id === blockId);
+  if (block) {
+    block.exerciseId = exerciseId;
+    block.dose = {};
+    block.level = 1;
+    renderExerciseBlocks();
+  }
+}
+
+function updateLevelInBlock(blockId, level) {
+  const block = currentSession.exercises.find(b => b.id === blockId);
+  if (block) block.level = parseInt(level);
+}
+
+function updateDoseField(blockId, fieldId, value) {
+  const block = currentSession.exercises.find(b => b.id === blockId);
+  if (block) {
+    block.dose[fieldId] = value === 'true' ? true : value === 'false' ? false : isNaN(value) ? value : (value === '' ? value : value);
+  }
+}
+
+function updateEffortInBlock(blockId, value) {
+  const block = currentSession.exercises.find(b => b.id === blockId);
+  if (block) {
+    block.effort = parseInt(value);
+    document.querySelectorAll('.slider-value')[0].textContent = value;
+  }
+}
+
+function updateRangeInBlock(blockId, range) {
+  const block = currentSession.exercises.find(b => b.id === blockId);
+  if (block) {
+    block.range = block.range === range ? '' : range;
+    renderExerciseBlocks();
+  }
+}
+
+function updateNotesInBlock(blockId, notes) {
+  const block = currentSession.exercises.find(b => b.id === blockId);
+  if (block) block.notes = notes;
+}
+
+function selectDuringSymptoms(event, value) {
+  event.target.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  if (event.target.textContent === value) {
+    event.target.classList.add('selected');
+    currentSession.during.symptoms = value;
+    document.getElementById('during-symptoms').value = value;
+  }
+}
+
+function selectSharpPain(event, value) {
+  event.target.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  if (event.target.textContent === value) {
+    event.target.classList.add('selected');
+    currentSession.during.sharpPain = value;
+    document.getElementById('sharp-pain').value = value;
+  }
+}
+
+async function saveSession() {
+  const date = document.getElementById('session-date').value;
+  const locations = Array.from(document.querySelectorAll('input[name="location"]:checked')).map(cb => cb.value);
+
+  if (!date || currentSession.exercises.length === 0) {
+    showToast('Please fill in date and add at least one exercise', true);
+    return;
+  }
+
+  const session = {
+    id: 'ses_' + date + '_' + Date.now(),
+    type: 'session',
+    date: date,
+    baseline: {
+      pain: parseInt(document.getElementById('baseline-pain').value) || 0,
+      stiffness: parseInt(document.getElementById('baseline-stiffness').value) || 0,
+      locations: locations,
+      nerveSymptoms: document.getElementById('baseline-nerve').value,
+      mood: parseInt(document.getElementById('baseline-mood').value) || 3,
+      stress: parseInt(document.getElementById('baseline-stress').value) || 3,
+      sleep: parseInt(document.getElementById('baseline-sleep').value) || 3,
+      steps: document.getElementById('baseline-steps').value,
+      sitting: document.getElementById('baseline-sitting').value
+    },
+    exercises: currentSession.exercises.map(ex => ({
+      exerciseId: ex.exerciseId,
+      name: EXERCISES_DB[ex.exerciseId]?.name || 'Unknown',
+      level: parseInt(ex.level) || 1,
+      dose: ex.dose,
+      range: ex.range,
+      effort: parseInt(ex.effort) || 0,
+      notes: ex.notes
+    })),
+    during: {
+      symptoms: document.getElementById('during-symptoms').value,
+      sharpPain: document.getElementById('sharp-pain').value,
+      afterPain: parseInt(document.getElementById('after-pain').value) || 0,
+      feltBest: document.getElementById('felt-best').value
+    }
+  };
+
+  try {
+    await putInStore('sessions', session);
+    currentSession = {
+      date: new Date().toISOString().split('T')[0],
+      baseline: { pain: 0, stiffness: 0, locations: [], nerveSymptoms: '', mood: 3, stress: 3, sleep: 3, steps: '', sitting: '' },
+      exercises: [],
+      during: { symptoms: '', sharpPain: '', afterPain: 0, feltBest: '' }
+    };
+    document.getElementById('session-date').value = currentSession.date;
+    renderExerciseBlocks();
+    await syncPush();
+    showToast('Session saved!');
+  } catch (err) {
+    console.error('Failed to save session:', err);
+    showToast('Failed to save', true);
+  }
+}
+
+async function renderNDSessionSelect() {
+  const sessions = await getAllFromStore('sessions');
+  const select = document.getElementById('previous-session-select');
+  select.innerHTML = '<option value="">-- Select Session --</option>' + sessions.map(s => {
+    const exNames = s.exercises.map(e => e.name).join(', ');
+    return `<option value="${s.id}">${s.date} - ${exNames} (Pain: ${s.baseline.pain})</option>`;
+  }).join('');
+
+  select.onchange = () => {
+    const sessionId = select.value;
+    if (!sessionId) {
+      document.getElementById('linked-session-info').style.display = 'none';
+      return;
+    }
+    const session = sessions.find(s => s.id === sessionId);
+    if (session) {
+      document.getElementById('linked-session-content').innerHTML = `
+        <div style="font-size: 0.9rem;">
+          <div><strong>Date:</strong> ${session.date}</div>
+          <div><strong>Baseline Pain:</strong> ${session.baseline.pain}/10</div>
+          <div><strong>Exercises:</strong> ${session.exercises.map(e => e.name).join(', ')}</div>
+        </div>
+      `;
+      document.getElementById('linked-session-info').style.display = 'block';
+      document.getElementById('nd-session-id').value = sessionId;
+    }
+  };
+}
+
+function selectNDResponse(event, value) {
+  event.target.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('nd-response').value = value;
+}
+
+function selectFlare(event, value) {
+  event.target.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('nd-flare').value = value;
+}
+
+function selectPlan(event, value) {
+  event.target.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('nd-plan').value = value;
+}
+
+function selectProgressVar(event, value) {
+  event.target.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('nd-progress-var').value = value;
+}
+
+async function saveNextDay() {
+  const date = document.getElementById('nextday-date').value;
+  const linkedSessionId = document.getElementById('previous-session-select').value;
+  const response = document.getElementById('nd-response').value;
+  const flare = document.getElementById('nd-flare').value;
+  const plan = document.getElementById('nd-plan').value;
+
+  if (!date || !linkedSessionId || !response || !flare || !plan) {
+    showToast('Please complete all required fields', true);
+    return;
+  }
+
+  const causes = Array.from(document.querySelectorAll('input[name="nd-cause"]:checked')).map(cb => cb.value);
+
+  const nd = {
+    id: 'nd_' + date + '_' + Date.now(),
+    type: 'nextday',
+    date: date,
+    linkedSessionId: linkedSessionId,
+    vsBaseline: response,
+    flare: flare,
+    causes: causes,
+    causeOther: document.getElementById('nd-cause-other').value,
+    decision: {
+      plan: plan,
+      progressVar: document.getElementById('nd-progress-var').value,
+      notes: document.getElementById('nd-notes').value
+    }
+  };
+
+  try {
+    await putInStore('nextdays', nd);
+    document.getElementById('nextday-date').value = '';
+    document.getElementById('previous-session-select').value = '';
+    document.getElementById('nd-response').value = '';
+    document.getElementById('nd-flare').value = '';
+    document.getElementById('nd-plan').value = '';
+    document.getElementById('nd-progress-var').value = '';
+    document.getElementById('nd-notes').value = '';
+    document.getElementById('nd-cause-other').value = '';
+    document.querySelectorAll('input[name="nd-cause"]').forEach(cb => cb.checked = false);
+    await syncPush();
+    showToast('Next-day check saved!');
+  } catch (err) {
+    console.error('Failed to save:', err);
+    showToast('Failed to save', true);
+  }
+}
+
+async function renderHistoryTab() {
+  const sessions = await getAllFromStore('sessions');
+  const nextdays = await getAllFromStore('nextdays');
+
+  const container = document.getElementById('history-container');
+  const allEntries = [];
+
+  sessions.forEach(s => {
+    allEntries.push({
+      type: 'session',
+      date: s.date,
+      data: s,
+      sortDate: new Date(s.date).getTime()
+    });
+  });
+
+  nextdays.forEach(nd => {
+    allEntries.push({
+      type: 'nextday',
+      date: nd.date,
+      data: nd,
+      sortDate: new Date(nd.date).getTime()
+    });
+  });
+
+  allEntries.sort((a, b) => b.sortDate - a.sortDate);
+
+  if (allEntries.length === 0) {
+    container.innerHTML = '<p style="color: var(--text2);">No sessions or next-day checks yet.</p>';
+    return;
+  }
+
+  container.innerHTML = allEntries.map(entry => {
+    if (entry.type === 'session') {
+      const s = entry.data;
+      return `
+        <div class="history-entry">
+          <div class="history-date">${s.date} • ${s.exercises.length} exercise(s)</div>
+          <div class="history-content">
+            <strong>Baseline Pain:</strong> ${s.baseline.pain}/10 | <strong>Exercises:</strong> ${s.exercises.map(e => e.name).join(', ')}
+          </div>
+          <div style="margin-top: 8px; display: flex; gap: 8px;">
+            <button onclick="deleteSession('${s.id}')" style="flex: 1; background: var(--red); padding: 8px;">Delete</button>
+          </div>
+        </div>
+      `;
+    } else {
+      const nd = entry.data;
+      const statusClass = nd.vsBaseline === 'Better' ? 'normal' : nd.vsBaseline === 'Same' ? 'mild' : 'severe';
+      return `
+        <div class="history-entry">
+          <div class="history-date">${nd.date} • Next-Day Check</div>
+          <div class="history-content">
+            <strong>Response:</strong> <span class="status ${statusClass}">${nd.vsBaseline}</span> | <strong>Flare:</strong> ${nd.flare} | <strong>Plan:</strong> ${nd.decision.plan}
+          </div>
+          <div style="margin-top: 8px; display: flex; gap: 8px;">
+            <button onclick="deleteNextDay('${nd.id}')" style="flex: 1; background: var(--red); padding: 8px;">Delete</button>
+          </div>
+        </div>
+      `;
+    }
+  }).join('');
+}
+
+async function deleteSession(id) {
+  if (confirm('Delete this session?')) {
+    await deleteFromStore('sessions', id);
+    await syncPush();
+    renderHistoryTab();
+    showToast('Session deleted');
+  }
+}
+
+async function deleteNextDay(id) {
+  if (confirm('Delete this next-day check?')) {
+    await deleteFromStore('nextdays', id);
+    await syncPush();
+    renderHistoryTab();
+    showToast('Next-day check deleted');
+  }
+}
+
+function openCreateRoutineModal() {
+  currentEditingRoutineId = null;
+  currentRoutineExercises = [];
+  document.getElementById('routine-name').value = '';
+  document.getElementById('routine-exercise-modal').classList.remove('active');
+  document.getElementById('routine-modal').classList.add('active');
+  renderRoutineExercisesList();
+}
+
+function closeRoutineModal() {
+  document.getElementById('routine-modal').classList.remove('active');
+  currentRoutineExercises = [];
+}
+
+function renderRoutineExercisesList() {
+  const container = document.getElementById('routine-exercises-list');
+  if (currentRoutineExercises.length === 0) {
+    container.innerHTML = '<p style="color: var(--text2); font-size: 0.9rem;">No exercises added yet</p>';
+    return;
+  }
+
+  container.innerHTML = currentRoutineExercises.map((ex, idx) => {
+    const exerciseInfo = EXERCISES_DB[ex.exerciseId];
+    return `
+      <div style="background: var(--surface2); padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 0.85rem;">
+          <strong>${exerciseInfo?.name || 'Unknown'}</strong> • Level ${ex.level}
+        </div>
+        <button onclick="removeFromRoutineExercises(${idx})" style="background: var(--red); padding: 4px 8px; font-size: 0.75rem;">Remove</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function addExerciseToRoutineModal() {
+  document.getElementById('modal-exercise-select').value = '';
+  document.getElementById('modal-level-select').innerHTML = '';
+  document.getElementById('modal-dose-fields').innerHTML = '';
+  document.getElementById('routine-exercise-modal').classList.add('active');
+}
+
+function closeRoutineExerciseModal() {
+  document.getElementById('routine-exercise-modal').classList.remove('active');
+}
+
+function updateModalLevelDropdown() {
+  const exerciseId = document.getElementById('modal-exercise-select').value;
+  const levelSelect = document.getElementById('modal-level-select');
+  const doseFieds = document.getElementById('modal-dose-fields');
+
+  levelSelect.innerHTML = '';
+  doseFieds.innerHTML = '';
+
+  if (!exerciseId) return;
+
+  const ex = EXERCISES_DB[exerciseId];
+  ex.levels.forEach(lv => {
+    const option = document.createElement('option');
+    option.value = lv.level;
+    option.textContent = `Level ${lv.level}: ${lv.name}`;
+    levelSelect.appendChild(option);
+  });
+
+  if (ex.doseFields) {
+    doseFieds.innerHTML = `<div class="dose-fields-grid" style="margin-top: 12px;">${ex.doseFields.map(field => {
+      if (field.type === 'number') {
+        return `<div class="dose-field"><label>${field.label}</label><input type="number" id="modal-dose-${field.id}" value="${field.default}"></div>`;
+      } else if (field.type === 'select') {
+        return `<div class="dose-field"><label>${field.label}</label><select id="modal-dose-${field.id}"><option value="">${field.options[0]}</option>${field.options.map(o => `<option value="${o}">${o}</option>`).join('')}</select></div>`;
+      } else if (field.type === 'checkbox') {
+        return `<div class="dose-field" style="flex-direction: row; align-items: center;"><label>${field.label}</label><input type="checkbox" id="modal-dose-${field.id}" ${field.default ? 'checked' : ''}></div>`;
+      }
+    }).join('')}</div>`;
+  }
+}
+
+function addRoutineExercise() {
+  const exerciseId = document.getElementById('modal-exercise-select').value;
+  const level = document.getElementById('modal-level-select').value;
+
+  if (!exerciseId || !level) {
+    showToast('Please select exercise and level', true);
+    return;
+  }
+
+  const dose = {};
+  const ex = EXERCISES_DB[exerciseId];
+  if (ex.doseFields) {
+    ex.doseFields.forEach(field => {
+      const val = document.getElementById(`modal-dose-${field.id}`)?.value;
+      if (val !== undefined && val !== '') dose[field.id] = val;
+    });
+  }
+
+  currentRoutineExercises.push({ exerciseId, level: parseInt(level), dose });
+  closeRoutineExerciseModal();
+  renderRoutineExercisesList();
+}
+
+function removeFromRoutineExercises(idx) {
+  currentRoutineExercises.splice(idx, 1);
+  renderRoutineExercisesList();
+}
+
+async function saveRoutine() {
+  const name = document.getElementById('routine-name').value.trim();
+
+  if (!name || currentRoutineExercises.length === 0) {
+    showToast('Please enter name and add exercises', true);
+    return;
+  }
+
+  const routine = {
+    id: 'routine_' + Date.now(),
+    name: name,
+    exercises: currentRoutineExercises
+  };
+
+  try {
+    await putInStore('routines', routine);
+    closeRoutineModal();
+    currentRoutineExercises = [];
+    await syncPush();
+    showToast('Routine saved!');
+    renderRoutinesTab();
+  } catch (err) {
+    showToast('Failed to save', true);
+  }
+}
+
+async function loadRoutineIntoSession() {
+  const routineId = document.getElementById('routine-select').value;
+  if (!routineId) {
+    showToast('Please select a routine', true);
+    return;
+  }
+
+  const routines = await getAllFromStore('routines');
+  const routine = routines.find(r => r.id === routineId);
+  if (!routine) return;
+
+  routine.exercises.forEach(ex => {
+    currentSession.exercises.push({
+      id: 'ex_' + Date.now() + Math.random(),
+      exerciseId: ex.exerciseId,
+      level: ex.level,
+      dose: ex.dose || {},
+      range: '',
+      effort: 5,
+      notes: ''
+    });
+  });
+
+  renderExerciseBlocks();
+  showToast('Routine loaded!');
+}
+
+async function renderRoutinesTab() {
+  const routines = await getAllFromStore('routines');
+  const container = document.getElementById('routines-list');
+
+  if (routines.length === 0) {
+    container.innerHTML = '<p style="color: var(--text2);">No routines yet. Create one above.</p>';
+    return;
+  }
+
+  container.innerHTML = routines.map(r => `
+    <div class="history-entry">
+      <div class="history-date">${r.name}</div>
+      <div class="history-content">
+        <strong>Exercises:</strong> ${r.exercises.map(e => EXERCISES_DB[e.exerciseId]?.name || 'Unknown').join(', ')}
+      </div>
+      <div style="margin-top: 8px; display: flex; gap: 8px;">
+        <button onclick="deleteRoutine('${r.id}')" style="flex: 1; background: var(--red); padding: 8px;">Delete</button>
+      </div>
+    </div>
+  `).join('');
+
+  const select = document.getElementById('routine-select');
+  select.innerHTML = '<option value="">-- Select Routine --</option>' + routines.map(r => `<option value="${r.id}">${r.name}</option>`).join('');
+}
+
+async function deleteRoutine(id) {
+  if (confirm('Delete this routine?')) {
+    await deleteFromStore('routines', id);
+    await syncPush();
+    renderRoutinesTab();
+    showToast('Routine deleted');
+  }
+}
+
+async function renderProgressions() {
+  const container = document.getElementById('progressions-container');
+  container.innerHTML = Object.entries(EXERCISES_DB).map(([id, ex]) => {
+    const currentLevel = localStorage.getItem(`level_${id}`) ? parseInt(localStorage.getItem(`level_${id}`)) : 1;
+    return `
+      <div class="history-entry">
+        <div class="history-date" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.style.cursor = 'pointer';">
+          ${ex.name} • Level ${currentLevel} ▼
+        </div>
+        <div style="display: none; padding-top: 12px;">
+          ${ex.levels.map(lv => `
+            <div style="margin-bottom: 12px; padding: 8px; background: var(--surface2); border-radius: 6px;">
+              <div style="font-weight: 600; margin-bottom: 4px;">Level ${lv.level}: ${lv.name}</div>
+              <div style="font-size: 0.85rem; color: var(--text2); margin-bottom: 4px;">${lv.description}</div>
+              <div style="font-size: 0.85rem; color: var(--accent);">Goal: ${lv.goal}</div>
+              <button onclick="setLevel('${id}', ${lv.level})" style="margin-top: 8px; width: 100%; ${currentLevel === lv.level ? 'background: var(--green);' : ''}">
+                ${currentLevel === lv.level ? 'Current Level' : 'Set Level'}
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function setLevel(exerciseId, level) {
+  localStorage.setItem(`level_${exerciseId}`, level);
+  renderProgressions();
+  showToast(`${EXERCISES_DB[exerciseId].name} set to Level ${level}`);
+}
+
+async function renderTrends() {
+  const sessions = await getAllFromStore('sessions');
+  const container = document.getElementById('trends-container');
+
+  if (sessions.length === 0) {
+    container.innerHTML = '<p style="color: var(--text2);">No session data yet.</p>';
+    return;
+  }
+
+  const painByDate = {};
+  sessions.forEach(s => {
+    if (!painByDate[s.date]) painByDate[s.date] = [];
+    painByDate[s.date].push(s.baseline.pain);
+  });
+
+  const avgPainByDate = Object.entries(painByDate).map(([date, pains]) => ({
+    date,
+    avg: (pains.reduce((a, b) => a + b, 0) / pains.length).toFixed(1)
+  })).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(-30);
+
+  container.innerHTML = `
+    <div style="margin-bottom: 16px;">
+      <div style="font-weight: 600; color: var(--accent); margin-bottom: 12px;">Baseline Pain Trend (Last 30 Days)</div>
+      <div style="background: var(--surface); padding: 16px; border-radius: var(--radius); overflow-x: auto;">
+        <table style="width: 100%; font-size: 0.85rem;">
+          <thead><tr><th style="text-align: left;">Date</th><th style="text-align: right;">Avg Pain</th></tr></thead>
+          <tbody>
+            ${avgPainByDate.map(({date, avg}) => `<tr><td>${date}</td><td style="text-align: right;">${avg}/10</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-weight: 600; color: var(--accent); margin-bottom: 12px;">Sessions Summary</div>
+      <div style="background: var(--surface); padding: 16px; border-radius: var(--radius); font-size: 0.9rem;">
+        <div><strong>Total Sessions:</strong> ${sessions.length}</div>
+        <div><strong>Avg Baseline Pain:</strong> ${(sessions.reduce((a, s) => a + s.baseline.pain, 0) / sessions.length).toFixed(1)}/10</div>
+      </div>
+    </div>
+  `;
+}
+
+async function renderSettingsTab() {
+  const container = document.getElementById('settings');
+  // Already in HTML, just ensure it's populated
+}
+
+async function exportData() {
+  const sessions = await getAllFromStore('sessions');
+  const nextdays = await getAllFromStore('nextdays');
+  const routines = await getAllFromStore('routines');
+
+  const data = { sessions, nextdays, routines, exportDate: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'brt-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  showToast('Data exported');
+}
+
+function importData() {
+  const input = document.getElementById('import-file');
+  input.click();
+  input.onchange = async () => {
+    const file = input.files[0];
+    const text = await file.text();
+    const data = JSON.parse(text);
+
+    try {
+      if (data.sessions && Array.isArray(data.sessions)) {
+        for (const s of data.sessions) await putInStore('sessions', s);
+      }
+      if (data.nextdays && Array.isArray(data.nextdays)) {
+        for (const nd of data.nextdays) await putInStore('nextdays', nd);
+      }
+      if (data.routines && Array.isArray(data.routines)) {
+        for (const r of data.routines) await putInStore('routines', r);
+      }
+      await syncPush();
+      showToast('Data imported successfully!');
+    } catch (err) {
+      showToast('Import failed: ' + err.message, true);
+    }
+  };
+}
+
+async function clearAllData() {
+  if (confirm('Are you sure? This will delete ALL sessions, next-day checks, and routines.')) {
+    if (confirm('This action cannot be undone. Are you really sure?')) {
+      const sessions = await getAllFromStore('sessions');
+      const nextdays = await getAllFromStore('nextdays');
+      const routines = await getAllFromStore('routines');
+
+      for (const s of sessions) await deleteFromStore('sessions', s.id);
+      for (const nd of nextdays) await deleteFromStore('nextdays', nd.id);
+      for (const r of routines) await deleteFromStore('routines', r.id);
+
+      await syncPush();
+      showToast('All data cleared');
+    }
+  }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', async () => {
+  await initDB();
+  document.getElementById('session-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('nextday-date').value = new Date().toISOString().split('T')[0];
+  populateExerciseSelects();
+  renderRoutinesTab();
+  renderExerciseBlocks();
+});
+
+function populateExerciseSelects() {
+  // Auto-populated in HTML selects
+}
 </script>
+
 </body>
 </html>
