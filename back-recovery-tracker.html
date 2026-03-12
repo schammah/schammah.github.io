@@ -1855,8 +1855,10 @@ async function renderNDSessionSelect() {
   const sessions = await getAllFromStore('sessions');
   const select = document.getElementById('previous-session-select');
   select.innerHTML = '<option value="">-- Select Session --</option>' + sessions.map(s => {
-    const exNames = s.exercises.map(e => e.name).join(', ');
-    return `<option value="${s.id}">${s.date} - ${exNames} (Pain: ${s.baseline.pain})</option>`;
+    const isV2 = !s.exercises || !Array.isArray(s.exercises);
+    const exNames = isV2 ? (s.exerciseName || 'Unknown') : s.exercises.map(e => e.name || 'Unknown').join(', ');
+    const pain = s.baseline ? s.baseline.pain : 'N/A';
+    return `<option value="${s.id}">${s.date} - ${exNames} (Pain: ${pain})</option>`;
   }).join('');
 
   select.onchange = () => {
@@ -1867,11 +1869,14 @@ async function renderNDSessionSelect() {
     }
     const session = sessions.find(s => s.id === sessionId);
     if (session) {
+      const isV2 = !session.exercises || !Array.isArray(session.exercises);
+      const exNames = isV2 ? (session.exerciseName || 'Unknown') : session.exercises.map(e => e.name || 'Unknown').join(', ');
+      const pain = session.baseline ? session.baseline.pain : 'N/A';
       document.getElementById('linked-session-content').innerHTML = `
         <div style="font-size: 0.9rem;">
           <div><strong>Date:</strong> ${session.date}</div>
-          <div><strong>Baseline Pain:</strong> ${session.baseline.pain}/10</div>
-          <div><strong>Exercises:</strong> ${session.exercises.map(e => e.name).join(', ')}</div>
+          <div><strong>Baseline Pain:</strong> ${pain}/10</div>
+          <div><strong>Exercises:</strong> ${exNames}</div>
         </div>
       `;
       document.getElementById('linked-session-info').style.display = 'block';
@@ -1988,28 +1993,120 @@ async function renderHistoryTab() {
   container.innerHTML = allEntries.map(entry => {
     if (entry.type === 'session') {
       const s = entry.data;
+      const isV2 = !s.exercises || !Array.isArray(s.exercises);
+      const exerciseNames = isV2 ? (s.exerciseName || 'Unknown') : s.exercises.map(e => e.name || e.exerciseName || 'Unknown').join(', ');
+      const exerciseCount = isV2 ? 1 : s.exercises.length;
+      const baselinePain = s.baseline ? s.baseline.pain : 'N/A';
+
+      // Build expanded detail view
+      let detailHtml = '';
+      if (!isV2) {
+        const b = s.baseline;
+        const locations = b.locations && b.locations.length ? b.locations.join(', ') : 'None';
+        detailHtml = `
+          <div style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 10px;">
+            <div style="font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.85rem;">BASELINE</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; font-size: 0.85rem; color: var(--text2); margin-bottom: 12px;">
+              <div>Pain: <span style="color: var(--text);">${b.pain}/10</span></div>
+              <div>Stiffness: <span style="color: var(--text);">${b.stiffness}/10</span></div>
+              <div>Mood: <span style="color: var(--text);">${b.mood}/5</span></div>
+              <div>Stress: <span style="color: var(--text);">${b.stress}/5</span></div>
+              <div>Sleep: <span style="color: var(--text);">${b.sleep}/5</span></div>
+              <div>Steps: <span style="color: var(--text);">${b.steps || '—'}</span></div>
+              <div>Sitting (hrs): <span style="color: var(--text);">${b.sitting || '—'}</span></div>
+              <div>Locations: <span style="color: var(--text);">${locations}</span></div>
+            </div>
+            ${b.nerveSymptoms ? `<div style="font-size: 0.85rem; color: var(--text2); margin-bottom: 12px;">Nerve: <span style="color: var(--yellow);">${b.nerveSymptoms}</span></div>` : ''}
+
+            <div style="font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.85rem;">EXERCISES</div>
+            ${s.exercises.map(ex => {
+              const dbEx = EXERCISES_DB[ex.exerciseId];
+              const doseStr = ex.dose ? Object.entries(ex.dose).filter(([k,v]) => v !== '' && v !== false && v !== 0 && v !== '0').map(([k, v]) => {
+                if (v === true) return k;
+                const field = dbEx?.doseFields?.find(f => f.id === k);
+                return (field ? field.label : k) + ': ' + v;
+              }).join(' · ') : '—';
+              return `
+                <div style="background: var(--surface2); border-radius: 6px; padding: 10px; margin-bottom: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <span style="font-weight: 600; color: var(--text);">${ex.name || 'Unknown'}</span>
+                    <span style="font-size: 0.8rem; color: var(--accent);">Level ${ex.level}</span>
+                  </div>
+                  <div style="font-size: 0.85rem; color: var(--text2);">
+                    <div>Dose: ${doseStr}</div>
+                    <div>Effort: ${ex.effort}/10${ex.range ? ' · Range: ' + ex.range : ''}</div>
+                    ${ex.notes ? `<div style="color: var(--yellow); margin-top: 4px;">${ex.notes}</div>` : ''}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+
+            <div style="font-weight: 600; color: var(--accent); margin-bottom: 8px; margin-top: 12px; font-size: 0.85rem;">DURING / AFTER</div>
+            <div style="font-size: 0.85rem; color: var(--text2);">
+              ${s.during.symptoms ? `<div>Symptoms: <span style="color: var(--text);">${s.during.symptoms}</span></div>` : ''}
+              ${s.during.sharpPain ? `<div>Sharp pain: <span style="color: ${s.during.sharpPain === 'Yes' ? 'var(--red)' : 'var(--green)'};">${s.during.sharpPain}</span></div>` : ''}
+              <div>After pain: <span style="color: var(--text);">${s.during.afterPain}/10</span></div>
+              ${s.during.feltBest ? `<div style="margin-top: 4px;">Felt best: <span style="color: var(--cyan);">${s.during.feltBest}</span></div>` : ''}
+            </div>
+          </div>
+        `;
+      } else {
+        detailHtml = `
+          <div style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 10px; font-size: 0.85rem; color: var(--text2);">
+            <div>Exercise: <span style="color: var(--text);">${s.exerciseName || 'Unknown'}</span></div>
+            <div>Level: <span style="color: var(--text);">${s.level || '—'}</span></div>
+            <div>Dose: <span style="color: var(--text);">${s.dose || '—'}</span></div>
+            <div>Effort: <span style="color: var(--text);">${s.effort || '—'}/10</span></div>
+            ${s.notes ? `<div>Notes: <span style="color: var(--yellow);">${s.notes}</span></div>` : ''}
+          </div>
+        `;
+      }
+
       return `
         <div class="history-entry">
-          <div class="history-date">${s.date} • ${s.exercises.length} exercise(s)</div>
-          <div class="history-content">
-            <strong>Baseline Pain:</strong> ${s.baseline.pain}/10 | <strong>Exercises:</strong> ${s.exercises.map(e => e.name).join(', ')}
+          <div class="history-date" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'" style="cursor: pointer;">
+            ${s.date} • ${exerciseCount} exercise(s) • Pain ${baselinePain}/10 ▼
           </div>
-          <div style="margin-top: 8px; display: flex; gap: 8px;">
-            <button onclick="deleteSession('${s.id}')" style="flex: 1; background: var(--red); padding: 8px;">Delete</button>
+          <div style="display: none;">
+            <div class="history-content" style="font-size: 0.85rem; color: var(--text2);">
+              ${exerciseNames}
+            </div>
+            ${detailHtml}
+            <div style="margin-top: 10px;">
+              <button onclick="event.stopPropagation(); deleteSession('${s.id}')" style="width: 100%; background: var(--red); padding: 8px;">Delete</button>
+            </div>
           </div>
         </div>
       `;
     } else {
       const nd = entry.data;
       const statusClass = nd.vsBaseline === 'Better' ? 'normal' : nd.vsBaseline === 'Same' ? 'mild' : 'severe';
+
+      let ndDetailHtml = `
+        <div style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 10px; font-size: 0.85rem; color: var(--text2);">
+          <div>Vs Baseline: <span class="status ${statusClass}">${nd.vsBaseline || '—'}</span></div>
+          <div>Flare: <span style="color: var(--text);">${nd.flare || '—'}</span></div>
+          ${nd.causes ? `<div>Causes: <span style="color: var(--text);">${nd.causes}</span></div>` : ''}
+          ${nd.causeOther ? `<div>Other cause: <span style="color: var(--text);">${nd.causeOther}</span></div>` : ''}
+          ${nd.decision ? `
+            <div style="margin-top: 8px; font-weight: 600; color: var(--accent);">DECISION</div>
+            <div>Plan: <span style="color: var(--text);">${nd.decision.plan || '—'}</span></div>
+            ${nd.decision.progressVar ? `<div>Progress variable: <span style="color: var(--text);">${nd.decision.progressVar}</span></div>` : ''}
+            ${nd.decision.notes ? `<div>Notes: <span style="color: var(--yellow);">${nd.decision.notes}</span></div>` : ''}
+          ` : ''}
+        </div>
+      `;
+
       return `
         <div class="history-entry">
-          <div class="history-date">${nd.date} • Next-Day Check</div>
-          <div class="history-content">
-            <strong>Response:</strong> <span class="status ${statusClass}">${nd.vsBaseline}</span> | <strong>Flare:</strong> ${nd.flare} | <strong>Plan:</strong> ${nd.decision.plan}
+          <div class="history-date" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'" style="cursor: pointer;">
+            ${nd.date} • Next-Day Check • <span class="status ${statusClass}">${nd.vsBaseline || '—'}</span> ▼
           </div>
-          <div style="margin-top: 8px; display: flex; gap: 8px;">
-            <button onclick="deleteNextDay('${nd.id}')" style="flex: 1; background: var(--red); padding: 8px;">Delete</button>
+          <div style="display: none;">
+            ${ndDetailHtml}
+            <div style="margin-top: 10px;">
+              <button onclick="event.stopPropagation(); deleteNextDay('${nd.id}')" style="width: 100%; background: var(--red); padding: 8px;">Delete</button>
+            </div>
           </div>
         </div>
       `;
@@ -2274,8 +2371,16 @@ async function renderTrends() {
     return;
   }
 
+  // Filter to only v3 sessions that have baseline data
+  const v3Sessions = sessions.filter(s => s.baseline && s.exercises && Array.isArray(s.exercises));
+
+  if (v3Sessions.length === 0) {
+    container.innerHTML = '<p style="color: var(--text2);">No session data yet (old format sessions are excluded from trends).</p>';
+    return;
+  }
+
   const painByDate = {};
-  sessions.forEach(s => {
+  v3Sessions.forEach(s => {
     if (!painByDate[s.date]) painByDate[s.date] = [];
     painByDate[s.date].push(s.baseline.pain);
   });
@@ -2301,8 +2406,8 @@ async function renderTrends() {
     <div>
       <div style="font-weight: 600; color: var(--accent); margin-bottom: 12px;">Sessions Summary</div>
       <div style="background: var(--surface); padding: 16px; border-radius: var(--radius); font-size: 0.9rem;">
-        <div><strong>Total Sessions:</strong> ${sessions.length}</div>
-        <div><strong>Avg Baseline Pain:</strong> ${(sessions.reduce((a, s) => a + s.baseline.pain, 0) / sessions.length).toFixed(1)}/10</div>
+        <div><strong>Total Sessions:</strong> ${v3Sessions.length}</div>
+        <div><strong>Avg Baseline Pain:</strong> ${(v3Sessions.reduce((a, s) => a + s.baseline.pain, 0) / v3Sessions.length).toFixed(1)}/10</div>
       </div>
     </div>
   `;
